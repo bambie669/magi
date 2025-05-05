@@ -1,0 +1,52 @@
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-3xl font-bold">Projects</h1>
+  <% if policy(Project).new? %>
+    <%= link_to 'New Project', new_project_path, class: "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+  <% end %>
+</div>
+
+<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+  <ul role="list" class="divide-y divide-gray-200">
+    <% @projects.each do |project| %>
+      <li>
+        <div class="px-4 py-4 sm:px-6 hover:bg-gray-50">
+          <div class="flex items-center justify-between">
+            <%= link_to project.name, project_path(project), class: "text-lg font-semibold text-blue-600 hover:text-blue-800 truncate" %>
+            <div class="ml-2 flex-shrink-0 flex">
+              <%# Poți adăuga status sau alte info aici %>
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                Created by: <%= project.user&.display_name || 'N/A' %>
+              </span>
+            </div>
+          </div>
+          <div class="mt-2 sm:flex sm:justify-between">
+            <div class="sm:flex">
+              <p class="flex items-center text-sm text-gray-500">
+                <%= project.description.presence || "No description available." %>
+              </p>
+            </div>
+            <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+              <p>Created <%= time_ago_in_words(project.created_at) %> ago</p>
+               <%# Link-uri acțiuni - Verifică permisiunile Pundit %>
+              <div class="ml-4 flex space-x-2">
+                <%= link_to 'View', project, class: "text-blue-600 hover:underline text-xs" %>
+                <% if policy(project).edit? %>
+                  <%= link_to 'Edit', edit_project_path(project), class: "text-yellow-600 hover:underline text-xs" %>
+                <% end %>
+                 <% if policy(project).destroy? %>
+                  <%= button_to 'Delete', project, method: :delete, data: { confirm: 'Are you sure?' }, class: "text-red-600 hover:underline text-xs p-0 border-none bg-transparent" %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    <% end %>
+     <% if @projects.empty? %>
+       <li class="px-4 py-4 sm:px-6 text-center text-gray-500">
+          No projects found. <%= link_to 'Create one?', new_project_path, class: "text-blue-600 hover:underline" if policy(Project).new? %>
+       </li>
+     <% end %>
+  </ul>
+</div>
+

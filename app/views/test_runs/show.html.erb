@@ -1,0 +1,54 @@
+<% @page_title = "Test Run: #{@test_run.name}" %>
+
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-3xl font-bold"><%= @page_title %></h1>
+  <div>
+    <%= link_to 'Back to Project', project_path(@test_run.project), class: "text-blue-600 hover:underline mr-4" %>
+    <% if policy(@test_run).edit? %>
+      <%= link_to 'Edit Run Details', edit_test_run_path(@test_run), class: "bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded text-sm mr-2" %>
+    <% end %>
+    <% if policy(@test_run).destroy? %>
+      <%= button_to 'Delete Run', @test_run, method: :delete, data: { confirm: 'Are you sure you want to delete this entire test run and its results?' }, class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded text-sm" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="bg-white p-6 rounded-lg shadow mb-6">
+  <p><strong>Project:</strong> <%= link_to @test_run.project.name, project_path(@test_run.project) %></p>
+  <p><strong>Created by:</strong> <%= @test_run.user.display_name %></p>
+  <p><strong>Created at:</strong> <%= @test_run.created_at.strftime('%Y-%m-%d %H:%M') %></p>
+  <div class="mt-4">
+     <h3 class="font-semibold">Run Progress: <%= @test_run.completion_percentage %>%</h3>
+     <div class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700 mt-1">
+        <div class="bg-blue-600 h-4 rounded-full" style="width: <%= @test_run.completion_percentage %>%"></div>
+    </div>
+     <div class="flex justify-around text-sm mt-2">
+        <span><span class="font-bold text-green-600"><%= @test_run.passed_cases %></span> Passed</span>
+        <span><span class="font-bold text-red-600"><%= @test_run.failed_cases %></span> Failed</span>
+        <span><span class="font-bold text-yellow-600"><%= @test_run.blocked_cases %></span> Blocked</span>
+        <span><span class="font-bold text-gray-500"><%= @test_run.untested_cases %></span> Untested</span>
+     </div>
+  </div>
+</div>
+
+<h2 class="text-2xl font-bold mb-4">Test Cases (<%= @test_run_cases.count %>)</h2>
+
+<div class="bg-white rounded-lg shadow overflow-hidden">
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Case Title</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Executor</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <% @test_run_cases.each do |trc| %>
+        <%# Folosim un partial pentru fiecare rând pentru a fi mai curat %>
+        <%= render 'test_run_case_row', trc: trc %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+

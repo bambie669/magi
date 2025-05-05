@@ -1,0 +1,42 @@
+<%# locals: (test_case:, test_suite: nil) %>
+<% url = test_case.persisted? ? test_case_path(test_case) : test_suite_test_cases_path(test_suite) %>
+<% the_test_suite = test_case.persisted? ? test_case.test_suite : test_suite %>
+
+<%= form_with(model: test_case, url: url, class: "space-y-4") do |form| %>
+  <% if test_case.errors.any? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <strong class="font-bold"><%= pluralize(test_case.errors.count, "error") %> prohibited this test case from being saved:</strong>
+      <ul class="mt-2 list-disc list-inside text-sm">
+        <% test_case.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :title, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+  </div>
+
+  <div>
+    <%= form.label :preconditions, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :preconditions, rows: 3, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+  </div>
+
+   <div>
+    <%= form.label :steps, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :steps, rows: 5, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+  </div>
+
+   <div>
+    <%= form.label :expected_result, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :expected_result, rows: 3, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+  </div>
+
+
+  <div class="flex justify-end">
+     <%= link_to 'Cancel', test_suite_path(the_test_suite), class: "mr-4 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    <%= form.submit class: "cursor-pointer inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+  </div>
+<% end %>

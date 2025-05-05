@@ -1,0 +1,81 @@
+<%# Partial pentru un singur TestRunCase în vederea TestRun#show %>
+<% test_case = trc.test_case %>
+<% status_color_class = case trc.status.to_sym
+                        when :passed
+                          'bg-green-100 text-green-800'
+                        when :failed
+                          'bg-red-100 text-red-800'
+                        when :blocked
+                          'bg-yellow-100 text-yellow-800'
+                        else # :untested
+                          'bg-gray-100 text-gray-800'
+                        end %>
+<% status_border_class = case trc.status.to_sym
+                        when :passed
+                          'border-l-4 border-green-500'
+                        when :failed
+                          'border-l-4 border-red-500'
+                        when :blocked
+                          'border-l-4 border-yellow-500'
+                        else # :untested
+                          'border-l-4 border-gray-300'
+                        end %>
+
+<tr id="test_run_case_<%= trc.id %>" class="<%= status_border_class %>">
+  <td class="px-6 py-4 whitespace-nowrap">
+    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= status_color_class %>">
+      <%= trc.status.humanize %>
+    </span>
+  </td>
+  <td class="px-6 py-4">
+    <div class="text-sm font-medium text-gray-900"><%= link_to test_case.title, test_case_path(test_case), class: "hover:text-blue-600", target: "_blank" %></div>
+    <%# Poți adăuga un acordeon/modal pentru a vedea pașii aici %>
+    <details class="text-xs text-gray-500 mt-1 cursor-pointer">
+        <summary>Details (Preconditions, Steps, Expected)</summary>
+        <div class="mt-2 p-2 border rounded bg-gray-50 whitespace-pre-wrap">
+            <strong>Preconditions:</strong> <%= test_case.preconditions.presence || 'N/A' %><br>
+            <strong>Steps:</strong> <%= test_case.steps %><br>
+            <strong>Expected Result:</strong> <%= test_case.expected_result %>
+        </div>
+    </details>
+  </td>
+  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+    <%= trc.executor&.display_name || 'N/A' %>
+  </td>
+  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+    <%# Formular pentru actualizarea statusului, comentariilor și atașamentelor %>
+    <%= form_with(model: trc, url: test_run_case_path(trc), method: :patch, data: { turbo: false }) do |form| %>
+       <div class="flex flex-col space-y-2">
+         <%# Status Dropdown %>
+         <%= form.select :status, TestRunCase.statuses.keys.map { |s| [s.humanize, s] }, {}, { class: "block w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
+
+         <%# Comments Text Area %>
+         <%= form.text_area :comments, rows: 2, placeholder: "Optional comments...", class: "block w-full mt-1 text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+
+         <%# Attachments %>
+         <div class="mt-1">
+            <%= form.label :attachments, class: "block text-xs font-medium text-gray-700" %>
+            <%= form.file_field :attachments, multiple: true, class: "block w-full text-sm text-gray-500 file:mr-4 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" %>
+            <%# Afișare atașamente existente %>
+            <% if trc.attachments.attached? %>
+                <div class="mt-2 text-xs">
+                    <strong>Current Files:</strong>
+                    <ul class="list-disc list-inside ml-2">
+                        <% trc.attachments.each do |attachment| %>
+                            <li>
+                                <%= link_to attachment.filename, url_for(attachment), target: "_blank", class: "text-blue-600 hover:underline" %>
+                                (<%= number_to_human_size(attachment.byte_size) %>)
+                                <%# Adaugă link de ștergere dacă e necesar (necesită acțiune custom) %>
+                            </li>
+                        <% end %>
+                    </ul>
+                </div>
+            <% end %>
+         </div>
+
+         <%# Submit Button %>
+         <%= form.submit 'Update Status', class: "mt-2 w-full inline-flex justify-center py-1 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" %>
+       </div>
+    <% end %>
+  </td>
+</tr>

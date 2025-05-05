@@ -1,0 +1,99 @@
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-3xl font-bold">Project: <%= @project.name %></h1>
+  <div>
+    <% if policy(@project).edit? %>
+      <%= link_to 'Edit Project', edit_project_path(@project), class: "bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded text-sm mr-2" %>
+    <% end %>
+    <% if policy(@project).destroy? %>
+      <%= button_to 'Delete Project', @project, method: :delete, data: { confirm: 'Are you sure? This will delete all associated data (milestones, suites, cases, runs)!' }, class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded text-sm" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="bg-white p-6 rounded-lg shadow mb-6">
+  <h2 class="text-xl font-semibold mb-3 border-b pb-2">Details</h2>
+  <p class="text-gray-700"><%= @project.description.presence || "No description." %></p>
+  <p class="text-sm text-gray-500 mt-2">Created by: <%= @project.user&.display_name || 'N/A' %> on <%= @project.created_at.strftime('%B %d, %Y') %></p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+  <%# --- Milestones Section --- %>
+  <div class="bg-white p-6 rounded-lg shadow">
+    <div class="flex justify-between items-center mb-3 border-b pb-2">
+      <h2 class="text-xl font-semibold">Milestones</h2>
+       <% if policy(Milestone.new(project: @project)).new? %>
+         <%= link_to '+ New Milestone', new_project_milestone_path(@project), class: "text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded" %>
+       <% end %>
+    </div>
+    <% if @milestones.any? %>
+      <ul class="space-y-2">
+        <% @milestones.each do |milestone| %>
+          <li class="flex justify-between items-center text-sm">
+            <span><%= milestone.name %> (<%= milestone.due_date.strftime('%Y-%m-%d') %>)</span>
+             <div class="flex space-x-1">
+                <% if policy(milestone).edit? %>
+                    <%= link_to 'Edit', edit_milestone_path(milestone), class: "text-yellow-600 hover:underline text-xs px-1" %>
+                <% end %>
+                <% if policy(milestone).destroy? %>
+                    <%= button_to 'Del', milestone, method: :delete, data: { confirm: 'Delete milestone?' }, class: "text-red-600 hover:underline text-xs p-0 border-none bg-transparent px-1" %>
+                <% end %>
+             </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-gray-500 text-sm">No milestones defined.</p>
+    <% end %>
+  </div>
+
+  <%# --- Test Suites Section --- %>
+  <div class="bg-white p-6 rounded-lg shadow">
+     <div class="flex justify-between items-center mb-3 border-b pb-2">
+      <h2 class="text-xl font-semibold">Test Suites</h2>
+      <% if policy(TestSuite.new(project: @project)).new? %>
+        <%= link_to '+ New Suite', new_project_test_suite_path(@project), class: "text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded" %>
+      <% end %>
+    </div>
+    <% if @test_suites.any? %>
+      <ul class="space-y-2">
+        <% @test_suites.each do |suite| %>
+           <li class="flex justify-between items-center text-sm">
+             <%= link_to suite.name, test_suite_path(suite), class: "text-blue-600 hover:underline" %>
+             <span class="text-xs text-gray-400">(<%= pluralize(suite.test_cases.size, 'case') %>)</span>
+             <%# Nu adaugam Edit/Delete aici, se face pe pagina suitei %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-gray-500 text-sm">No test suites defined.</p>
+    <% end %>
+  </div>
+
+  <%# --- Test Runs Section --- %>
+   <div class="bg-white p-6 rounded-lg shadow">
+     <div class="flex justify-between items-center mb-3 border-b pb-2">
+      <h2 class="text-xl font-semibold">Test Runs</h2>
+       <% if policy(TestRun.new(project: @project)).new? %>
+         <%= link_to '+ New Run', new_project_test_run_path(@project), class: "text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded" %>
+       <% end %>
+    </div>
+    <% if @test_runs.any? %>
+      <ul class="space-y-2">
+        <% @test_runs.each do |run| %>
+           <li class="flex justify-between items-center text-sm">
+             <%= link_to run.name, test_run_path(run), class: "text-blue-600 hover:underline" %>
+             <span class="text-xs text-gray-400"><%= run.completion_percentage %>% done</span>
+          </li>
+        <% end %>
+      </ul>
+       <%# Link to view all runs? %>
+       <%# <%= link_to 'View All Runs', project_test_runs_path(@project), class: "text-sm text-blue-600 hover:underline mt-3 block" %>
+    <% else %>
+      <p class="text-gray-500 text-sm">No test runs started.</p>
+    <% end %>
+  </div>
+</div>
+
+<div class="mt-8">
+  <%= link_to 'Back to All Projects', projects_path, class: "text-blue-600 hover:underline" %>
+</div>

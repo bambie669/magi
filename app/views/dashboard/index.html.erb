@@ -1,0 +1,105 @@
+<h1 class="text-3xl font-bold text-gray-900 mb-6 mr-6 pb-3 border-b border-gray-200">Dashboard</h1>
+
+<%# Grid principal: 1 coloană pe mobil, 2 pe mediu, 3 pe large+ %>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+  <%# Coloana 1: Recent Test Runs %>
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
+      <h2 class="text-xl font-semibold text-gray-800">Recent Test Runs</h2>
+      <%# TODO: Link View All %>
+    </div>
+
+    <% if @recent_test_runs.any? %>
+      <ul class="space-y-4">
+        <% @recent_test_runs.each do |run| %>
+          <li class="p-3 rounded-md hover:bg-gray-50 transition-colors duration-150">
+            <div class="flex justify-between items-start">
+              <%= link_to run.name, test_run_path(run), class: "text-base font-medium text-blue-700 hover:text-blue-900 hover:underline mb-1 block" %>
+              <span class="text-xs text-gray-400 flex-shrink-0 ml-2"><%= time_ago_in_words(run.created_at) %> ago</span>
+            </div>
+            <span class="text-xs text-gray-500 block mb-2">
+              Project: <%= link_to run.project.name, project_path(run.project), class: "text-blue-600 hover:underline" %>
+            </span>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mb-1">
+              <div class="bg-blue-600 h-2.5 rounded-full dark:bg-blue-500" style="width: <%= run.completion_percentage %>%"></div>
+            </div>
+            <div class="text-xs text-gray-600 flex justify-between items-center">
+              <span><%= run.completion_percentage %>% Complete</span>
+              <span class="space-x-2">
+                <span class="font-medium text-green-600"><%= run.passed_cases %> P</span>
+                <span class="font-medium text-red-600"><%= run.failed_cases %> F</span>
+                <span class="font-medium text-yellow-600"><%= run.blocked_cases %> B</span>
+                <span class="font-medium text-gray-500"><%= run.untested_cases %> U</span>
+              </span>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div class="text-center text-gray-500 py-8">
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No Active Test Runs</h3>
+        <p class="mt-1 text-sm text-gray-500">Get started by creating a new test run in a project.</p>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Coloana 2: Upcoming Milestones %>
+  <div class="bg-white p-6 rounded-lg shadow-md">
+     <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-100">
+        <h2 class="text-xl font-semibold text-gray-800">Upcoming Milestones</h2>
+        <%# TODO: Link View All %>
+     </div>
+     <% if @upcoming_milestones.any? %>
+       <ul class="space-y-3">
+         <% @upcoming_milestones.each do |milestone| %>
+           <li class="p-3 rounded-md hover:bg-gray-50 transition-colors duration-150 flex justify-between items-center">
+             <div>
+                <span class="text-base font-medium text-gray-800 block"><%= milestone.name %></span>
+                <span class="text-xs text-gray-500 block mt-0.5">
+                  Project: <%= link_to milestone.project.name, project_path(milestone.project), class: "text-blue-600 hover:underline" %>
+                </span>
+             </div>
+             <span class="text-sm font-medium text-gray-700 flex-shrink-0 ml-2">
+               Due: <%= milestone.due_date.strftime('%b %d, %Y') %>
+             </span>
+           </li>
+         <% end %>
+       </ul>
+     <% else %>
+        <div class="text-center text-gray-500 py-8">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">No Upcoming Milestones</h3>
+          <p class="mt-1 text-sm text-gray-500">Define milestones within your projects.</p>
+       </div>
+     <% end %>
+  </div>
+
+   <%# Coloana 3: Overall Stats %>
+    
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <div class="mb-4 pb-2 border-b border-gray-100">
+          <h2 class="text-xl font-semibold text-gray-800">Overall Stats</h2>
+      </div>
+      <%# Grid intern pentru statistici: 2 coloane %>
+      <div class="grid grid-cols-2 gap-4">
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-center transition hover:shadow-sm">
+              <div class="text-2xl font-bold text-blue-600"><%= @total_projects %></div>
+              <div class="text-sm font-medium text-slate-500 mt-1">Projects</div>
+          </div>
+           <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-center transition hover:shadow-sm">
+              <div class="text-2xl font-bold text-blue-600"><%= @total_test_suites %></div>
+              <div class="text-sm font-medium text-slate-500 mt-1">Test Suites</div>
+          </div>
+           <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-center transition hover:shadow-sm">
+              <div class="text-2xl font-bold text-blue-600"><%= @total_test_cases %></div>
+              <div class="text-sm font-medium text-slate-500 mt-1">Test Cases</div>
+          </div>
+           <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-center transition hover:shadow-sm">
+              <div class="text-2xl font-bold text-blue-600"><%= @total_test_runs %></div>
+              <div class="text-sm font-medium text-slate-500 mt-1">Test Runs</div>
+          </div>
+      </div>
+    </div>
+
+</div>

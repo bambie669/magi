@@ -1,0 +1,42 @@
+<% test_suite = @test_case.test_suite %>
+<% project = test_suite.project %>
+
+<div class="flex justify-between items-center mb-6">
+   <div>
+     <h1 class="text-3xl font-bold"><%= @test_case.title %></h1>
+      <div class="text-sm text-gray-500 mt-1">
+        Suite: <%= link_to test_suite.name, test_suite_path(test_suite), class: "text-blue-600 hover:underline" %>
+        | Project: <%= link_to project.name, project_path(project), class: "text-blue-600 hover:underline" %>
+     </div>
+   </div>
+
+  <div>
+    <% if policy(@test_case).edit? %>
+      <%= link_to 'Edit Test Case', edit_test_case_path(@test_case), class: "bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded text-sm mr-2" %>
+    <% end %>
+    <% if policy(@test_case).destroy? %>
+      <%= button_to 'Delete Test Case', @test_case, method: :delete, data: { confirm: 'Are you sure?' }, class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded text-sm" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="bg-white p-6 rounded-lg shadow space-y-4">
+   <div>
+      <h3 class="text-lg font-semibold text-gray-800 mb-1">Preconditions</h3>
+      <p class="text-gray-700 whitespace-pre-wrap"><%= @test_case.preconditions.presence || "N/A" %></p>
+   </div>
+    <hr>
+   <div>
+      <h3 class="text-lg font-semibold text-gray-800 mb-1">Steps</h3>
+      <div class="text-gray-700 whitespace-pre-wrap"><%= simple_format(@test_case.steps, {}, wrapper_tag: "div") %></div>
+   </div>
+    <hr>
+   <div>
+      <h3 class="text-lg font-semibold text-gray-800 mb-1">Expected Result</h3>
+      <p class="text-gray-700 whitespace-pre-wrap"><%= @test_case.expected_result %></p>
+   </div>
+</div>
+
+<div class="mt-8">
+  <%= link_to 'Back to Test Suite', test_suite_path(test_suite), class: "text-blue-600 hover:underline" %>
+</div>

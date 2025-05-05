@@ -1,0 +1,67 @@
+<% project = @test_suite.project %>
+<div class="flex justify-between items-center mb-6">
+  <div>
+     <h1 class="text-3xl font-bold">Test Suite: <%= @test_suite.name %></h1>
+     <div class="text-sm text-gray-500 mt-1">
+        Project: <%= link_to project.name, project_path(project), class: "text-blue-600 hover:underline" %>
+     </div>
+  </div>
+  <div>
+    <% if policy(@test_suite).edit? %>
+      <%= link_to 'Edit Suite', edit_test_suite_path(@test_suite), class: "bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded text-sm mr-2" %>
+    <% end %>
+    <% if policy(@test_suite).destroy? %>
+      <%= button_to 'Delete Suite', @test_suite, method: :delete, data: { confirm: 'Are you sure? This will delete all associated test cases!' }, class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded text-sm" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="bg-white p-6 rounded-lg shadow mb-6">
+  <h2 class="text-xl font-semibold mb-3 border-b pb-2">Description</h2>
+  <p class="text-gray-700"><%= @test_suite.description.presence || "No description." %></p>
+</div>
+
+
+<div class="mb-6">
+    <div class="flex justify-between items-center mb-3">
+      <h2 class="text-2xl font-bold">Test Cases (<%= @test_cases.size %>)</h2>
+      <% if policy(::TestCase.new(test_suite: @test_suite)).new? %>
+        <%= link_to '+ New Test Case', new_test_suite_test_case_path(@test_suite), class: "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+      <% end %>
+    </div>
+
+   <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+     <ul role="list" class="divide-y divide-gray-200">
+       <% @test_cases.each do |test_case| %>
+         <li>
+           <div class="px-4 py-4 sm:px-6 hover:bg-gray-50">
+             <div class="flex items-center justify-between">
+               <%= link_to test_case.title, test_case_path(test_case), class: "text-md font-semibold text-blue-600 hover:text-blue-800 truncate" %>
+                <div class="ml-4 flex space-x-2 text-xs">
+                    <%= link_to 'View', test_case, class: "text-blue-600 hover:underline" %>
+                    <% if policy(test_case).edit? %>
+                      <%= link_to 'Edit', edit_test_case_path(test_case), class: "text-yellow-600 hover:underline" %>
+                    <% end %>
+                     <% if policy(test_case).destroy? %>
+                      <%= button_to 'Delete', test_case, method: :delete, data: { confirm: 'Are you sure?' }, class: "text-red-600 hover:underline p-0 border-none bg-transparent" %>
+                    <% end %>
+                  </div>
+             </div>
+             <%# Poți adăuga un preview mic aici dacă dorești %>
+             <%# <p class="text-sm text-gray-500 mt-1 truncate"><%= test_case.steps %></p> %>
+           </div>
+         </li>
+       <% end %>
+       <% if @test_cases.empty? %>
+        <li class="px-4 py-4 sm:px-6 text-center text-gray-500">
+          No test cases found in this suite. <%= link_to 'Add one?', new_test_suite_test_case_path(@test_suite), class: "text-blue-600 hover:underline" if policy(TestCase.new(test_suite: @test_suite)).new? %>
+        </li>
+       <% end %>
+     </ul>
+   </div>
+</div>
+
+
+<div class="mt-8">
+  <%= link_to 'Back to Project', project_path(project), class: "text-blue-600 hover:underline" %>
+</div>
