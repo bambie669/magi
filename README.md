@@ -36,7 +36,7 @@ Magi QA is a web application built with Ruby on Rails for managing software test
 3.  **Install JavaScript dependencies:**
 
     ```bash
-    yarn install
+    node install
     ```
 
 4.  **Set up the database:**
