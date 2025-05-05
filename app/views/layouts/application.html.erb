@@ -14,7 +14,7 @@
   <body class="bg-gray-100">
     <nav class="bg-blue-600 text-white p-4 shadow-md">
       <div class="container mx-auto flex justify-between items-center">
-        <%= link_to 'Magi', authenticated_root_path, class: "px-3 py-2 m-2 text-xl font-bold" %>
+        <%= link_to 'Magi', authenticated_root_path, class: "px-3 py-2 m-2 text-xl font-bold text-red" %>
         <div>
           <% if user_signed_in? %>
             <%= link_to 'Dashboard', dashboard_path, class: "px-30 py-20 hover:bg-blue-700 rounded" %>
