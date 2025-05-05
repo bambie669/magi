@@ -46,15 +46,14 @@
                       <%= button_to 'Delete', test_case, method: :delete, data: { confirm: 'Are you sure?' }, class: "text-red-600 hover:underline p-0 border-none bg-transparent" %>
                     <% end %>
                   </div>
-             </div>
-             <%# Poți adăuga un preview mic aici dacă dorești %>
-             <%# <p class="text-sm text-gray-500 mt-1 truncate"><%= test_case.steps %></p> %>
+             </div>      
+            <p class="text-sm text-gray-500 mt-1 truncate"><%= test_case.steps %></p>
            </div>
          </li>
        <% end %>
        <% if @test_cases.empty? %>
         <li class="px-4 py-4 sm:px-6 text-center text-gray-500">
-          No test cases found in this suite. <%= link_to 'Add one?', new_test_suite_test_case_path(@test_suite), class: "text-blue-600 hover:underline" if policy(TestCase.new(test_suite: @test_suite)).new? %>
+          No test cases found in this suite. <%= link_to 'Add one?', new_test_suite_test_case_path(@test_suite), class: "text-blue-600 hover:underline" if policy(::TestCase.new(test_suite: @test_suite)).new? %>
         </li>
        <% end %>
      </ul>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_01_125021) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_05_222702) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,7 +74,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_01_125021) do
   create_table "test_run_cases", force: :cascade do |t|
     t.bigint "test_run_id", null: false
     t.bigint "test_case_id", null: false
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.integer "status"
     t.text "comments"
     t.datetime "created_at", null: false

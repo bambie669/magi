@@ -12,16 +12,15 @@ class TestRunsController < ApplicationController
   def show
     authorize @test_run
     # Eager load pentru a afișa detaliile cazurilor și a executorilor
-    @test_run_cases = @test_run.test_run_cases.includes(:test_case, :executor, attachments_attachments: :blob).order('test_cases.title ASC')
+    @test_run_cases = @test_run.test_run_cases.includes(:test_case, :user, attachments_attachments: :blob).order('test_cases.title ASC') # Changed :executor to :user
   end
 
   # GET /projects/:project_id/test_runs/new
   def new
     @test_run = @project.test_runs.new
     authorize @test_run
-    # Permite selectarea Test Suite-urilor sau cazurilor
-    @test_suites = @project.test_suites.includes(:test_cases).order(:name)
-    # Sau @test_cases = @project.test_cases.order(:title)
+    # Load all test cases for the project to display in the form
+    @available_test_cases = @project.test_cases.order(:name)
   end
 
   # POST /projects/:project_id/test_runs
@@ -30,33 +29,34 @@ class TestRunsController < ApplicationController
     @test_run.user = current_user # Creatorul
     authorize @test_run
 
-    # Selectează Test Case-urile bazat pe input (ex: un Test Suite întreg)
-    selected_suite_id = params[:test_run][:test_suite_id] # Presupunem un select în form
-    test_case_ids = []
-    if selected_suite_id.present?
-      test_suite = @project.test_suites.find(selected_suite_id)
-      test_case_ids = test_suite.test_case_ids if test_suite
-      @test_run.name ||= "Run for #{test_suite.name} - #{Time.zone.now.strftime('%Y-%m-%d')}" # Nume default
-    else
-      # Poți implementa selecție de cazuri individuale sau toate cazurile din proiect
-      # test_case_ids = @project.test_case_ids
-      # @test_run.name ||= "Run for All Cases - #{Time.zone.now.strftime('%Y-%m-%d')}"
-    end
+    # Get the selected test case IDs directly from the form parameters
+    selected_test_case_ids = params.dig(:test_run, :test_case_ids)&.reject(&:blank?) || []
 
-    if test_case_ids.empty?
-       @test_suites = @project.test_suites.includes(:test_cases).order(:name) # Re-populează pentru form
-       flash.now[:alert] = "Please select a Test Suite or ensure the suite has Test Cases."
+    # Check if any test cases were actually selected
+    if selected_test_case_ids.empty?
+       flash.now[:alert] = "Please select at least one Test Case to include in the run."
+       # Add this line to ensure @available_test_cases is set for the re-rendered form
+       @available_test_cases = @project.test_cases.order(:title)
        render :new, status: :unprocessable_entity
        return
     end
 
-
     if @test_run.save
        # Adaugă TestRunCases după salvarea TestRun-ului
-       @test_run.add_test_cases(test_case_ids)
+       selected_test_case_ids = params.dig(:test_run, :test_case_ids)&.reject(&:blank?) || []
+       selected_test_case_ids.each do |test_case_id|
+        if @project.test_case_ids.include?(test_case_id.to_i)
+          @test_run.test_run_cases.create(test_case_id: test_case_id, status: :untested)
+        end
+      end
+
+       # The loop above replaces the need for @test_run.add_test_cases
       redirect_to @test_run, notice: 'Test run was successfully created.'
     else
-       @test_suites = @project.test_suites.includes(:test_cases).order(:name) # Re-populează pentru form
+      flash.now[:alert] = @test_run.errors.full_messages.join(', ')
+      # Ensure this is also set in the other failure path, using :title
+      @available_test_cases = @project.test_cases.order(:title)
+
       render :new, status: :unprocessable_entity
     end
   end
@@ -95,6 +95,7 @@ class TestRunsController < ApplicationController
   end
 
   def test_run_params
-    params.require(:test_run).permit(:name) # Doar numele poate fi editat direct aici
+    # Allow name and the array of test_case_ids from the checkboxes
+    params.require(:test_run).permit(:name, test_case_ids: [])
   end
 end

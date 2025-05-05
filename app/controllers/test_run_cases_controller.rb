@@ -11,8 +11,8 @@ class TestRunCasesController < ApplicationController
 
     # Atribuie executorul DOAR dacă statusul se schimbă din 'untested'
     # și dacă nu a fost deja setat
-    if @test_run_case.untested? && test_run_case_params[:status] != 'untested' && @test_run_case.executor.nil?
-       params[:test_run_case][:user_id] = current_user.id
+    if @test_run_case.status_was == 'untested' && test_run_case_params[:status] != 'untested' && @test_run_case.user_id.nil?
+      params[:test_run_case][:user_id] = current_user.id
     elsif test_run_case_params[:status] == 'untested'
       # Reset executor if status goes back to untested
       params[:test_run_case][:user_id] = nil

@@ -14,13 +14,13 @@ Rails.application.routes.draw do
   get "dashboard", to: "dashboard#index"
 
   resources :projects do
-    # Nested shallow: Doar index, new, create sunt sub /projects/:project_id/
-    # Restul (show, edit, update, destroy) au URL propriu (/milestones/:id)
-    resources :milestones
+    resources :test_runs, shallow: true do
+      resources :test_run_cases, only: [:update]
+   end
+    resources :milestones, shallow: true
     resources :test_suites, shallow: true do
        resources :test_cases, shallow: true
     end
-    resources :test_runs, shallow: true, except: [:edit, :update] # Folosim ruta separată pt update cazuri
   end
 
   # Rută specifică pentru actualizarea TestRunCase (status, comentarii, atașamente)

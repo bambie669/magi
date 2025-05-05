@@ -1,6 +1,7 @@
 <%# Partial pentru un singur TestRunCase în vederea TestRun#show %>
 <% test_case = trc.test_case %>
-<% status_color_class = case trc.status.to_sym
+<% status_symbol = trc.status&.to_sym || :untested %>
+<% status_color_class = case status_symbol
                         when :passed
                           'bg-green-100 text-green-800'
                         when :failed
@@ -10,7 +11,7 @@
                         else # :untested
                           'bg-gray-100 text-gray-800'
                         end %>
-<% status_border_class = case trc.status.to_sym
+<% status_border_class = case status_symbol # Use the safe status_symbol here too
                         when :passed
                           'border-l-4 border-green-500'
                         when :failed
@@ -24,7 +25,8 @@
 <tr id="test_run_case_<%= trc.id %>" class="<%= status_border_class %>">
   <td class="px-6 py-4 whitespace-nowrap">
     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= status_color_class %>">
-      <%= trc.status.humanize %>
+      <%# Use status_symbol (which defaults to :untested) and convert to string before humanize %>
+      <%= status_symbol.to_s.humanize %>
     </span>
   </td>
   <td class="px-6 py-4">
@@ -39,8 +41,8 @@
         </div>
     </details>
   </td>
-  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-    <%= trc.executor&.display_name || 'N/A' %>
+  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> <%# Changed executor to user %>
+    <%= trc.user&.display_name || 'N/A' %>
   </td>
   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
     <%# Formular pentru actualizarea statusului, comentariilor și atașamentelor %>
