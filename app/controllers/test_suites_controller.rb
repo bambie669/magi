@@ -1,13 +1,16 @@
 
 class TestSuitesController < ApplicationController
     before_action :set_project, only: [:new, :create]
-    before_action :set_test_suite, only: [:show, :edit, :update, :destroy]
+    before_action :set_test_suite, only: [:show, :edit, :update, :destroy, :export_csv, :export_pdf, :import_csv, :process_import_csv, :csv_template, :bulk_destroy_cases, :bulk_export_cases]
+
+    rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
   
     # GET /test_suites/:id
     def show
       authorize @test_suite
-      # Eager load test cases pentru afișare
-      @test_cases = @test_suite.test_cases.order(:title)
+      # Eager load test cases pentru afișare cu paginare
+      all_test_cases = @test_suite.all_test_cases.sort_by(&:title)
+      @pagy, @test_cases = pagy_array(all_test_cases, items: 15)
     end
   
     # GET /projects/:project_id/test_suites/new
@@ -51,7 +54,104 @@ class TestSuitesController < ApplicationController
       @test_suite.destroy
       redirect_to project_path(project), notice: 'Test suite was successfully destroyed.', status: :see_other
     end
-  
+
+    # GET /test_suites/:id/export_csv
+    def export_csv
+      authorize @test_suite
+      csv_data = TestCasesCsvExporter.new(@test_suite).to_csv
+
+      send_data csv_data,
+        filename: "#{@test_suite.name.parameterize}-test-cases-#{Date.current}.csv",
+        type: 'text/csv; charset=utf-8'
+    end
+
+    # GET /test_suites/:id/export_pdf
+    def export_pdf
+      authorize @test_suite
+      pdf_data = TestCasesPdfExporter.new(@test_suite).to_pdf
+
+      send_data pdf_data,
+        filename: "#{@test_suite.name.parameterize}-protocols-#{Date.current}.pdf",
+        type: 'application/pdf',
+        disposition: 'attachment'
+    end
+
+    # GET /test_suites/:id/csv_template
+    def csv_template
+      authorize @test_suite
+      csv_data = TestCasesCsvExporter.headers_only
+
+      send_data csv_data,
+        filename: "test-cases-template.csv",
+        type: 'text/csv; charset=utf-8'
+    end
+
+    # GET /test_suites/:id/import_csv
+    def import_csv
+      authorize @test_suite
+    end
+
+    # POST /test_suites/:id/process_import_csv
+    def process_import_csv
+      authorize @test_suite
+
+      unless params[:csv_file].present?
+        redirect_to import_csv_test_suite_path(@test_suite), alert: 'Please select a CSV file.'
+        return
+      end
+
+      result = TestCasesCsvImporter.new(@test_suite, params[:csv_file]).import
+
+      if result[:success]
+        redirect_to test_suite_path(@test_suite),
+          notice: "Successfully imported #{result[:imported]} test cases."
+      else
+        flash.now[:alert] = "Import completed with #{result[:errors].size} error(s). #{result[:imported]} test cases imported."
+        @errors = result[:errors]
+        @imported_count = result[:imported]
+        render :import_csv, status: :unprocessable_entity
+      end
+    end
+
+    # DELETE /test_suites/:id/bulk_destroy_cases
+    def bulk_destroy_cases
+      authorize @test_suite, :destroy?
+
+      ids = params[:ids] || []
+      return head :bad_request if ids.empty?
+
+      # Only destroy test cases that belong to this test suite
+      test_cases = @test_suite.all_test_cases.where(id: ids)
+      destroyed_count = test_cases.destroy_all.count
+
+      respond_to do |format|
+        format.json { render json: { destroyed: destroyed_count }, status: :ok }
+        format.html { redirect_to test_suite_path(@test_suite), notice: "#{destroyed_count} protocol(s) terminated." }
+      end
+    end
+
+    # POST /test_suites/:id/bulk_export_cases
+    def bulk_export_cases
+      authorize @test_suite, :export_csv?
+
+      ids = params[:ids] || []
+      return head :bad_request if ids.empty?
+
+      # Only export test cases that belong to this test suite
+      test_cases = @test_suite.all_test_cases.where(id: ids).order(:title)
+
+      csv_data = CSV.generate(headers: true) do |csv|
+        csv << %w[title preconditions steps expected_result cypress_id]
+        test_cases.each do |tc|
+          csv << [tc.title, tc.preconditions, tc.steps, tc.expected_result, tc.cypress_id]
+        end
+      end
+
+      send_data csv_data,
+        filename: "#{@test_suite.name.parameterize}-selected-#{Date.current}.csv",
+        type: 'text/csv; charset=utf-8'
+    end
+
     private
   
     def set_project
@@ -64,5 +164,9 @@ class TestSuitesController < ApplicationController
   
     def test_suite_params
       params.require(:test_suite).permit(:name, :description)
+    end
+
+    def handle_not_found
+      redirect_to root_path, alert: 'Test suite was not found. It may have been deleted.'
     end
   end

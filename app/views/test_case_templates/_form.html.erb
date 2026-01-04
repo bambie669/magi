@@ -1,0 +1,60 @@
+<%= form_with model: [@project, @template], local: true, class: "space-y-6" do |f| %>
+  <% if @template.errors.any? %>
+    <div class="bg-terminal-red/10 border border-terminal-red/50 p-4 rounded">
+      <div class="flex items-center space-x-2 mb-2">
+        <svg class="w-5 h-5 text-terminal-red" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+        </svg>
+        <span class="text-terminal-red font-mono text-sm uppercase tracking-wider">System Errors Detected</span>
+      </div>
+      <ul class="list-disc list-inside text-terminal-red text-sm font-mono">
+        <% @template.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="nerv-panel">
+    <div class="nerv-panel-header">Template Configuration</div>
+    <div class="p-6 space-y-6">
+      <!-- Name -->
+      <div>
+        <%= f.label :name, "Template Name", class: "block text-[10px] font-mono text-terminal-gray uppercase tracking-widest mb-2" %>
+        <%= f.text_field :name, class: "input-nerv w-full", placeholder: "e.g., Login Flow Template" %>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <%= f.label :description, "Description", class: "block text-[10px] font-mono text-terminal-gray uppercase tracking-widest mb-2" %>
+        <%= f.text_area :description, rows: 2, class: "input-nerv w-full", placeholder: "Brief description of this template's purpose..." %>
+      </div>
+
+      <!-- Preconditions -->
+      <div>
+        <%= f.label :preconditions, "Preconditions", class: "block text-[10px] font-mono text-terminal-gray uppercase tracking-widest mb-2" %>
+        <%= f.text_area :preconditions, rows: 3, class: "input-nerv w-full", placeholder: "Prerequisites and initial state required..." %>
+        <p class="text-[9px] font-mono text-terminal-gray/60 mt-1">Define the initial conditions that must be met before executing this protocol</p>
+      </div>
+
+      <!-- Steps -->
+      <div>
+        <%= f.label :steps, "Execution Steps", class: "block text-[10px] font-mono text-terminal-gray uppercase tracking-widest mb-2" %>
+        <%= f.text_area :steps, rows: 6, class: "input-nerv w-full", placeholder: "1. First step...\n2. Second step...\n3. Third step..." %>
+        <p class="text-[9px] font-mono text-terminal-gray/60 mt-1">List the steps to be executed in order</p>
+      </div>
+
+      <!-- Expected Result -->
+      <div>
+        <%= f.label :expected_result, "Expected Result", class: "block text-[10px] font-mono text-terminal-gray uppercase tracking-widest mb-2" %>
+        <%= f.text_area :expected_result, rows: 3, class: "input-nerv w-full", placeholder: "The expected outcome when all steps are executed correctly..." %>
+        <p class="text-[9px] font-mono text-terminal-gray/60 mt-1">Define the success criteria for this protocol</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-end space-x-4">
+    <%= link_to "Cancel", project_test_case_templates_path(@project), class: "px-4 py-2 text-terminal-gray text-sm font-mono uppercase tracking-wider hover:text-terminal-white transition-colors" %>
+    <%= f.submit (@template.persisted? ? "Update Template" : "Initialize Template"), class: "btn-nerv" %>
+  </div>
+<% end %>

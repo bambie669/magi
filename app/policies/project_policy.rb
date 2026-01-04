@@ -2,6 +2,8 @@ class ProjectPolicy < ApplicationPolicy
   # Folosim Scope pentru a filtra ce proiecte poate vedea un utilizator
   class Scope < Scope
     def resolve
+      return scope.none unless user
+
       if user.admin?
         scope.all # Adminii văd tot
       elsif user.manager? || user.tester? # Managerii și testerii văd tot (poți rafina ulterior)

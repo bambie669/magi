@@ -4,7 +4,8 @@ class ProjectsController < ApplicationController
   # GET /projects
   def index
     # Folosește Pundit Scope pentru a filtra proiectele vizibile
-    @projects = policy_scope(Project).order(created_at: :desc)
+    projects = policy_scope(Project).order(created_at: :desc)
+    @pagy, @projects = pagy(projects, items: 12)
     authorize Project # Verifică dacă utilizatorul are voie să acceseze index-ul
   end
 
@@ -12,7 +13,12 @@ class ProjectsController < ApplicationController
   def show
     authorize @project # Verifică permisiunea pentru show
     # Eager load pentru performanță
-    @project = Project.includes(:milestones, test_suites: :test_cases, test_runs: :user).find(params[:id])
+    @project = Project.includes(
+      :milestones,
+      { test_suites: { root_test_scopes: [:test_cases, { children: :test_cases }] } },
+      { test_runs: :user }
+    ).find(params[:id])
+
     @milestones = @project.milestones.order(due_date: :asc)
     @test_suites = @project.test_suites.order(:name)
     @test_runs = @project.test_runs.order(created_at: :desc)

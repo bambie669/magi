@@ -1,99 +1,229 @@
-<div class="flex justify-between items-center mb-6">
-  <h1 class="text-3xl font-bold">Project: <%= @project.name %></h1>
-  <div>
-    <% if policy(@project).edit? %>
-      <%= link_to 'Edit Project', edit_project_path(@project), class: "bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 mx-2 rounded text-sm mr-2" %>
-    <% end %>
-    <% if policy(@project).destroy? %>
-      <%= button_to 'Delete Project', @project, method: :delete, data: { confirm: 'Are you sure? This will delete all associated data (milestones, suites, cases, runs)!' }, class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded text-sm" %>
-    <% end %>
-  </div>
-</div>
+<% content_for :page_title, "MISSION: #{@project.name.upcase}" %>
 
-<div class="bg-white p-6 rounded-lg shadow mb-6">
-  <h2 class="text-xl font-semibold mb-3 border-b pb-2">Details</h2>
-  <p class="text-gray-700"><%= @project.description.presence || "No description." %></p>
-  <p class="text-sm text-gray-500 mt-2">Created by: <%= @project.user&.display_name || 'N/A' %> on <%= @project.created_at.strftime('%B %d, %Y') %></p>
-</div>
+<% content_for :breadcrumbs do %>
+  <%= link_to "Missions", projects_path, class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+  <span class="text-terminal-red mx-2">/</span>
+  <span class="text-terminal-gray"><%= @project.name %></span>
+<% end %>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-  <%# --- Milestones Section --- %>
-  <div class="bg-white p-6 rounded-lg shadow">
-    <div class="flex justify-between items-center mb-3 border-b pb-2">
-      <h2 class="text-xl font-semibold">Milestones</h2>
-       <% if policy(Milestone.new(project: @project)).new? %>
-         <%= link_to '+ New Milestone', new_project_milestone_path(@project), class: "text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded" %>
-       <% end %>
-    </div>
-    <% if @milestones.any? %>
-      <ul class="space-y-2">
-        <% @milestones.each do |milestone| %>
-          <li class="flex justify-between items-center text-sm">
-            <span><%= milestone.name %> (<%= milestone.due_date.strftime('%Y-%m-%d') %>)</span>
-             <div class="flex space-x-1">
-                <% if policy(milestone).edit? %>
-                    <%= link_to 'Edit', edit_milestone_path(milestone), class: "text-yellow-600 hover:underline text-xs px-1" %>
-                <% end %>
-                <% if policy(milestone).destroy? %>
-                    <%= button_to 'Del', milestone, method: :delete, data: { confirm: 'Delete milestone?' }, class: "text-red-600 hover:underline text-xs p-0 border-none bg-transparent px-1" %>
-                <% end %>
-             </div>
-          </li>
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+  <!-- Main Content -->
+  <div class="lg:col-span-3 space-y-6">
+    <!-- Mission Brief -->
+    <% if @project.description.present? %>
+      <div class="nerv-panel">
+        <div class="nerv-panel-header">Mission Brief</div>
+        <div class="p-6">
+          <p class="text-terminal-white/80 font-mono text-sm"><%= @project.description %></p>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Protocol Banks Section -->
+    <div class="nerv-panel">
+      <div class="nerv-panel-header flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <span>Protocol Banks</span>
+          <div class="h-3 w-px bg-terminal-red/30"></div>
+          <span class="text-[10px] font-mono text-terminal-cyan"><%= @test_suites.size %> Banks</span>
+        </div>
+        <% if policy(TestSuite.new(project: @project)).new? %>
+          <%= link_to new_project_test_suite_path(@project), class: "btn-nerv-primary flex items-center space-x-2 py-1.5" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            <span>Initialize Protocol Bank</span>
+          <% end %>
         <% end %>
-      </ul>
-    <% else %>
-      <p class="text-gray-500 text-sm">No milestones defined.</p>
-    <% end %>
-  </div>
+      </div>
 
-  <%# --- Test Suites Section --- %>
-  <div class="bg-white p-6 rounded-lg shadow">
-     <div class="flex justify-between items-center mb-3 border-b pb-2">
-      <h2 class="text-xl font-semibold">Test Suites</h2>
-      <% if policy(TestSuite.new(project: @project)).new? %>
-        <%= link_to '+ New Suite', new_project_test_suite_path(@project), class: "text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded" %>
+      <% if @test_suites.any? %>
+        <div class="divide-y divide-terminal-red/20">
+          <% @test_suites.each do |suite| %>
+            <div class="p-4 hover:bg-nerv-purple-mid/50 transition-colors group">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                  <span class="w-2 h-2 bg-terminal-cyan rounded-full group-hover:animate-pulse"></span>
+                  <%= link_to suite.name, test_suite_path(suite), class: "text-sm font-mono text-terminal-white hover:text-terminal-cyan transition-colors" %>
+                  <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">
+                    <%= pluralize(suite.all_test_cases.size, 'protocol') %>
+                  </span>
+                </div>
+                <%= link_to test_suite_path(suite), class: "p-2 border border-terminal-cyan/30 text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors opacity-0 group-hover:opacity-100" do %>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="p-8 text-center">
+          <p class="text-sm font-mono text-terminal-gray uppercase tracking-wider">No protocol banks initialized</p>
+          <% if policy(TestSuite.new(project: @project)).new? %>
+            <%= link_to "Initialize Bank", new_project_test_suite_path(@project), class: "text-terminal-cyan hover:text-terminal-cyan/80 text-sm font-mono" %>
+          <% end %>
+        </div>
       <% end %>
     </div>
-    <% if @test_suites.any? %>
-      <ul class="space-y-2">
-        <% @test_suites.each do |suite| %>
-           <li class="flex justify-between items-center text-sm">
-             <%= link_to suite.name, test_suite_path(suite), class: "text-blue-600 hover:underline" %>
-             <span class="text-xs text-gray-400">(<%= pluralize(suite.test_cases.size, 'case') %>)</span>
-             <%# Nu adaugam Edit/Delete aici, se face pe pagina suitei %>
-          </li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p class="text-gray-500 text-sm">No test suites defined.</p>
-    <% end %>
-  </div>
 
-  <%# --- Test Runs Section --- %>
-   <div class="bg-white p-6 rounded-lg shadow">
-     <div class="flex justify-between items-center mb-3 border-b pb-2">
-      <h2 class="text-xl font-semibold">Test Runs</h2>
-       <% if policy(TestRun.new(project: @project)).new? %>
-         <%= link_to '+ New Run', new_project_test_run_path(@project), class: "text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded" %>
-       <% end %>
+    <!-- Operations Section -->
+    <div class="nerv-panel">
+      <div class="nerv-panel-header flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <span>Operations Log</span>
+          <div class="h-3 w-px bg-terminal-red/30"></div>
+          <span class="text-[10px] font-mono text-terminal-cyan"><%= @test_runs.size %> Operations</span>
+        </div>
+        <% if policy(TestRun.new(project: @project)).new? %>
+          <%= link_to new_project_test_run_path(@project), class: "btn-nerv-primary flex items-center space-x-2 py-1.5" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            <span>Initialize Operation</span>
+          <% end %>
+        <% end %>
+      </div>
+
+      <% if @test_runs.any? %>
+        <div class="divide-y divide-terminal-red/20">
+          <% @test_runs.each do |run| %>
+            <% has_failures = run.failed_cases > 0 %>
+            <div class="p-4 hover:bg-nerv-purple-mid/50 transition-colors group <%= has_failures ? 'border-l-2 border-terminal-red' : '' %>">
+              <div class="flex items-center justify-between">
+                <div class="flex-1">
+                  <%= link_to run.name, test_run_path(run), class: "text-sm font-mono text-terminal-white hover:text-terminal-cyan transition-colors" %>
+                  <div class="flex items-center mt-2 space-x-4">
+                    <div class="flex-1 max-w-xs progress-nerv h-1.5">
+                      <div class="progress-nerv-fill h-1.5 <%= has_failures ? 'critical' : '' %>" style="width: <%= run.completion_percentage %>%"></div>
+                    </div>
+                    <span class="text-xs font-mono <%= run.completion_percentage == 100 ? 'text-terminal-green' : 'text-terminal-cyan' %>"><%= run.completion_percentage %>%</span>
+                    <div class="flex items-center space-x-3 text-[10px] font-mono uppercase">
+                      <span class="text-terminal-green"><%= run.passed_cases %> nominal</span>
+                      <% if has_failures %>
+                        <span class="text-terminal-red animate-pulse"><%= run.failed_cases %> breach</span>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+                <%= link_to test_run_path(run), class: "p-2 border border-terminal-cyan/30 text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors opacity-0 group-hover:opacity-100 ml-4" do %>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="p-8 text-center">
+          <p class="text-sm font-mono text-terminal-gray uppercase tracking-wider">No operations logged</p>
+          <% if policy(TestRun.new(project: @project)).new? %>
+            <%= link_to "Initialize Operation", new_project_test_run_path(@project), class: "text-terminal-cyan hover:text-terminal-cyan/80 text-sm font-mono" %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
-    <% if @test_runs.any? %>
-      <ul class="space-y-2">
-        <% @test_runs.each do |run| %>
-           <li class="flex justify-between items-center text-sm">
-             <%= link_to run.name, test_run_path(run), class: "text-blue-600 hover:underline" %>
-             <span class="text-xs text-gray-400"><%= run.completion_percentage %>% done</span>
-          </li>
-        <% end %>
-      </ul>
-       <%# Link to view all runs? %>
-       <%# <%= link_to 'View All Runs', project_test_runs_path(@project), class: "text-sm text-blue-600 hover:underline mt-3 block" %>
-    <% else %>
-      <p class="text-gray-500 text-sm">No test runs started.</p>
-    <% end %>
   </div>
-</div>
 
-<div class="mt-8">
-  <%= link_to 'Back to All Projects', projects_path, class: "text-blue-600 hover:underline" %>
+  <!-- Sidebar -->
+  <div class="space-y-6">
+    <!-- Mission Parameters -->
+    <div class="nerv-panel">
+      <div class="nerv-panel-header">Mission Parameters</div>
+      <div class="p-4 space-y-4">
+        <dl class="space-y-3 text-sm font-mono">
+          <div class="flex justify-between">
+            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">Commander</dt>
+            <dd class="text-terminal-white"><%= @project.user&.display_name || 'N/A' %></dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">Initialized</dt>
+            <dd class="text-terminal-white"><%= @project.created_at.strftime('%Y.%m.%d') %></dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">Protocol Banks</dt>
+            <dd class="text-terminal-cyan"><%= @test_suites.size %></dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">Operations</dt>
+            <dd class="text-terminal-cyan"><%= @test_runs.size %></dd>
+          </div>
+        </dl>
+
+        <!-- Action Buttons -->
+        <div class="pt-4 border-t border-terminal-red/20 space-y-2">
+          <% if policy(@project).edit? %>
+            <%= link_to edit_project_path(@project), class: "flex items-center justify-center w-full px-4 py-2 bg-nerv-purple-mid border border-terminal-cyan/30 text-terminal-cyan text-xs font-mono uppercase tracking-wider hover:bg-terminal-cyan/10 transition-colors" do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+              </svg>
+              Modify Mission
+            <% end %>
+          <% end %>
+          <% if policy(@project).destroy? %>
+            <%= button_to project_path(@project), method: :delete, data: { confirm: 'TERMINATE MISSION? All associated data will be purged.' }, class: "flex items-center justify-center w-full px-4 py-2 bg-terminal-red/10 border border-terminal-red/50 text-terminal-red text-xs font-mono uppercase tracking-wider hover:bg-terminal-red/20 transition-colors" do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Terminate Mission
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mission Deadlines -->
+    <div class="nerv-panel">
+      <div class="nerv-panel-header flex items-center justify-between">
+        <span>Mission Deadlines</span>
+        <% if policy(Milestone.new(project: @project)).new? %>
+          <%= link_to new_project_milestone_path(@project), class: "text-terminal-cyan hover:text-terminal-cyan/80" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="p-4">
+        <% if @milestones.any? %>
+          <div class="space-y-3">
+            <% @milestones.each do |milestone| %>
+              <% is_urgent = milestone.due_date < 7.days.from_now %>
+              <div class="p-3 bg-nerv-black/30 border <%= is_urgent ? 'border-terminal-red/50' : 'border-terminal-cyan/20' %>">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-sm font-mono text-terminal-white"><%= milestone.name %></span>
+                  <div class="flex items-center space-x-1">
+                    <% if policy(milestone).edit? %>
+                      <%= link_to edit_milestone_path(milestone), class: "p-1 text-terminal-gray hover:text-terminal-amber transition-colors" do %>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                      <% end %>
+                    <% end %>
+                    <% if policy(milestone).destroy? %>
+                      <%= button_to milestone_path(milestone), method: :delete, data: { confirm: 'Purge deadline?' }, class: "p-1 text-terminal-gray hover:text-terminal-red transition-colors" do %>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span class="w-2 h-2 rounded-full <%= is_urgent ? 'bg-terminal-red animate-pulse' : 'bg-terminal-amber' %>"></span>
+                  <span class="text-[10px] font-mono <%= is_urgent ? 'text-terminal-red' : 'text-terminal-gray' %> uppercase tracking-wider">
+                    Due: <%= milestone.due_date.strftime('%Y.%m.%d') %>
+                  </span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="text-sm font-mono text-terminal-gray text-center py-4 uppercase tracking-wider">No deadlines set</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>

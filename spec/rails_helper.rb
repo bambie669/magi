@@ -8,6 +8,8 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
 require 'rspec/rails'
+require 'pundit/matchers'
+require 'capybara/rspec'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -32,7 +34,34 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
 RSpec.configure do |config|
+  # Include FactoryBot methods
+  config.include FactoryBot::Syntax::Methods
+
+  # Include time helpers for freeze_time
+  config.include ActiveSupport::Testing::TimeHelpers
+
+  # Include Devise test helpers for request specs
+  config.include Devise::Test::IntegrationHelpers, type: :request
+
+  # Include Devise test helpers for system specs
+  config.include Devise::Test::IntegrationHelpers, type: :system
+
+  # Configure system specs to use headless Chrome
+  config.before(:each, type: :system) do
+    driven_by :selenium, using: :headless_chrome, screen_size: [1400, 900]
+  end
+
+  # Include Pundit matchers for policy specs
+  config.include Pundit::Matchers, type: :policy
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')

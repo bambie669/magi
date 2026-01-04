@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :test_suite do
-    name { "MyString" }
-    description { "MyText" }
-    project { nil }
+    sequence(:name) { |n| "Test Suite #{n}" }
+    description { "Test suite description" }
+    project
   end
 end

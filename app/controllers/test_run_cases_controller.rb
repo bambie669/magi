@@ -23,6 +23,9 @@ class TestRunCasesController < ApplicationController
 
 
     if @test_run_case.update(test_run_case_params)
+      # Broadcast update to all subscribers
+      broadcast_test_run_update(test_run)
+
       respond_to do |format|
         format.html { redirect_to test_run_path(test_run), notice: 'Test case result updated.' }
         # format.turbo_stream # Pentru update-uri dinamice cu Turbo
@@ -46,5 +49,19 @@ class TestRunCasesController < ApplicationController
     # Permite actualizarea statusului, comentariilor și atașamentelor
     # user_id este setat intern, nu direct din parametri nesiguri
     params.require(:test_run_case).permit(:status, :comments, attachments: [])
+  end
+
+  def broadcast_test_run_update(test_run)
+    TestRunChannel.broadcast_to(test_run, {
+      type: 'status_update',
+      test_run_case_id: @test_run_case.id,
+      status: @test_run_case.status,
+      user_name: @test_run_case.user&.display_name,
+      passed_count: test_run.passed_cases,
+      failed_count: test_run.failed_cases,
+      blocked_count: test_run.blocked_cases,
+      untested_count: test_run.untested_cases,
+      completion_percentage: test_run.completion_percentage
+    })
   end
 end

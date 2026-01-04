@@ -1,36 +1,45 @@
 <%# locals: (milestone:, project: nil) %>
-<%# Determină URL-ul corect bazat pe persistența obiectului (shallow routes) %>
 <% url = milestone.persisted? ? milestone_path(milestone) : project_milestones_path(project) %>
-<%# Determină proiectul, necesar pentru redirect/context %>
 <% the_project = milestone.persisted? ? milestone.project : project %>
 
-<%= form_with(model: milestone, url: url, class: "space-y-4") do |form| %>
-  <% if milestone.errors.any? %>
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-      <strong class="font-bold"><%= pluralize(milestone.errors.count, "error") %> prohibited this milestone from being saved:</strong>
-      <ul class="mt-2 list-disc list-inside text-sm">
-        <% milestone.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div>
-    <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
-    <%= form.text_field :name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+<div class="nerv-panel">
+  <div class="nerv-panel-header flex items-center justify-between">
+    <span><%= milestone.persisted? ? 'MODIFY DEADLINE' : 'INITIALIZE DEADLINE' %></span>
+    <span class="text-[10px] font-mono text-terminal-cyan">Mission: <%= the_project.name %></span>
   </div>
 
-  <div>
-    <%= form.label :due_date, class: "block text-sm font-medium text-gray-700" %>
-    <%= form.date_field :due_date, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
-  </div>
+  <div class="p-6">
+    <%= form_with(model: milestone, url: url, class: "space-y-6") do |form| %>
+      <% if milestone.errors.any? %>
+        <div class="p-4 bg-terminal-red/10 border border-terminal-red/50 text-terminal-red font-mono text-sm animate-pulse" role="alert">
+          <div class="flex items-center space-x-2 mb-2">
+            <span class="w-2 h-2 bg-terminal-red rounded-full"></span>
+            <span class="uppercase tracking-wider text-xs">System Error:</span>
+          </div>
+          <strong class="font-bold"><%= pluralize(milestone.errors.count, "error") %> prohibited this deadline from being saved:</strong>
+          <ul class="mt-2 list-disc list-inside text-sm">
+            <% milestone.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-   <%# Input hidden pentru project_id NU este necesar, se ia din URL la create %>
-   <%# sau din obiectul existent la update %>
+      <div>
+        <%= form.label :name, "Deadline Designation", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
+        <%= form.text_field :name, class: "input-nerv w-full px-4 py-3 text-sm", placeholder: "Enter deadline designation..." %>
+      </div>
 
-  <div class="flex justify-end">
-     <%= link_to 'Cancel', project_path(the_project), class: "mr-4 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-    <%= form.submit class: "cursor-pointer inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+      <div>
+        <%= form.label :due_date, "Target Date", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
+        <%= form.date_field :due_date, class: "input-nerv w-full px-4 py-3 text-sm" %>
+        <p class="mt-1 text-[10px] font-mono text-terminal-gray">Deadline target completion date</p>
+      </div>
+
+      <div class="flex justify-end space-x-3 pt-6 border-t border-terminal-red/20">
+        <%= link_to 'Abort', project_path(the_project), class: "px-4 py-2 bg-nerv-purple-mid border border-terminal-gray-dark text-terminal-gray text-xs font-mono uppercase tracking-wider hover:text-terminal-white transition-colors" %>
+        <%= form.submit milestone.persisted? ? 'Update Deadline' : 'Initialize Deadline', class: "btn-nerv-primary cursor-pointer" %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>

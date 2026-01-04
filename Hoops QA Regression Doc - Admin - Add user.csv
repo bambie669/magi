@@ -1,0 +1,1243 @@
+,,Not checked,Pass,Fail,Blocked,N/A,Automated
+,,1,186,1,0,0,
+,,,,,,07.07.2025,
+Test case number,Test title,Prerequisites,Test steps,Expected results,Actual results,Results,
+Admin - Users Page,,,,,,,
+TC001 ,Users page UI,The user is logged in as an Admin and is on the Users page,1. Observe the Users page.,"1a. Left navigation should be visible  → Navigation is correctly displayed.  
+1b. Users section should be highlighted  → The ""Users"" section is visually highlighted.  
+1c. Users page header should be visible → The section header is present.  
+1d. Users section subheader should be visible  
+1d1. Page title → The correct title is displayed.  
+1d2. Page description → The description text ""Here you can view, create, edit and delete users."" is visible.  
+1d3. Visibility button → The button includes Full Name, Access Level, Department, Team, Manager and Status.  
+1d4. ""New User"" button → The button is visible and clickable.  
+1d5. Search input field → The search bar is functional.  
+1e. User table should be visible  
+1e1. Table header should display selected columns → The correct headers are shown:
+-Full Name
+-Status
+-Department
+-Team
+-Manager
+-Access Level",,Pass,Yes
+TC002,Verify User List Display,The user is logged in as an Admin and is on the Users page,1. Observe user table,1a. User list should display existing users with correct information → The displayed user data should match stored information.,,Pass,Yes
+TC003,Verify Table Columns,The user is logged in as an Admin and is on the Users page,1. Observe table structure,"1. Column headers should be correct → The table should contain the following columns (default): Full Name, Status, Access Level, Departments, Teams, Manager.",,Pass,Yes
+TC004,Verify Full Name Column,The user is logged in as an Admin and is on the Users page,1. Observe table structure,1. Full Name should be correctly displayed → Each user should have their full name visible.,,Pass,Yes
+TC005,Verify Department Column,The user is logged in as an Admin and is on the Users page,1. Observe Department column,1. Department names should be correctly displayed → Each user should have their assigned department visible or N/A if case,,Pass,Yes
+TC006,Verify Access Level Display,The user is logged in as an Admin and is on the Users page,1. Observe Access Level column,"1. Access Level tags should be visible → Each user should have one or more of the following labels: Admin, Employee, Hr, Company Manager)",,Pass,Yes
+TC007,Verify Teams Column,The user is logged in as an Admin and is on the Users page,1. Observe Team column,"1. Teams should be displayed correctly → Each user should have assigned teams visible, with tooltip "" + more teams"" option if needed or N/A if case.",,Pass,Yes
+TC008,Verify Manager Column,The user is logged in as an Admin and is on the Users page,1. Observe Manager column,"1. Managers should be correctly displayed → Each user should have an assigned manager, manager's name being displayed in the Managers collumn.",,Pass,Yes
+TC009,Verify Status Column,The user is logged in as an Admin and is on the Users page,1. Observe Status column,1. Status tags should be visilbe → Each user should have assigned active/inactive tag depending on the status of the account.,,Pass,No
+TC010,Make User name as link to details page,The user is logged in as an Admin and is on the Users page,1. Click on any user name.,1. User is redirected to user details page.,,Pass,Yes
+Admin - Table User Functionality,,,,,,,
+TC011,Verify Sorting Functionality,The user is logged in as an Admin and is on the Users page,1. Click on column headers to sort users,1a. Sorting should function correctly → Clicking column headers sorts users properly.,https://ensemble-ro.atlassian.net/browse/HOOP-394,Pass,Yes
+TC012,Verify Filtering Functionality,The user is logged in as an Admin and is on the Users page,"1. Click on filter button next to ""Add new user"" button.
+2. Apply visibility filters on different columns","1. A filter menu is shown with following checkboxes: Full Name(disabled), Status, Department, Team, Manager and Access Level.
+2. Filtering should work as expected → Using filters correctly narrows down user results.", ,Pass,Yes
+TC013,Verify Search Functionality,The user is logged in as an Admin and is on the Users page,1. Enter text in search field,1. Search should return correct results → The user table updates and displays matching users.,,Pass,Yes
+TC014,Verify Search Functionality - No user found,The user is logged in as an Admin and is on the Users page,1. Enter a non-existent user in search field,"1a. Error message should appear → ""No User Found"" message is displayed and a loupe icon is visible
+1b. Detailed guidance is shown → ""No users found for search term. Try searching for something else."" message is visible.",,Pass,Yes
+TC015,Verify Overflow Menu Options,The user is logged in as an Admin and is on the Users page,1. Click on the overlfow menu next to a user,"1a. Overflow menu should provide options for user management → Hover over overflow icon should show Edit, View and Delete options.",,Pass,Yes
+TC016,Verify Pagination Controls,The user is logged in as an Admin and is on the Users page,1. Navigate using pagination,1. Pagination should work correctly → Clicking next/previous loads the correct set of users.,,Not Checked,To Update
+Admin - Create User Page,,,,,,,
+TC017,"Verify access to ""Add New User"" page",The user is logged in as an Admin and is on Users page,"1. Click on the ""New User"" button .","1. The ""New User"" form opens correctly, displaying all required fields.",,Pass,Yes
+TC018, User Page UI Verification,The user is logged in as an Admin and is on the Create User page,1. Observe the page,"1a. Page header should be visible. → The correct page title, ""Create user,"" is displayed.
+1b. The Basic Information section should be visible → Fields for First Name, Last Name, Email, and Password should be visible with the proper placeholders and info ""i"" tooltip, hide/show password for Password field.
+1c. The Organizational details section should be visible → Dropdown Fields for Department, Managed Departments. Team, Managed Teams and Manager are displayed with the proper placeholders and Labels.
+1d. Access & Roles section should be visible → Checkboxes for Admin,Company Manager, HR and Employee options should be visible
+1e. Status section with Active checkbox checked is visible.
+1f.  Action buttons should be visible → ""Cancel"" and ""Create User"" buttons shoud be visible and clickable.
+",,Pass,Yes
+TC019,"Validate ""First Name"" required  field",The user is logged in as an Admin and is on the Edit User page,"1. Click on ""First Name"" field.
+2. Click ""Create User"" button.
+3. Observe ""Firs Name"" field.","1. Field border becomes highlighted in purple.
+2. Btn should be visible and clickable.
+3a. ""First Name"" filed border becomes highlighted in red color.
+3b. ""First name is required"" message appears in red color under the field.
+3c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC020,"Validate ""Last Name"" required  field",The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Last Name"" field.
+2. Click ""Create User"" button.
+3. Observe ""Last Name"" field.","1. Field border becomes highlighted in purple.
+2. Btn should be visible and clickable.
+3a. ""Last Name"" filed border becomes highlighted in red color.
+3b. ""Last name is required"" message appears in red color under the field.
+3c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC021,"Validate ""Email"" required  field",The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Email"" field.
+2. Click ""Create User"" button.
+3. Observe ""Email"" field.","1. Field border becomes highlighted in purple.
+2. Btn should be visible and clickable.
+3a. ""Email"" filed border becomes highlighted in red color.
+3b. ""Email is required"" message appears in red color under the field.
+3c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC022,"Validate ""Password"" required field",The user is logged in as an Admin and is on the Create User page,"1. Click on ""Password"" field.
+2. Click outside the field.
+3. Click ""Create User"" button.
+","1. Field border becomes highlighted in purple.
+2. Field border is unhighlighted.
+3a. ""Create User"" btn should be visible and clickable.
+3b. Field border should become highlighted in red color
+3c. ""Password is required"" message should be displayed in red color
+underneath input field.
+3d. Red exclamation sign should be displayed at the end of the input field.
+",,Pass,Yes
+TC023,Validate Invalid Email Format Error Message,The user is logged in as an Admin and is on the Create User page,"1. Enter an invalid email format.
+2. Fill in required field.
+3. Click on the ""Create User"" button.
+4. Observe the ""Email"" input field.","1. The field accepts the input and input is displayed in the email field.
+2. Fields accepts valid input.
+3. ""Create User"" btn should be visible and clickable.
+4a. ""Invalid email"" message should be visible under input field.
+4b. Field border should be highlighted in red color.",,Pass,Yes
+TC024,Verify Duplicate Email Error Message,The user is logged in as an Admin and is on the Create User page,"1. Fill all mandatory fields 
+2. Enter a duplicate email in the ""Email"" input field.
+3. Click on the ""Create User"" button.
+4. Observe the ""Email"" input field.","1. Fields accept valid input.
+2. Fields accepts input.
+3. Btn should be clickable and visible.
+4. ""Email must be unique"" error messaje toast is displayed.",,Pass,Yes
+TC025,Validate Minimum Characters Password Error,The user is logged in as an Admin and is on the Create User page,"1. Click on ""Password"" field.
+2. Fill field with less than 8 characters.
+3. Fill in all required fields
+4. Click ""Create User"" button.
+5. Observe ""Password"" input field.
+","1. Field border becomes highlighted in purple.
+2. Characters are added to the field as dots (hidden).
+3. Fields accept valid input.
+4. ""Create User"" btn should be visible and clickable.
+5a. Password field border is red highlighted.
+5b. Exclamation mark icon is shown.
+5c. ""Password must be at least 8 characters"" error message should be visible underneath input field.
+
+",,Pass,Yes
+TC026,Validate Show/hide Password,The user is logged in as an Admin and is on the Create User page,"1. Click on ""Password"" field.
+2. Add valid password.
+3. Click on hide/show (eye) icon at the end of the password field.","1. Field border becomes highlighted in purple.
+2. Input is correctly added, characters are hidden and displayed as dots. 
+3. Password characters are now visible and hide/show icon changes indicating that characters are no longer hidden.",,Pass,Yes
+TC027, Validate Departments Dropdown Field,User is logged in as Admin and is on the Create User page.,"1. Click on ""Departments"" field.
+2. Click on a department name.
+3. Click on multiple department names.
+4. Click on the ""X"" mark at the end of the department names.","1. Dropdown with existing deaprtments should open.
+2. Selected department should be visible inside the field.
+3. User should be able to add multiple departments  →  Department names should be visible inside the Departments field.
+4. Departments should disappear from the Departments field.",,Pass,Yes
+TC028,Verify Search Functionality in Departments Dropdown,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Departments"" field.
+2. Type an existing department.
+3. Type a non-existing department.","1a. Department dropdown with options should open.
+1b. Department field should become editable 
+2. Matching department should be visible in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,Yes
+TC029,Validate Department Dropdown List Behavior,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Department"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with department options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional department options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,Yes
+TC030, Validate Managed Departments Dropdown Field,User is logged in as Admin and is on the Create User page.,"1. Click on ""Managed Departments"" field.
+2. Click on a department name.
+3. Click on multiple department names.
+4. Click on the ""X"" mark at the end of the department names.","1. Dropdown with existing departments should open.
+2. Selected department should be visible inside the field.
+3. User should be able to add multiple departments  →  Department names should be visible inside the Managed Departments field.
+4. Departments should disappear from the Managed Departments field.",,Pass,Yes
+TC031,Verify Search Functionality in Managed Departments Dropdown,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Managed Departments"" field.
+2. Type an existing department.
+3. Type a non-existing department.","1a. Dropdown with department options should open.
+1b. Managed Departments field should become editable.
+2. Matching department should be visible in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,Yes
+TC032,Validate Managed Departments Dropdown List Behavior,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Managed Departments"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with department options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional department options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,No
+TC033,"Verify Linked Behavior Between Departments and Managed Departments Field
+
+",User is logged in as Admin and is on the Create User page.,"1. Click on Managed Departments dropdown.
+2. Select a department from the dropdown.
+3. Click on ""x"" mark at the end of the department name in the Departments dropdown.","1. Dropdown with all existing departments should be visible.
+2a. Selected department name should be visible inside the Managed Departments dropdown.
+2b. Selected department name should be visible inside the Departments dropdown.
+3a. Department name should not be visible inside the Departments dropdown.
+3b. Department name should not be visible inside the Managed Departments dropdown.",,Pass,Yes
+TC034, Validate Team Dropdown Field,User is logged in as Admin and is on the Create User page.,"1. Click on ""Team"" field.
+2. Click on a team name.
+3. Click on multiple team names.
+4. Click on the ""X"" mark at the end of the team name.","1. Dropdown with existing teams should open.
+2. Selected team should be visible inside the field.
+3. User should be able to add multiple teams →  Team names should be visible inside the Team field.
+4. Teams should disappear from the Teams field.",,Pass,Yes
+TC035,Verify Search Functionality in Team Dropdown Field,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Team"" field.
+2. Type an existing team name.
+3. Type a non-existing team name.","1a. Team dropdown with options should open.
+1b. Team field should become editable.
+2. Matching team name should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,Yes
+TC036,Validate Team Dropdown List Behavior,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Team"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with team options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional team options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,Yes
+TC037, Validate Managed Teams Dropdown Field,User is logged in as Admin and is on the Create User page.,"1. Click on ""Managed Teams"" field.
+2. Click on a team name.
+3. Click on multiple team names.
+4. Click on the ""X"" mark at the end of the team names.","1. Dropdown with existing teams should open.
+2. Selected team should be visible inside the field.
+3. User should be able to add multiple teams →  Team names should be visible inside the Managed Teams field.
+4. Teams should disappear from the Managed Teams field.",,Pass,Yes
+TC038,Verify Search Functionality in Managed Teams Dropdown,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Managed Teams"" field.
+2. Type an existing team name.
+3. Type a non-existing team name.","1a. Dropdown with team options should open.
+1b. Managed Teams field should become editable.
+2. Matching team should be visible in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,Yes
+TC039,Validate Managed Teams Dropdown List Behavior,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Managed Teams"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with team options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional team options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,Yes
+TC040,"Verify Linked Behavior Between Temas and Managed Teams Field
+
+",User is logged in as Admin and is on the Create User page.,"1. Click on Managed Teams dropdown.
+2. Select a team from the dropdown.
+3. Click on ""x"" mark at the end of the team name in the Team dropdown.","1. Dropdown with all existing teams should be visible.
+2a. Selected team name should be visible inside the Managed Teams dropdown.
+2b. Selected team name should be visible inside the Team dropdown.
+3a. Team name should be cleared from the Team dropdown.
+3b. Team name should be cleared from the Managed Teams dropdown.",,Pass,Yes
+TC041,Validate Manager Dropdown Field,User is logged in as Admin and is on the Create User page.,"1. Click on ""Manager"" dropdown field.
+2. Click on a manager name.
+3. Click on the ""x"" mark inside the manager's name badge","1. Dropdown list with available users should be visible.
+2. Manager name in badge should be visibile inside the dropdown.
+3. Manager name badge should not be visible inside the Managers field.",,Pass,Yes
+TC042,Verify Search Functionality in Manager Dropdown Field,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Manager"" field.
+2. Type an existing manager name.
+3. Type a non-existing manager name.","1a. Manager dropdown with options should open.
+1b. Manager field should become editable.
+2. Matching manager name should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,Yes
+TC043,Validate Manager Dropdown List Behavior,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Manager"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with manager options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional manager options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,Yes
+TC044,Validate Roles Required Field,User is logged in as Admin and is on the Create User page.,"1. Observe the Role section in the Access & Roles section
+1. Uncheck Employee role.
+2. Click on Create User btn.","1a. Role section should be visible.
+1b. Employee role should be checked by default.
+2. Employee role should be unchecked.
+3. ""Role is required"" message should be displayed under roles.",https://ensemble-ro.atlassian.net/browse/HOOP-442,Pass,Yes
+TC045,Validate Status Checkbox Functionality - Inactive,The user is logged in as an Admin and is on the Create User page,"1. Click on Active checkbox.
+2. Click on the ""Create User"" button.
+3. Sign in with the inactive user.","1. Chekcbox is unchecked.
+2. The user is successfully created and appears in the user list.
+3. The inactive user is unable to sign in, on the login page ""Account is disabled, contact your administrator."" message is shown.",,Pass,No
+TC046,Validate Status Checkbox Functionality - Active,The user is logged in as an Admin and is on the Create User page,"1. Fill in required fields.
+2. Ensure Active checkbox is checked.
+3. Click on ""Create User"" btn.
+4. On Users page search in the search field for the name of the newly created user.
+5. Observe the status badge in the Status collumn.","1. Fields should accept valid input.
+2. Active checkbox should be checked by default.
+3a.  ""User has been successfully created!"" toast should be visible.
+3b. User should be redirected to ""Users"" page.
+4. User should be visible in the Users table.
+5. Created user should have ""Active"" status badge.",,Pass,No
+TC047,"Validate ""Create User"" btn functionality",The user is logged in as an Admin and is on the Edit User page to a Active user,"1. Fill in all mandatory fields.
+2. Click on ""Create User"" btn.","1. Fields should accept valid input.
+2a. User should be redirected to the Users page.
+2b. ""User has been successfully created!"" toast should be visible. ",,Pass,
+TC048,Cancel create new Employee user,The user is logged in as an Admin and is on the Create User page,"1. Fill in all required fields.
+2. In the Role section check ""Employee"" role.
+3. Click on ""Cancel"".
+4. On the Users page, in the search input field, search for the username.","1. Fields accept valid input.
+2. Employee role checkbox should be checked
+3a. ""Cancel"" btn should be visible and clickable.
+3b. User is redirected to the ""Users"" page and no user is created.
+4a. Search input should accept the input.
+4b. ""No Users found"" message should be displayed in the users table and no new user should be created.",,Pass,Yes
+TC049,Cancel create new HR user,The user is logged in as an Admin and is on the Create User page,"1. Fill in all required fields.
+2. In the Role section check ""Hr"" role.
+3. Click on ""Cancel"".
+4. On the Users page, in the search input field, search for the username.","1. Fields accept valid input.
+2. Hr role checkbox should be checked
+3a. ""Cancel"" btn should be visible and clickable.
+3b. User is redirected to the ""Users"" page and no user is created.
+4a. Search input should accept the input.
+4b. ""No Users found"" message should be displayed in the users table and no new user should be created.",,Pass,Yes
+TC050,Cancel create new Company Manager user,The user is logged in as an Admin and is on the Create User page,"1. Fill in all required fields.
+2. In the Role section check ""Company manager"" role.
+3. Click on ""Cancel"".
+4. On the Users page, in the search input field, search for the username.","1. Fields accept valid input.
+2. Company manager role checkbox should be checked.
+3a. ""Cancel"" btn should be visible and clickable.
+3b. User is redirected to the ""Users"" page and no user is created.
+4a. Search input should accept the input.
+4b. ""No Users found"" message should be displayed in the users table and no new user should be created.",,Pass,Yes
+TC051,Cancel create new Admin user,The user is logged in as an Admin and is on the Create User page,"1. Fill in all required fields.
+2. In the Role section check ""Admin"" role.
+3. Click on ""Cancel"".
+4. On the Users page, in the search input field, search for the username.","1. Fields accept valid input.
+2. Admin role checkbox should be checked.
+3a. ""Cancel"" btn should be visible and clickable.
+3b. User is redirected to the ""Users"" page and no user is created.
+4a. Search input should accept the input.
+4b. ""No Users found"" message should be displayed in the users table and no new user should be created.",,Pass,Yes
+Admin - User View Page,,,,,,,
+TC052,"Verify access to ""User Detail"" page",The user is logged in as an Admin,"1. Navigate to the ""Users"" menu.
+2. Click/Hover on the action button.
+3. Click on ""View"" button from action menu.","1. The user successfully accesses the ""Users"" page.
+2. The action menu with Edit, View and Delete options is displayed.
+3. User successfully lands on User detail page.",,Pass,Yes
+TC053,Page UI,The user is logged in as an Admin and is on the User Details page,1. Observe the page.,"1a. Left navigation should be visible  → Navigation is correctly displayed.  
+1b. Users section should be highlighted  → The ""Users"" section is visually highlighted.  
+1c. Page header should be visible. → The correct page title, ""User Details"" is displayed.
+1d. User section header should be visible → Avatar, User Name, User information and Edit button are correctly displayed.
+1e. User section form should be visible → Full Name, Email, Management Chain, Direct Reports, Department, Teams, Roles, Status, Created at are correctly displayed.
+1f. User Goals section should be visible → ""Add Goal"" button and available goals or ""No Goals Found"" text are displayed.
+",,Pass,Yes
+TC054,Verify Edit button,The user is logged in as an Admin and is on the User Details page,1. Click on Edit button.,1. User is redirected to User Edit page.,,Pass,Yes
+TC055,Verify Add Goal button,The user is logged in as an Admin and is on the User Details page,"1. Click on ""Add Goal"" button.
+",1. User is redirected to Add Goal page.,,Pass,Yes
+TC056,"Verify Access to ""Goal"" details from ""User Details"" page",The user is logged in as an Admin and is on the User Details page on a user page assigned to at least one goal,"1. In ""Goals"" section, click on the user's assigned goal title.","1. User should be redirected to the ""Goal Details"" page.",,Pass,No
+TC057,Verify Goals section functionality,"1. The user is logged in as Admin and is on the User Details page.
+2. The viewed user should own at least one goal.","1. Observe the Goals section.
+","1a. User's owned goals should be visible in the Goals section.
+1b. Goal count indicator should indicate the number of visible goals in the Goals section.
+",,Pass,
+Admin - User Edit Page - HR ,,,,,,,
+TC058,"Verify access to ""User Edit"" page",The user is logged in as an Admin,"1. Navigate to the ""Users"" menu.
+2. Click/Hover on the action button.
+3. Click on ""Edit"" button from action menu.","1. The user successfully accesses the ""Users"" page.
+2. The action menu with Edit, View and Delete options is displayed.
+3. User successfully lands on User edit page.",,Pass,Yes
+TC059,Page UI,The user is logged in as an Admin and is on the Edit User page of a HR user,1. Observe the page,"1a. Left navigation should be visible  → Navigation is correctly displayed.  
+1b. Users section should be highlighted  → The ""Users"" section is visually highlighted.  
+1c. Page header should be visible. → The correct page title ""Edit User"" is displayed.
+1d. The Basic Information section should be visible → Fields for First Name, Last Name, Email, and Password are displayed with user's information.
+1e. ""Leave blank to keep current password."" text should be visible and displayed underneath Password input field.
+1f. The Organizational details section should be visible → Dropdown Fields for Departments, Managed Departments, Teams, Managed Teams and Manager are displayed with the user's info if that is the case.
+ 1g. Access & Roles section should be visible → Checkboxes for Admin, Company Manager, Employee and HR should be visible. (HR checked by default)
+1h. Status section with Active checkbox checked by default should be visible.
+1i.  Action buttons should be visible → ""Cancel"" and ""Update User"" buttons are displayed and clickable.
+",,Pass,Yes
+TC060,"Validate ""First Name"" required  field",The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""First Name"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Firs Name"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""First Name"" filed border becomes highlighted in red color.
+4b. ""First name is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC061,"Validate ""Last Name"" required  field",The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""Last Name"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Last Name"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""Last Name"" filed border becomes highlighted in red color.
+4b. ""Last name is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC062,"Validate ""Email"" required  field",The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""Email"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Email"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""Email"" filed border becomes highlighted in red color.
+4b. ""Email is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC063,Invalid Email,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""Email"" field.
+2. Add an invalid email format (e.g without ""@"").
+3. Click ""Update User"" button.","1. Field border becomes highlighted in purple.
+2. New data is correctly added and remain visible.
+3. Btn should be visible and clickable.
+4.Email"" filed border becomes highlighted in red color.
+5b. ""Invalid email"" message appears in red color under the field.
+5c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC064,Duplicate Email,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""Email"" field.
+2. Add a duplicate email.
+3. Click ""Update User"" button.","1. Field border becomes highlighted in purple.
+2. New data is correctly added and remain visible.
+3. Btn should be visible and clickable.
+4. Error message ""Email must be unique"" is shown.",,Pass,Yes
+TC065,Invalid Password (minimum required characters),The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""Password"" field.
+2. Fill field with less than 8 characters.
+3. Click ""Create User"" button.
+4. Observe ""Password"" input field.
+","1. Field border becomes highlighted in purple.
+2. Characters are added to the field as dots (hidden).
+3. Btn should be visible and clickable.
+4a. Password field border is red highlighted.
+4b. Exclamation mark icon should be displayed at the end of the input field.
+4c. ""Password must be at least 8 characters"" error message is shown.
+",,Pass,Yes
+TC066,Validate show/hide password,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""Password"" field.
+2. Add valid password.
+3. Click on hide/show (eye) icon at the end of the password field.","1. Field border becomes highlighted in purple.
+2. Input is correctly added, characters are hidden and displayed as dots. 
+3. Password characters are now visible and hide/show icon changes indicating that characters are no longer hidden.",,Pass,Yes
+TC067, Validate Department Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""Department"" field.
+2. Select a department name.
+3. Select multiple department names.
+4. Click on the ""X"" mark at the end of the department names.","1. Dropdown with existing deaprtments should open.
+2. Selected department should be visible inside the field.
+3. Selected departments should be visible inside the field.
+4. Department field should be empty.",,Pass,
+TC068, Verify Search Functionality in Department Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on the ""Department"" field.
+2. Type an existing department.
+3. Type a non-existing department.","1a. Department dropdown with options should open.
+1b. Department field should become editable.
+2. Matching department should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,
+TC069,Validate Department Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on the ""Department"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with department options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional department options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC070, Validate Managed Departments Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""Managed Departments"" field.
+2. Click on a department name.
+3. Click on multiple department names.
+4. Click on the ""X"" mark at the end of the department names.","1. Dropdown with existing deaprtments should open.
+2. Selected department should be visible inside the field.
+3. User should be able to add multiple departments  →  Department names should be visible inside the Managed Departments field.
+4. Departments should disappear from the Managed Departments field.",,Pass,
+TC071,Verify Search Functionality in Managed Departments Dropdown,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on the ""Managed Departments"" field.
+2. Type an existing department.
+3. Type a non-existing department.","1a. Dropdown with department options should open.
+1b. Managed Departments field should become editable.
+2. Matching department should be visible in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,
+TC072,Validate Managed Departments Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on the ""Managed Departments"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with department options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional department options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC073,Validate Linked Behavior Between Departments and Managed Departments Dropdowns,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on Managed Departments dropdown.
+2. Select a departments from the dropdown.
+3. Click on ""x"" mark at the end of the department name in the Departments dropdown.","1. Dropdown with all existing departments should be visible.
+2a. Selected department name should be visible inside the Managed Departments dropdown.
+2b. Selected department name should be visible inside the Departments dropdown.
+3a. Department name should not be visible inside the Departments dropdown.
+3b. Department name should not be visible inside the Managed Departments dropdown.",,Pass,
+TC074, Validate Teams Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""Team"" field.
+2. Click on a team name.
+3. Click on the ""X"" mark at the end of the team name.","1. Dropdown with existing teams should open.
+2. Selected team should be visible inside the field.
+3. Team field should be empty.",,Pass,
+TC075,Verify Search Functionality in Teams Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on the ""Team"" field.
+2. Type an existing team name.
+3. Type a non-existing team name.","1a.Team dropdown with options should open.
+1b. Team field should become editable.
+2. Matching team name should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,
+TC076,Validate Teams Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on the ""Team"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with team options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional team options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC077, Validate Managed Teams Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""Managed Teams"" field.
+2. Click on a team name.
+3. Click on multiple team names.
+4. Click on the ""X"" mark at the end of the team names.","1. Dropdown with existing teams should open.
+2. Selected team should be visible inside the field.
+3. User should be able to add multiple teams →  Team names should be visible inside the Managed Teams field.
+4. Teams should disappear from the Managed Teams field.",,Pass,
+TC078,Verify Search Functionality in Managed Teams Dropdown,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on the ""Managed Teams"" field.
+2. Type an existing team name.
+3. Type a non-existing team name.","1a. Dropdown with team options should open.
+1b. Managed Teams field should become editable.
+2. Matching team should be visible in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,
+TC079,Validate Managed Teams Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on the ""Managed Teams"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with team options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional team options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC080,Validate Linked Behavior Between Teams and Managed Teams Dropdowns,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on Managed Teams dropdown.
+2. Select a team from the dropdown.
+3. Click on ""x"" mark at the end of the team name in the Team dropdown.","1. Dropdown with all existing teams should be visible.
+2a. Selected team name should be visible inside the Managed Teams dropdown.
+2b. Selected team name should be visible inside the Team dropdown.
+3a. Team name should not be visible inside the Team dropdown.
+3b. Team name should not be visible inside the Managed Teams dropdown.",,Pass,
+TC081, Validate Manager Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on ""Manager"" field.
+2. Click on a manager name.
+3. Click on the ""X"" mark at the end of the manager name.","1. Dropdown with existing managers should open.
+2. Selected manager should be visible inside the field.
+3. Manager field should be empty.",,Pass,
+TC082,Verify Search Functionality in Manager Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on the ""Manager"" field.
+2. Type an existing manager name.
+3. Type a non-existing manager name.","1a. Manager dropdown with options should open.
+1b. Manager field should become editable.
+2. Matching manager name should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,
+TC083,Validate Manager Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on the ""Manager"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with manager options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional manager options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC084,Validate User cannot be assigned as their own manager,The user is logged in as an Admin and is on the Edit User page of a HR user,"1.Click on the ""Manager"" field.
+2. Type the name of the user currently being edited.
+3. Select the user's own name from the dropdown list.
+4. Click on ""Update User"" btn.","1. Dropdown with manager options should be visible and the field should become editable.
+2. Field should accept valid input and the user should be visible inside the dropdown.
+3. User's name should be visible inside the ""Manager"" field.
+4. ""You cannot assign a direct report as a manager."" error toast should be visible.
+",,Pass,
+TC085,Validate Roles Required Field,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Observe the Role section in the Access & Roles section
+2. Uncheck HR role.
+3. Click on Update User btn.","1a. Role section should be visible.
+1b. HR role should be checked by default.
+2. HR role should be unchecked.
+3. ""Role is required"" message should be displayed under roles.",https://ensemble-ro.atlassian.net/browse/HOOP-442,Pass,
+TC086,Validate Status Checkbox Functionality - Inactive User,The user is logged in as an Admin and is on the Edit User page of a HR Active user,"1. Click on Active checkbox.
+2. Click on the ""Update User"" button.
+3. Sign in with the inactive user.","1. Chekcbox is unchecked.
+2. The user is successfully created and appears in the user list.
+3. The inactive user is unable to sign in, on the login page ""Account is disabled, contact your administrator.
+"" message is shown.",,Pass,No
+TC087,Validate Status Checkbox Functionality - Active User,The user is logged in as an Admin and is on the Edit User page of a HR Active user,"1. Verify Active checkbox to be checked.
+2. Click on the ""Update User"" button.
+3. Sign in with the created user.","1. Chekcbox is unchecked.
+2. The user is successfully created and appears in the user list with Active badge.
+3. The active user is able to sign in the active account.",,Pass,
+TC088,"Validate ""Update User"" btn functionality",The user is logged in as an Admin and is on the Edit User page of a HR Active user,"1. Clear all inputs.
+2. Complete required inputs with different data.
+3. In the ""Acces & Roles"" section check Employee checkbox.
+4. Click on ""Update User"" btn.","1. Inputs data should be deleted and no data should be present in the input fields.
+2. Input fields should accept new entered data.
+3. Employee checkbox should remain checked.
+4a. User should be redirected to the Users page.
+4b. ""User has been successfully updated!"" toast should be visible",,Pass,Yes
+TC089,Cancel Edit Hr User,The user is logged in as an Admin and is on the Edit User page,"1. Clear all inputs.
+2. Complete required inputs with different data.
+3. In the ""Acces & Roles"" section check employee checkbox.
+4. Click on ""Cancel"" btn
+5. Search for the same user name.
+6. Click on action btn.
+7. Click on ""Edit"" btn.
+8. Observe user details.","1. Inputs data should be deleted and no data should be present in the input fields.
+2. Input fields should accept new entered data.
+3. Employee checkbox should remain checked.
+4. User should be redirected to the Users page.
+5. Searched user should be displayed in the Users table.
+6. The action menu with Edit, View and Delete options is displayed.
+7. User should be redirected to Edit User page.
+8. Cleared input should be restored in all input fields, without any changes to the user's information.",,Pass,No
+Admin - User Edit Page - Employee,,,,,,,
+TC090,"Verify access to ""User Edit"" page",The user is logged in as an Admin,"1. Navigate to the ""Users"" menu.
+2. Click/Hover on the action button.
+3. Click on ""Edit"" button from action menu.","1. The user successfully accesses the ""Users"" page.
+2. The action menu with Edit, View and Delete options is displayed.
+3. User successfully lands on User edit page.",,Pass,No
+TC091,Page UI,The user is logged in as an Admin and is on the Edit User page,1. Observe the page,"1a. Left navigation should be visible  → Navigation is correctly displayed.  
+1b. Users section should be highlighted  → The ""Users"" section is visually highlighted.  
+1c. Page header should be visible. → The correct page title ""Edit User"" is displayed.
+1d. The Basic Information section should be visible → Fields for First Name, Last Name, Email, and Password labels should be visible.
+1e. ""Leave blank to keep current password."" text should be visible and displayed underneath Password input field.
+1f. The Organizational details section should be visible → Dropdown Fields for Department, Team and Manager labels and inputs are displayed 
+ 1g. Access & Roles section should be visible → Role checkboxes for Admin, Company Manager, Employee and HR should be visible. (Employess checked by default)
+1h. Status section with Active checkbox checked by default should be visible.
+1i.  Action buttons should be visible → ""Cancel"" and ""Update User"" buttons are displayed and clickable.
+",,Pass,To Update
+TC092,Display selected user data,The user is logged in as an Admin and is on the Edit User page,1. Observe the page,"1a. The Basic Information section should be visible → Fields for First Name, Last Name, Email, and Password inputs are displayed with user's information.
+1b. The Organizational details section should be visible → Dropdown Fields for Department, Managed Departments,Team, Managed Teams and Manager are displayed with the user's info if that is the case.
+1c. The user role should be display corectly. ",,Pass,Yes
+TC093,"Validate ""First Name"" required  field",The user is logged in as an Admin and is on the Edit User page,"1. Click on ""First Name"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Firs Name"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""First Name"" filed border becomes highlighted in red color.
+4b. ""First name is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC094,"Validate ""Last Name"" required  field",The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Last Name"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Last Name"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""Last Name"" filed border becomes highlighted in red color.
+4b. ""Last name is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC095,"Validate ""Email"" required  field",The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Email"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Email"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""Email"" filed border becomes highlighted in red color.
+4b. ""Email is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC096,Invalid Email,The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Email"" field.
+2. Add an invalid email format (e.g without ""@"").
+3. Click ""Update User"" button.","1. Field border becomes highlighted in purple.
+2. New data is correctly added and remain visible.
+3. Btn should be visible and clickable.
+4. Error message ""Email is invalid"" toast is shown.",,Pass,Yes
+TC097,Duplicate Email,The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Email"" field.
+2. Add a duplicate email.
+3. Click ""Update User"" button.","1. Field border becomes highlighted in purple.
+2. New data is correctly added and remain visible.
+3. Btn should be visible and clickable.
+4. Error message ""Email must be unique"" is shown.",,Pass,Yes
+TC098,Invalid Password (minimum required characters),The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Password"" field.
+2. Fill field with less than 8 characters.
+3. Click ""Create User"" button.
+4. Observe ""Password"" input field.
+","1. Field border becomes highlighted in purple.
+2. Characters are added to the field as dots (hidden).
+3. Btn should be visible and clickable.
+4a. Password field border is red highlighted.
+4b. Exclamation mark icon should be displayed at the end of the input field.
+4c. ""Password must be at least 8 characters"" error message is shown.
+",,Pass,Yes
+TC099,Validate show/hide password,The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Password"" field.
+2. Add valid password.
+3. Click on hide/show (eye) icon at the end of the password field.","1. Field border becomes highlighted in purple.
+2. Input is correctly added, characters are hidden and displayed as dots. 
+3. Password characters are now visible and hide/show icon changes indicating that characters are no longer hidden.",,Pass,Yes
+TC100, Validate Department Dropdown Field,User is logged in as Admin and is on the Create User page.,"1. Click on ""Department"" field.
+2. Click on a department name.
+3. Click on the ""X"" mark at the end of the department name.","1. Dropdown with existing deaprtments should open.
+2. Selected department should be visible inside the field.
+3. Department field should be empty.",,Pass,Yes
+TC101, Verify Search Functionality in Department Dropdown Field,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Department"" field.
+2. Type an existing department.
+3. Type a non-existing department.","1a. Department dropdown with options should open.
+1b. Department field should become editable.
+2. Matching department should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,Yes
+TC102,Validate Department Dropdown List Behavior,User is logged in as Admin and is on the Create User page.,"1. Click on the ""Department"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with department options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional department options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,Yes
+TC103, Validate Managed Departments Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on ""Managed Departments"" field.
+2. Click on a department name.
+3. Click on multiple department names.
+4. Click on the ""X"" mark at the end of the department names.","1. Dropdown with existing deaprtments should open.
+2. Selected department should be visible inside the field.
+3. User should be able to add multiple departments  →  Department names should be visible inside the Managed Departments field.
+4. Departments should disappear from the Managed Departments field.",,Pass,
+TC104,Verify Search Functionality in Managed Departments Dropdown,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on the ""Managed Departments"" field.
+2. Type an existing department.
+3. Type a non-existing department.","1a. Dropdown with department options should open.
+1b. Managed Departments field should become editable.
+2. Matching department should be visible in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,
+TC105,Validate Managed Departments Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on the ""Managed Departments"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with department options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional department options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC106,Validate Linked Behavior Between Departments and Managed Departments Dropdowns,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on Managed Departments dropdown.
+2. Select a departments from the dropdown.
+3. Click on ""x"" mark at the end of the department name in the Departments dropdown.","1. Dropdown with all existing departments should be visible.
+2a. Selected department name should be visible inside the Managed Departments dropdown.
+2b. Selected department name should be visible inside the Departments dropdown.
+3a. Department name should not be visible inside the Departments dropdown.
+3b. Department name should not be visible inside the Managed Departments dropdown.",,Pass,
+TC107, Validate Team Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on ""Team"" field.
+2. Click on a team name.
+3. Click on the ""X"" mark at the end of the team name.","1. Dropdown with existing teams should open.
+2. Selected team should be visible inside the field.
+3. Team field should be empty.",,Pass,
+TC108,Verify Search Functionality in the Team Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on the ""Team"" field.
+2. Type an existing team name.
+3. Type a non-existing team name.","1a. Team dropdown with options should open.
+1b. Team field should become editable.
+2. Matching team name should be visible in the dropdown.
+3. ""No options available"" message should be visible inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,
+TC109,Validate Team Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on the ""Team"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with team options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional team options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC110, Validate Managed Teams Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on ""Managed Teams"" field.
+2. Click on a team name.
+3. Click on multiple team names.
+4. Click on the ""X"" mark at the end of the team names.","1. Dropdown with existing teams should open.
+2. Selected team should be visible inside the field.
+3. User should be able to add multiple teams →  Team names should be visible inside the Managed Teams field.
+4. Teams should disappear from the Managed Teams field.",,Pass,
+TC111,Verify Search Functionality in Managed Teams Dropdown,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on the ""Managed Teams"" field.
+2. Type an existing team name.
+3. Type a non-existing team name.","1a. Dropdown with team options should open.
+1b. Managed Teams field should become editable.
+2. Matching team should be visible in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,
+TC112,Validate Managed Teams Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on the ""Managed Teams"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with team options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional team options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC113,Validate Linked Behavior Between Teams and Managed Teams Dropdowns,The user is logged in as an Admin and is on the Edit User page of a HR user,"1. Click on Managed Teams dropdown.
+2. Select a team from the dropdown.
+3. Click on ""x"" mark at the end of the team name in the Team dropdown.","1. Dropdown with all existing teams should be visible.
+2a. Selected team name should be visible inside the Managed Teams dropdown.
+2b. Selected team name should be visible inside the Team dropdown.
+3a. Team name should not be visible inside the Team dropdown.
+3b. Team name should not be visible inside the Managed Teams dropdown.",,Pass,
+TC114, Validate Manager Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on ""Manager"" field.
+2. Click on a manager name.
+3. Click on the ""X"" mark at the end of the manager name.","1. Dropdown with existing managers should open.
+2. Selected manager should be visible inside the field.
+3. Manager field should be empty.",,Pass,
+TC115,Verify Search Functionality in Manager Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on the ""Manager"" field.
+2. Type an existing manager name.
+3. Type a non-existing manager name.","1a. Manager dropdown with options should open.
+1b. Manager field should become editable.
+2. Matching manager name should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",https://ensemble-ro.atlassian.net/browse/HOOP-441,Pass,
+TC116,Validate Manager Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Click on the ""Manager"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with manager options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional manager options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC117,Validate User cannot be assigned as their own manager,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1.Click on the ""Manager"" field.
+2. Type the name of the user currently being edited.
+3. Select the user's own name from the dropdown list.
+4. Click on ""Update User"" btn.","1. Dropdown with manager options should be visible and the field should become editable.
+2. Field should accept valid input and the user should be visible inside the dropdown.
+3. User's name should be visible inside the ""Manager"" field.
+4. ""You cannot assign a direct report as a manager."" error toast should be visible.
+",,Pass,
+TC118,Validate Roles Required Field,The user is logged in as an Admin and is on the Edit User page of a Employee user,"1. Observe the Role section in the Access & Roles section
+2. Uncheck Employee role.
+3. Click on Update User btn.","1a. Role section should be visible.
+1b. Employee role should be checked by default.
+2. Employee role should be unchecked.
+3. ""Role is required"" message should be displayed under roles.",,Pass,
+TC119,Validate Status Checkbox Functionality - Active User,The user is logged in as an Admin and is on the Edit User page to a Active user,"1. Verify Active checkbox to be checked.
+2. Click on the ""Update User"" button.
+3. Sign in with the created user.","1. Chekcbox is unchecked.
+2. The user is successfully created and appears in the user list with Active badge
+3. The active user is able to sign in the active account.",,Pass,
+TC120,Validate Status Checkbox Functionality - Inactive User,The user is logged in as an Admin and is on the Edit User page to a Active user,"1. Click on Active checkbox.
+2. Click on the ""Update User"" button.
+3. Sign in with the inactive user.","1. Chekcbox is unchecked.
+2. The user is successfully created and appears in the user list.
+3. The inactive user is unable to sign in, on the login page ""Account is disabled, contact your administrator.
+"" message is shown.",,Pass,No
+TC121,"Validate ""Update User"" btn functionality",The user is logged in as an Admin and is on the Edit User page to a Active user,"1. Clear all inputs.
+2. Complete required inputs with different data.
+3. In the ""Acces & Roles"" section check Hr checkbox.
+4. Click on ""Update User"" btn.","1. Inputs data should be deleted and no data should be present in the input fields.
+2. Input fields should accept new entered data.
+3. Hr checkbox should remain checked.
+4a. User should be redirected to the Users page.
+4b. ""User has been successfully updated!"" toast should be visible",,Pass,
+TC122,Cancel Edit Basic User,The user is logged in as an Admin and is on the Edit User page,"1. Clear all inputs.
+2. Complete required inputs with different data.
+3. In the ""Acces & Roles"" section check Hr checkbox.
+4. Click on ""Cancel"" btn
+5. Search for the same user name.
+6. Click on action btn.
+7. Click on ""Edit"" btn.
+8. Observe user details.","1. Inputs data should be deleted and no data should be present in the input fields.
+2. Input fields should accept new entered data.
+3. Hr checkbox should remain checked.
+4. User should be redirected to the Users page.
+5. Searched user should be displayed in the Users table.
+6. The action menu with Edit, View and Delete options is displayed.
+7. User should be redirected to Edit User page.
+8. Cleared input should be restored in all input fields, without any changes to the user's information.",,Pass,No
+Admin - User Edit Page - Admin,,,,,,,
+TC123,"Verify access to ""User Edit"" page",The user is logged in as an Admin,"1. Navigate to the ""Users"" menu.
+2. Click/Hover on the action button.
+3. Click on ""Edit"" button from action menu.","1. The user successfully accesses the ""Users"" page.
+2. The action menu with Edit, View and Delete options is displayed.
+3. User successfully lands on User edit page.",,Pass,No
+TC124,Page UI,The user is logged in as an Admin and is on the Edit User page,1. Observe the page,"1a. Left navigation should be visible  → Navigation is correctly displayed.  
+1b. Users section should be highlighted  → The ""Users"" section is visually highlighted.  
+1c. Page header should be visible. → The correct page title ""Edit User"" is displayed.
+1d. The Basic Information section should be visible → Fields for First Name, Last Name, Email, and Password labels are displayed
+1e. ""Leave blank to keep current password."" text should be visible and displayed underneath Password input field.
+1f. The Organizational details section should be visible → Dropdown Fields for Department, Team and Manager labels and inputs are displayed 
+ 1g. Access & Roles section should be visible → Role checkboxes for Admin, Company Manager, Employee, HR should be visible (Admin checked by default)
+1h. Status section with Active checkbox checked or unchecked is visible.
+1i.  Action buttons should be visible → ""Cancel"" and ""Update User"" buttons are displayed and clickable.
+",,Pass,Yes
+TC125,Display selected user data,The user is logged in as an Admin and is on the Edit User page,1. Observe the page,"1a. The Basic Information section should be visible → Fields for First Name, Last Name, Email, and Password inputs are displayed with user's information.
+1b. The Organizational details section should be visible → Dropdown Fields for Departments, Managed Departments, Teams, Managed Teams and Manager are displayed with the user's info if that is the case.
+1c. The user role should be display corectly ",,Pass,Yes
+TC126,"Validate ""First Name"" required  field",The user is logged in as an Admin and is on the Edit User page,"1. Click on ""First Name"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Firs Name"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""First Name"" filed border becomes highlighted in red color.
+4b. ""First name is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC127,"Validate ""Last Name"" required  field",The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Last Name"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Last Name"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""Last Name"" filed border becomes highlighted in red color.
+4b. ""Last name is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC128,"Validate ""Email"" required  field",The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Email"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Email"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""Email"" filed border becomes highlighted in red color.
+4b. ""Email is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC129,Invalid Email,The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Email"" field.
+2. Add an invalid email format (e.g without ""@"").
+3. Click ""Update User"" button.","1. Field border becomes highlighted in purple.
+2. New data is correctly added and remain visible.
+3. Btn should be visible and clickable.
+4. Error message ""Email is invalid"" toast is shown.",,Pass,No
+TC130,Duplicate Email,The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Email"" field.
+2. Add a duplicate email.
+3. Click ""Update User"" button.","1. Field border becomes highlighted in purple.
+2. New data is correctly added and remain visible.
+3. Btn should be visible and clickable.
+4. Error message ""Email must be unique"" is shown.",,Pass,No
+TC131,Invalid Password (minimum required characters),The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Password"" field.
+2. Fill field with less than 8 characters.
+3. Click ""Create User"" button.
+4. Observe ""Password"" input field.
+","1. Field border becomes highlighted in purple.
+2. Characters are added to the field as dots (hidden).
+3. Btn should be visible and clickable.
+4a. Password field border is red highlighted.
+4b. Exclamation mark icon should be displayed at the end of the input field.
+4c. ""Password must be at least 8 characters"" error message is shown.
+",,Pass,No
+TC132,Validate show/hide password,The user is logged in as an Admin and is on the Edit User page,"1. Click on ""Password"" field.
+2. Add valid password.
+3. Click on hide/show (eye) icon at the end of the password field.","1. Field border becomes highlighted in purple.
+2. Input is correctly added, characters are hidden and displayed as dots. 
+3. Password characters are now visible and hide/show icon changes indicating that characters are no longer hidden.",,Pass,No
+TC133, Validate Department Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on ""Department"" field.
+2. Click on a department name.
+3. Click on the ""X"" mark at the end of the department name.","1. Dropdown with existing deaprtments should open.
+2. Selected department should be visible inside the field.
+3. Department field should be empty.",,Pass,
+TC134, Verify Search Functionality in Department Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on the ""Department"" field.
+2. Type an existing department.
+3. Type a non-existing department.","1a. Department dropdown with options should open.
+1b. Department field should become editable.
+2. Matching department should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,
+TC135,Validate Department Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on the ""Department"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with department options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional department options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC136, Validate Managed Departments Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on ""Managed Departments"" field.
+2. Click on a department name.
+3. Click on multiple department names.
+4. Click on the ""X"" mark at the end of the department names.","1. Dropdown with existing deaprtments should open.
+2. Selected department should be visible inside the field.
+3. User should be able to add multiple departments  →  Department names should be visible inside the Managed Departments field.
+4. Departments should disappear from the Managed Departments field.",,Pass,
+TC137,Verify Search Functionality in Managed Departments Dropdown,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on the ""Managed Departments"" field.
+2. Type an existing department.
+3. Type a non-existing department.","1a. Dropdown with department options should open.
+1b. Managed Departments field should become editable.
+2. Matching department should be visible in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,
+TC138,Validate Managed Departments Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on the ""Managed Departments"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with department options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional department options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC139,Validate Linked Behavior Between Departments and Managed Departments Dropdowns,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on Managed Departments dropdown.
+2. Select a departments from the dropdown.
+3. Click on ""x"" mark at the end of the department name in the Departments dropdown.","1. Dropdown with all existing departments should be visible.
+2a. Selected department name should be visible inside the Managed Departments dropdown.
+2b. Selected department name should be visible inside the Departments dropdown.
+3a. Department name should not be visible inside the Departments dropdown.
+3b. Department name should not be visible inside the Managed Departments dropdown.",,Pass,
+TC140, Validate Team Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on ""Team"" field.
+2. Click on a team name.
+3. Click on the ""X"" mark at the end of the team name.","1. Dropdown with existing teams should open.
+2. Selected team should be visible inside the field.
+3. Team field should be empty.",,Pass,
+TC141,Verify Search Functionality in the Team Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on the ""Team"" field.
+2. Type an existing team name.
+3. Type a non-existing team name.","1a. Team dropdown with options should open.
+1b. Team field should become editable.
+2. Matching team name should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,
+TC142,Validate Team Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on the ""Team"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with team options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional team options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC143, Validate Managed Teams Dropdown Field,The user is logged in as an Admin and is on the Edit User page of an Admin user,"1. Click on ""Managed Teams"" field.
+2. Click on a team name.
+3. Click on multiple team names.
+4. Click on the ""X"" mark at the end of the team names.","1. Dropdown with existing teams should open.
+2. Selected team should be visible inside the field.
+3. User should be able to add multiple teams →  Team names should be visible inside the Managed Teams field.
+4. Teams should disappear from the Managed Teams field.",,Pass,
+TC144,Verify Search Functionality in Managed Teams Dropdown,The user is logged in as an Admin and is on the Edit User page of an Admin user,"1. Click on the ""Managed Teams"" field.
+2. Type an existing team name.
+3. Type a non-existing team name.","1a. Dropdown with team options should open.
+1b. Managed Teams field should become editable.
+2. Matching team should be visible in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,
+TC145,Validate Managed Teams Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of an Admin user,"1. Click on the ""Managed Teams"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with team options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional team options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC146,Validate Linked Behavior Between Teams and Managed Teams Dropdowns,The user is logged in as an Admin and is on the Edit User page of an Admin user,"1. Click on Managed Teams dropdown.
+2. Select a team from the dropdown.
+3. Click on ""x"" mark at the end of the team name in the Team dropdown.","1. Dropdown with all existing teams should be visible.
+2a. Selected team name should be visible inside the Managed Teams dropdown.
+2b. Selected team name should be visible inside the Team dropdown.
+3a. Team name should not be visible inside the Team dropdown.
+3b. Team name should not be visible inside the Managed Teams dropdown.",,Pass,
+TC147, Validate Manager Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on ""Manager"" field.
+2. Click on a manager name.
+3. Click on the ""X"" mark at the end of the manager name.","1. Dropdown with existing managers should open.
+2. Selected manager should be visible inside the field.
+3. Manager field should be empty.",,Pass,
+TC148,Verify Search Functionality in Manager Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on the ""Manager"" field.
+2. Type an existing manager name.
+3. Type a non-existing manager name.","1a. Manager dropdown with options should open.
+1b. Manager field should become editable.
+2. Matching manager name should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,
+TC149,Validate Manager Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Click on the ""Manager"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with manager options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional manager options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC150,Validate User cannot be assigned as their own manager,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1.Click on the ""Manager"" field.
+2. Type the name of the user currently being edited.
+3. Select the user's own name from the dropdown list.
+4. Click on ""Update User"" btn.","1. Dropdown with manager options should be visible and the field should become editable.
+2. Field should accept valid input and the user should be visible inside the dropdown.
+3. User's name should be visible inside the ""Manager"" field.
+4. ""You cannot assign a direct report as a manager."" error toast should be visible.
+",,Pass,
+TC151,Validate Roles Required Field,The user is logged in as an Admin and is on the Edit User page of a Admin user,"1. Observe the Role section in the Access & Roles section
+1. Uncheck Admin role.
+2. Click on Update User btn.","1a. Role section should be visible.
+1b. Admin role should be checked by default.
+2. Admin role should be unchecked.
+3. ""Role is required"" message should be displayed under roles.",,Fail,
+TC152,Validate Status Checkbox Functionality - Active User,The user is logged in as an Admin and is on the Edit User page to a Active user,"1. Verify Active checkbox to be checked.
+2. Click on the ""Update User"" button.
+3. Sign in with the created user.","1. Chekcbox is unchecked.
+2. The user is successfully created and appears in the user list.
+3. The active user is able to sign in the active account.",,Pass,
+TC153,Validate Status Checkbox Functionality - Inactive User,The user is logged in as an Admin and is on the Edit User page to a Active user,"1. Click on Active checkbox.
+2. Click on the ""Update User"" button.
+3. Sign in with the inactive user.","1. Chekcbox is unchecked.
+2. The user is successfully created and appears in the user list.
+3. The inactive user is unable to sign in, on the login page ""Account is disabled, contact your administrator.
+"" message is shown.",,Pass,No
+TC154,"Validate ""Update User"" btn functionality",The user is logged in as an Admin and is on the Edit User page to a Active user,"1. Clear all inputs.
+2. Complete required inputs with different data.
+3. In the ""Acces & Roles"" section check checkbox.
+4. Click on ""Update User"" btn.","1. Inputs data should be deleted and no data should be present in the input fields.
+2. Input fields should accept new entered data.
+3. Hr checkbox should remain checked.
+4a. User should be redirected to the Users page.
+4b. ""User has been successfully updated!"" toast should be visible",,Pass,
+TC155,Cancel Edit Admin User,The user is logged in as an Admin and is on the Edit User page,"1. Clear all inputs.
+2. Complete required inputs with different data.
+3. In the ""Acces & Roles"" section uncheck Admin checkbox and check other role.
+4. Click on ""Cancel"" btn
+5. Search for the same user name.
+6. Click on action btn.
+7. Click on ""Edit"" btn.
+8. Observe user details.","1. Inputs data should be deleted and no data should be present in the input fields.
+2. Input fields should accept new entered data.
+3a. Admin checkbox should be unchecked.
+3b. New selected role should remain checked.
+4. User should be redirected to the Users page.
+5. Searched user should be displayed in the Users table.
+6. The action menu with Edit, View and Delete options is displayed.
+7. User should be redirected to Edit User page.
+8. Cleared input should be restored in all input fields, without any changes to the user's information.",,Pass,No
+Admin - User Edit Page - Company Manager,,,,,,,
+TC156,"Verify access to ""User Edit"" page",The user is logged in as an Admin,"1. Navigate to the ""Users"" menu.
+2. Click/Hover on the action button.
+3. Click on ""Edit"" button from action menu.","1. The user successfully accesses the ""Users"" page.
+2. The action menu with Edit, View and Delete options is displayed.
+3. User successfully lands on User edit page.",,Pass,No
+TC157,Page UI,The user is logged in as an Admin and is on the Edit User page of a CM user,1. Observe the page,"1a. Left navigation should be visible  → Navigation is correctly displayed.  
+1b. Users section should be highlighted  → The ""Users"" section is visually highlighted.  
+1c. Page header should be visible. → The correct page title ""Edit User"" is displayed.
+1d. The Basic Information section should be visible → Fields for First Name, Last Name, Email, and Password labels are displayed
+1e. ""Leave blank to keep current password."" text should be visible and displayed underneath Password input field.
+1f. The Organizational details section should be visible → Dropdown Fields for Department, Team and Manager labels and inputs are displayed 
+ 1g. Access & Roles section should be visible → Role checkboxes for Admin, Company Manager, Employee, HR should be visible(CM checked by default).
+1h. Status section with Active checkbox checked or unchecked is visible.
+1i.  Action buttons should be visible → ""Cancel"" and ""Update User"" buttons are displayed and clickable.
+",,Pass,Yes
+TC158,Display selected user data,The user is logged in as an Admin and is on the Edit User page of a CM user,1. Observe the page,"1a. The Basic Information section should be visible → Fields for First Name, Last Name, Email, and Password inputs are displayed with user's information.
+1b. The Organizational details section should be visible → Dropdown Fields for Departments, Managed Departments, Teams, Managed Teams and Manager are displayed with the user's info if that is the case.
+1c. The user role should be display corectly. ",,Pass,Yes
+TC159,"Validate ""First Name"" required  field",The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on ""First Name"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Firs Name"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""First Name"" filed border becomes highlighted in red color.
+4b. ""First name is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC160,"Validate ""Last Name"" required  field",The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on ""Last Name"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Last Name"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""Last Name"" filed border becomes highlighted in red color.
+4b. ""Last name is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC161,"Validate ""Email"" required  field",The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on ""Email"" field.
+2. Delete the input.
+3. Click ""Update User"" button.
+4. Observe ""Email"" field.","1. Field border becomes highlighted in purple.
+2. The input should be deleted successfully, input field remaining empty.
+3. Btn should be visible and clickable.
+4a. ""Email"" filed border becomes highlighted in red color.
+4b. ""Email is required"" message appears in red color under the field.
+4c. Red exclamation icon should be shown at the end of the input field.",,Pass,Yes
+TC162,Invalid Email,The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on ""Email"" field.
+2. Add an invalid email format (e.g without ""@"").
+3. Click ""Update User"" button.","1. Field border becomes highlighted in purple.
+2. New data is correctly added and remain visible.
+3. Btn should be visible and clickable.
+4. Error message ""Email is invalid"" toast is shown.",,Pass,No
+TC163,Duplicate Email,The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on ""Email"" field.
+2. Add a duplicate email.
+3. Click ""Update User"" button.","1. Field border becomes highlighted in purple.
+2. New data is correctly added and remain visible.
+3. Btn should be visible and clickable.
+4. Error message ""Email must be unique"" is shown.",,Pass,No
+TC164,Invalid Password (minimum required characters),The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on ""Password"" field.
+2. Fill field with less than 8 characters.
+3. Click ""Create User"" button.
+4. Observe ""Password"" input field.
+","1. Field border becomes highlighted in purple.
+2. Characters are added to the field as dots (hidden).
+3. Btn should be visible and clickable.
+4a. Password field border is red highlighted.
+4b. Exclamation mark icon should be displayed at the end of the input field.
+4c. ""Password must be at least 8 characters"" error message is shown.
+",,Pass,No
+TC165,Validate show/hide password,The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on ""Password"" field.
+2. Add valid password.
+3. Click on hide/show (eye) icon at the end of the password field.","1. Field border becomes highlighted in purple.
+2. Input is correctly added, characters are hidden and displayed as dots. 
+3. Password characters are now visible and hide/show icon changes indicating that characters are no longer hidden.",,Pass,No
+TC166, Validate Department Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on ""Department"" field.
+2. Click on a department name.
+3. Click on the ""X"" mark at the end of the department name.","1. Dropdown with existing deaprtments should open.
+2. Selected department should be visible inside the field.
+3. Department field should be empty.",,Pass,
+TC167, Verify Search Functionality in Department Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on the ""Department"" field.
+2. Type an existing department.
+3. Type a non-existing department.","1a. Department dropdown with options should open.
+1b. Department field should become editable.
+2. Matching department should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,
+TC168,Validate Department Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on the ""Department"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with department options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional department options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC169, Validate Managed Departments Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Company Manager user,"1. Click on ""Managed Departments"" field.
+2. Click on a department name.
+3. Click on multiple department names.
+4. Click on the ""X"" mark at the end of the department names.","1. Dropdown with existing deaprtments should open.
+2. Selected department should be visible inside the field.
+3. User should be able to add multiple departments  →  Department names should be visible inside the Managed Departments field.
+4. Departments should disappear from the Managed Departments field.",,Pass,
+TC170,Verify Search Functionality in Managed Departments Dropdown,The user is logged in as an Admin and is on the Edit User page of a Company Manager user,"1. Click on the ""Managed Departments"" field.
+2. Type an existing department.
+3. Type a non-existing department.","1a. Dropdown with department options should open.
+1b. Managed Departments field should become editable.
+2. Matching department should be visible in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,
+TC171,Validate Managed Departments Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a Company Manager user,"1. Click on the ""Managed Departments"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with department options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional department options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC172,Validate Linked Behavior Between Departments and Managed Departments Dropdowns,The user is logged in as an Admin and is on the Edit User page of a Company Manager user,"1. Click on Managed Departments dropdown.
+2. Select a departments from the dropdown.
+3. Click on ""x"" mark at the end of the department name in the Departments dropdown.","1. Dropdown with all existing departments should be visible.
+2a. Selected department name should be visible inside the Managed Departments dropdown.
+2b. Selected department name should be visible inside the Departments dropdown.
+3a. Department name should not be visible inside the Departments dropdown.
+3b. Department name should not be visible inside the Managed Departments dropdown.",,Pass,
+TC173, Validate Team Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Company Manager user,"1. Click on ""Team"" field.
+2. Click on a team name.
+3. Click on the ""X"" mark at the end of the team name.","1. Dropdown with existing teams should open.
+2. Selected team should be visible inside the field.
+3. Team field should be empty.",,Pass,
+TC174,Verify Search Functionality in the Team Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Company Manager user,"1. Click on the ""Team"" field.
+2. Type an existing team name.
+3. Type a non-existing team name.","1a. Team dropdown with options should open.
+1b. Team field should become editable.
+2. Matching team name should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,
+TC175,Validate Team Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a Company Manager user,"1. Click on the ""Team"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with team options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional team options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC176, Validate Managed Teams Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a Company Manager user,"1. Click on ""Managed Teams"" field.
+2. Click on a team name.
+3. Click on multiple team names.
+4. Click on the ""X"" mark at the end of the team names.","1. Dropdown with existing teams should open.
+2. Selected team should be visible inside the field.
+3. User should be able to add multiple teams →  Team names should be visible inside the Managed Teams field.
+4. Teams should disappear from the Managed Teams field.",,Pass,
+TC177,Verify Search Functionality in Managed Teams Dropdown,The user is logged in as an Admin and is on the Edit User page of a Company Manager user,"1. Click on the ""Managed Teams"" field.
+2. Type an existing team name.
+3. Type a non-existing team name.","1a. Dropdown with team options should open.
+1b. Managed Teams field should become editable.
+2. Matching team should be visible in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,
+TC178,Validate Managed Teams Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a Company Manager user,"1. Click on the ""Managed Teams"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with team options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional team options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC179,Validate Linked Behavior Between Teams and Managed Teams Dropdowns,The user is logged in as an Admin and is on the Edit User page of a Company Manager user,"1. Click on Managed Teams dropdown.
+2. Select a team from the dropdown.
+3. Click on ""x"" mark at the end of the team name in the Team dropdown.","1. Dropdown with all existing teams should be visible.
+2a. Selected team name should be visible inside the Managed Teams dropdown.
+2b. Selected team name should be visible inside the Team dropdown.
+3a. Team name should not be visible inside the Team dropdown.
+3b. Team name should not be visible inside the Managed Teams dropdown.",,Pass,
+TC180, Validate Manager Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on ""Manager"" field.
+2. Click on a manager name.
+3. Click on the ""X"" mark at the end of the manager name.","1. Dropdown with existing managers should open.
+2. Selected manager should be visible inside the field.
+3. Manager field should be empty.",,Pass,
+TC181,Verify Search Functionality in Manager Dropdown Field,The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on the ""Manager"" field.
+2. Type an existing manager name.
+3. Type a non-existing manager name.","1a. Manager dropdown with options should open.
+1b. Manager field should become editable.
+2. Matching manager name should be displayed in the dropdown.
+3. ""No options available"" message should be displayed inside the dropdown.",,Pass,
+TC182,Validate Manager Dropdown List Behavior,The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Click on the ""Manager"" field.
+2. Hover over all visible options.
+3. Click on the down arrow of the navigation bar.
+4 .Click on the up arrow of the navigation bar.","1. Dropdown with manager options should open.
+2. Options should be highlighted in grey color when on hover.
+3. Additional manager options (if any) become visible as the dropdown scrolls down.
+4. The dropdown scrolls back up, showing previously hidden options from the top.",,Pass,
+TC183,Validate User cannot be assigned as their own manager,The user is logged in as an Admin and is on the Edit User page of a CM user,"1.Click on the ""Manager"" field.
+2. Type the name of the user currently being edited.
+3. Select the user's own name from the dropdown list.
+4. Click on ""Update User"" btn.","1. Dropdown with manager options should be visible and the field should become editable.
+2. Field should accept valid input and the user should be visible inside the dropdown.
+3. User's name should be visible inside the ""Manager"" field.
+4. ""You cannot assign a direct report as a manager."" error toast should be visible.
+",,Pass,
+TC184,Validate Roles Required Field,The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Observe the Role section in the Access & Roles section
+1. Uncheck Company Manager role.
+2. Click on Update User btn.","1a. Role section should be visible.
+1b. CM role should be checked by default.
+2. CM role should be unchecked.
+3. ""Role is required"" message should be displayed under roles.",,Pass,
+TC185,Validate Status Checkbox Functionality - Active User,The user is logged in as an Admin and is on the Edit User page to a Active user,"1. Verify Active checkbox to be checked.
+2. Click on the ""Update User"" button.
+3. Sign in with the created user.","1. Chekcbox is unchecked.
+2. The user is successfully created and appears in the user list.
+3. The active user is able to sign in the active account.",,Pass,
+TC186,Validate Status Checkbox Functionality - Inactive User,The user is logged in as an Admin and is on the Edit User page to a Active user,"1. Click on Active checkbox.
+2. Click on the ""Update User"" button.
+3. Sign in with the inactive user.","1. Chekcbox is unchecked.
+2. The user is successfully created and appears in the user list.
+3. The inactive user is unable to sign in, on the login page ""Account is disabled, contact your administrator.
+"" message is shown.",,Pass,No
+TC187,"Validate ""Update User"" btn functionality",The user is logged in as an Admin and is on the Edit User page to a Active user,"1. Clear all inputs.
+2. Complete required inputs with different data.
+3. In the ""Acces & Roles"" section check Employee checkbox.
+4. Click on ""Update User"" btn.","1. Inputs data should be deleted and no data should be present in the input fields.
+2. Input fields should accept new entered data.
+3. Employee checkbox should remain checked.
+4a. User should be redirected to the Users page.
+4b. ""User has been successfully updated!"" toast should be visible",,Pass,
+TC188,Cancel Edit CM User,The user is logged in as an Admin and is on the Edit User page of a CM user,"1. Clear all inputs.
+2. Complete required inputs with different data.
+3. In the ""Acces & Roles"" section uncheck CM checkbox and check other role.
+4. Click on ""Cancel"" btn
+5. Search for the same user name.
+6. Click on action btn.
+7. Click on ""Edit"" btn.
+8. Observe user details.","1. Inputs data should be deleted and no data should be present in the input fields.
+2. Input fields should accept new entered data.
+3a. CM checkbox should be unchecked.
+3b. New selected role should remain checked.
+4. User should be redirected to the Users page.
+5. Searched user should be displayed in the Users table.
+6. The action menu with Edit, View and Delete options is displayed.
+7. User should be redirected to Edit User page.
+8. Cleared input should be restored in all input fields, without any changes to the user's information.",,Pass,No
+TC566,Add User with Admin role,,,,,,
+TC567,Add User with CM role,,,,,,
+TC568,Add User with Emp role,,,,,,
+TC569,Add User with HR role,,,,,,
+TC571,ViewUserEditPage - display selected user data,,,,,,

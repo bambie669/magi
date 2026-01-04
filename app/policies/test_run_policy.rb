@@ -41,6 +41,15 @@ class TestRunPolicy < ApplicationPolicy
      user.admin? || user.manager? # Doar admin/manager poate șterge
    end
 
+   # Export - oricine logat poate exporta rapoarte
+   def export_csv?
+     user.present?
+   end
+
+   def export_pdf?
+     user.present?
+   end
+
   # Adaugă o metodă specifică dacă vrei control granular pe actualizarea cazurilor
   # def update_case?
   #   user.present? # Oricine poate actualiza statusul unui caz în run

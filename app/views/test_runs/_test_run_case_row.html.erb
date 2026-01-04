@@ -1,83 +1,201 @@
-<%# Partial pentru un singur TestRunCase în vederea TestRun#show %>
 <% test_case = trc.test_case %>
 <% status_symbol = trc.status&.to_sym || :untested %>
-<% status_color_class = case status_symbol
-                        when :passed
-                          'bg-green-100 text-green-800'
-                        when :failed
-                          'bg-red-100 text-red-800'
-                        when :blocked
-                          'bg-yellow-100 text-yellow-800'
-                        else # :untested
-                          'bg-gray-100 text-gray-800'
-                        end %>
-<% status_border_class = case status_symbol # Use the safe status_symbol here too
-                        when :passed
-                          'border-l-4 border-green-500'
-                        when :failed
-                          'border-l-4 border-red-500'
-                        when :blocked
-                          'border-l-4 border-yellow-500'
-                        else # :untested
-                          'border-l-4 border-gray-300'
-                        end %>
+<%
+  status_config = case status_symbol
+                  when :passed
+                    {
+                      bg: 'bg-terminal-green/10',
+                      text: 'text-terminal-green',
+                      border: 'border-l-2 border-terminal-green',
+                      dot: 'bg-terminal-green animate-pulse',
+                      label: 'NOMINAL'
+                    }
+                  when :failed
+                    {
+                      bg: 'bg-terminal-red/10',
+                      text: 'text-terminal-red',
+                      border: 'border-l-2 border-terminal-red',
+                      dot: 'bg-terminal-red animate-pulse',
+                      label: 'BREACH'
+                    }
+                  when :blocked
+                    {
+                      bg: 'bg-terminal-amber/10',
+                      text: 'text-terminal-amber',
+                      border: 'border-l-2 border-terminal-amber',
+                      dot: 'bg-terminal-amber',
+                      label: 'PATTERN BLUE'
+                    }
+                  else
+                    {
+                      bg: 'bg-nerv-purple-mid',
+                      text: 'text-terminal-gray',
+                      border: 'border-l-2 border-terminal-gray-dark',
+                      dot: 'bg-terminal-gray',
+                      label: 'STANDBY'
+                    }
+                  end
+%>
 
-<tr id="test_run_case_<%= trc.id %>" class="<%= status_border_class %>">
-  <td class="px-6 py-4 whitespace-nowrap">
-    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= status_color_class %>">
-      <%# Use status_symbol (which defaults to :untested) and convert to string before humanize %>
-      <%= status_symbol.to_s.humanize %>
+<tr id="test_run_case_<%= trc.id %>" class="<%= status_config[:border] %> hover:bg-nerv-purple-mid/50 transition-colors">
+  <td class="px-4 py-3">
+    <div class="w-3 h-3 rounded-full <%= status_config[:dot] %>"></div>
+  </td>
+  <td class="px-4 py-3">
+    <div class="flex flex-col">
+      <%= link_to test_case.title, test_case_path(test_case), class: "text-sm font-mono text-terminal-white hover:text-terminal-cyan transition-colors", target: "_blank" %>
+      <details class="mt-2">
+        <summary class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider cursor-pointer hover:text-terminal-cyan transition-colors">
+          &gt; Access Protocol Details
+        </summary>
+        <div class="mt-3 p-4 bg-nerv-black/50 border border-terminal-cyan/20 text-xs font-mono space-y-3">
+          <% if test_case.preconditions.present? %>
+            <div>
+              <span class="text-[10px] text-terminal-amber uppercase tracking-wider">Preconditions:</span>
+              <p class="text-terminal-white/80 whitespace-pre-wrap mt-1"><%= test_case.preconditions %></p>
+            </div>
+          <% end %>
+          <div>
+            <span class="text-[10px] text-terminal-amber uppercase tracking-wider">Execution Steps:</span>
+            <p class="text-terminal-white/80 whitespace-pre-wrap mt-1"><%= test_case.steps %></p>
+          </div>
+          <div>
+            <span class="text-[10px] text-terminal-amber uppercase tracking-wider">Expected Result:</span>
+            <p class="text-terminal-cyan whitespace-pre-wrap mt-1"><%= test_case.expected_result %></p>
+          </div>
+        </div>
+      </details>
+    </div>
+  </td>
+  <td class="px-4 py-3">
+    <span class="<%= status_config[:bg] %> <%= status_config[:text] %> border border-current/30 px-2 py-1 text-[10px] font-mono uppercase tracking-wider">
+      <%= status_config[:label] %>
     </span>
   </td>
-  <td class="px-6 py-4">
-    <div class="text-sm font-medium text-gray-900"><%= link_to test_case.title, test_case_path(test_case), class: "hover:text-blue-600", target: "_blank" %></div>
-    <%# Poți adăuga un acordeon/modal pentru a vedea pașii aici %>
-    <details class="text-xs text-gray-500 mt-1 cursor-pointer">
-        <summary>Details (Preconditions, Steps, Expected)</summary>
-        <div class="mt-2 p-2 border rounded bg-gray-50 whitespace-pre-wrap">
-            <strong>Preconditions:</strong> <%= test_case.preconditions.presence || 'N/A' %><br>
-            <strong>Steps:</strong> <%= test_case.steps %><br>
-            <strong>Expected Result:</strong> <%= test_case.expected_result %>
+  <td class="px-4 py-3 text-sm font-mono text-terminal-gray">
+    <%= trc.user&.display_name || 'Unassigned' %>
+  </td>
+  <td class="px-4 py-3">
+    <div class="flex justify-end">
+      <button onclick="document.getElementById('form_<%= trc.id %>').classList.toggle('hidden')" class="p-2 border border-terminal-cyan/30 text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+        </svg>
+      </button>
+    </div>
+  </td>
+</tr>
+
+<!-- Expandable Form Row -->
+<tr id="form_<%= trc.id %>" class="hidden bg-nerv-black/50">
+  <td colspan="5" class="px-4 py-4 border-t border-terminal-cyan/20">
+    <%= form_with(model: trc, url: test_run_case_path(trc), method: :patch, data: { turbo: false }, class: "space-y-4") do |form| %>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <%= form.label :status, "Status Override", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
+          <%= form.select :status, TestRunCase.statuses.keys.map { |s|
+            label = case s
+                    when 'passed' then 'NOMINAL'
+                    when 'failed' then 'BREACH'
+                    when 'blocked' then 'PATTERN BLUE'
+                    else 'STANDBY'
+                    end
+            [label, s]
+          }, {}, { class: "input-nerv w-full px-3 py-2 text-sm" } %>
         </div>
-    </details>
-  </td>
-  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> <%# Changed executor to user %>
-    <%= trc.user&.display_name || 'N/A' %>
-  </td>
-  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-    <%# Formular pentru actualizarea statusului, comentariilor și atașamentelor %>
-    <%= form_with(model: trc, url: test_run_case_path(trc), method: :patch, data: { turbo: false }) do |form| %>
-       <div class="flex flex-col space-y-2">
-         <%# Status Dropdown %>
-         <%= form.select :status, TestRunCase.statuses.keys.map { |s| [s.humanize, s] }, {}, { class: "block w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
+        <div class="md:col-span-2">
+          <%= form.label :comments, "Operation Log", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
+          <%= form.text_area :comments, rows: 2, placeholder: "Enter operation notes...", class: "input-nerv w-full px-3 py-2 text-sm resize-none" %>
+        </div>
+      </div>
 
-         <%# Comments Text Area %>
-         <%= form.text_area :comments, rows: 2, placeholder: "Optional comments...", class: "block w-full mt-1 text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+      <div>
+        <%= form.label :attachments, "Evidence Files", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
+        <%= form.file_field :attachments, multiple: true, class: "block w-full text-sm text-terminal-gray file:mr-4 file:py-2 file:px-4 file:border file:border-terminal-cyan/30 file:text-xs file:font-mono file:uppercase file:tracking-wider file:bg-nerv-purple-mid file:text-terminal-cyan hover:file:bg-terminal-cyan/10 file:cursor-pointer" %>
 
-         <%# Attachments %>
-         <div class="mt-1">
-            <%= form.label :attachments, class: "block text-xs font-medium text-gray-700" %>
-            <%= form.file_field :attachments, multiple: true, class: "block w-full text-sm text-gray-500 file:mr-4 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" %>
-            <%# Afișare atașamente existente %>
-            <% if trc.attachments.attached? %>
-                <div class="mt-2 text-xs">
-                    <strong>Current Files:</strong>
-                    <ul class="list-disc list-inside ml-2">
-                        <% trc.attachments.each do |attachment| %>
-                            <li>
-                                <%= link_to attachment.filename, url_for(attachment), target: "_blank", class: "text-blue-600 hover:underline" %>
-                                (<%= number_to_human_size(attachment.byte_size) %>)
-                                <%# Adaugă link de ștergere dacă e necesar (necesită acțiune custom) %>
-                            </li>
-                        <% end %>
-                    </ul>
+        <% if trc.attachments.attached? %>
+          <%
+            images = trc.attachments.select { |a| a.content_type.start_with?('image/') }
+            other_files = trc.attachments.reject { |a| a.content_type.start_with?('image/') }
+          %>
+
+          <% if images.any? %>
+            <div class="mt-3" data-controller="lightbox" data-lightbox-images-value="<%= images.map.with_index { |img, i| { url: url_for(img), caption: img.filename.to_s } }.to_json %>">
+              <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mb-2">Image Evidence</p>
+              <div class="flex flex-wrap gap-2">
+                <% images.each_with_index do |attachment, index| %>
+                  <button type="button"
+                          data-action="click->lightbox#open"
+                          data-lightbox-url="<%= url_for(attachment) %>"
+                          data-lightbox-caption="<%= attachment.filename %>"
+                          data-lightbox-index="<%= index %>"
+                          class="relative group w-16 h-16 border border-terminal-cyan/30 overflow-hidden hover:border-terminal-cyan transition-colors">
+                    <%= image_tag url_for(attachment.variant(resize_to_fill: [64, 64])), class: "w-full h-full object-cover", alt: attachment.filename %>
+                    <div class="absolute inset-0 bg-nerv-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <svg class="w-5 h-5 text-terminal-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
+                      </svg>
+                    </div>
+                  </button>
+                <% end %>
+              </div>
+
+              <!-- Lightbox Modal -->
+              <div data-lightbox-target="modal" class="hidden fixed inset-0 z-50 bg-nerv-black/95 flex items-center justify-center" data-action="click->lightbox#closeOnBackdrop">
+                <button data-action="click->lightbox#close" class="absolute top-4 right-4 p-2 text-terminal-gray hover:text-terminal-white transition-colors">
+                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+
+                <% if images.size > 1 %>
+                  <button data-action="click->lightbox#previous" class="absolute left-4 p-2 text-terminal-gray hover:text-terminal-cyan transition-colors">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                  </button>
+                  <button data-action="click->lightbox#next" class="absolute right-16 p-2 text-terminal-gray hover:text-terminal-cyan transition-colors">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                <% end %>
+
+                <div class="max-w-4xl max-h-[80vh] flex flex-col items-center">
+                  <img data-lightbox-target="image" src="" alt="" class="max-w-full max-h-[70vh] object-contain border border-terminal-cyan/30">
+                  <div class="mt-4 text-center">
+                    <p data-lightbox-target="caption" class="text-sm font-mono text-terminal-white"></p>
+                    <p data-lightbox-target="counter" class="hidden text-[10px] font-mono text-terminal-gray mt-1"></p>
+                  </div>
                 </div>
-            <% end %>
-         </div>
+              </div>
+            </div>
+          <% end %>
 
-         <%# Submit Button %>
-         <%= form.submit 'Update Status', class: "mt-2 w-full inline-flex justify-center py-1 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" %>
-       </div>
+          <% if other_files.any? %>
+            <div class="mt-3">
+              <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mb-2">Other Files</p>
+              <div class="flex flex-wrap gap-2">
+                <% other_files.each do |attachment| %>
+                  <%= link_to url_for(attachment), target: "_blank", class: "inline-flex items-center px-3 py-1 bg-nerv-purple-mid border border-terminal-cyan/20 text-xs font-mono text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors" do %>
+                    <svg class="w-4 h-4 mr-2 text-terminal-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+                    </svg>
+                    <%= attachment.filename %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="flex justify-end space-x-3 pt-4 border-t border-terminal-red/20">
+        <button type="button" onclick="document.getElementById('form_<%= trc.id %>').classList.add('hidden')" class="px-4 py-2 bg-nerv-purple-mid border border-terminal-gray-dark text-terminal-gray text-xs font-mono uppercase tracking-wider hover:text-terminal-white transition-colors">
+          Cancel
+        </button>
+        <%= form.submit 'Execute Update', class: "px-4 py-2 bg-terminal-cyan/10 border border-terminal-cyan text-terminal-cyan text-xs font-mono uppercase tracking-wider hover:bg-terminal-cyan/20 transition-colors cursor-pointer" %>
+      </div>
     <% end %>
   </td>
 </tr>

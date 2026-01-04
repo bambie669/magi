@@ -1,0 +1,104 @@
+<%# NERV-styled pagination component %>
+<% if pagy.pages > 1 %>
+  <nav class="flex items-center justify-between border-t border-terminal-red/20 px-4 py-3 mt-4" aria-label="Pagination">
+    <!-- Mobile: Simple prev/next -->
+    <div class="flex flex-1 justify-between sm:hidden">
+      <% if pagy.prev %>
+        <%= link_to pagy_url_for(pagy, pagy.prev), class: "inline-flex items-center px-3 py-1.5 border border-terminal-cyan/30 text-xs font-mono text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors" do %>
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          PREV
+        <% end %>
+      <% else %>
+        <span class="inline-flex items-center px-3 py-1.5 border border-terminal-gray/20 text-xs font-mono text-terminal-gray/50 cursor-not-allowed">
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          PREV
+        </span>
+      <% end %>
+
+      <% if pagy.next %>
+        <%= link_to pagy_url_for(pagy, pagy.next), class: "inline-flex items-center px-3 py-1.5 border border-terminal-cyan/30 text-xs font-mono text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors" do %>
+          NEXT
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        <% end %>
+      <% else %>
+        <span class="inline-flex items-center px-3 py-1.5 border border-terminal-gray/20 text-xs font-mono text-terminal-gray/50 cursor-not-allowed">
+          NEXT
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </span>
+      <% end %>
+    </div>
+
+    <!-- Desktop: Full pagination -->
+    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+      <div>
+        <p class="text-xs font-mono text-terminal-gray">
+          <span class="text-terminal-amber">DISPLAYING</span>
+          <span class="text-terminal-cyan"><%= pagy.from %></span>
+          <span class="text-terminal-amber">-</span>
+          <span class="text-terminal-cyan"><%= pagy.to %></span>
+          <span class="text-terminal-amber">OF</span>
+          <span class="text-terminal-cyan"><%= pagy.count %></span>
+          <span class="text-terminal-amber">ENTRIES</span>
+        </p>
+      </div>
+      <div>
+        <nav class="inline-flex -space-x-px" aria-label="Pagination">
+          <!-- Previous -->
+          <% if pagy.prev %>
+            <%= link_to pagy_url_for(pagy, pagy.prev), class: "inline-flex items-center px-2 py-1.5 border border-terminal-cyan/30 text-xs font-mono text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors", title: "Previous page" do %>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+              </svg>
+            <% end %>
+          <% else %>
+            <span class="inline-flex items-center px-2 py-1.5 border border-terminal-gray/20 text-xs font-mono text-terminal-gray/50 cursor-not-allowed">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </span>
+          <% end %>
+
+          <!-- Page numbers -->
+          <% pagy.series.each do |item| %>
+            <% if item.is_a?(Integer) %>
+              <% if item == pagy.page %>
+                <span class="inline-flex items-center px-3 py-1.5 border border-terminal-cyan bg-terminal-cyan/20 text-xs font-mono text-terminal-cyan font-bold">
+                  <%= item %>
+                </span>
+              <% else %>
+                <%= link_to item, pagy_url_for(pagy, item), class: "inline-flex items-center px-3 py-1.5 border border-terminal-cyan/30 text-xs font-mono text-terminal-gray hover:text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors" %>
+              <% end %>
+            <% elsif item == :gap %>
+              <span class="inline-flex items-center px-3 py-1.5 border border-terminal-gray/20 text-xs font-mono text-terminal-gray/50">
+                ...
+              </span>
+            <% end %>
+          <% end %>
+
+          <!-- Next -->
+          <% if pagy.next %>
+            <%= link_to pagy_url_for(pagy, pagy.next), class: "inline-flex items-center px-2 py-1.5 border border-terminal-cyan/30 text-xs font-mono text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors", title: "Next page" do %>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            <% end %>
+          <% else %>
+            <span class="inline-flex items-center px-2 py-1.5 border border-terminal-gray/20 text-xs font-mono text-terminal-gray/50 cursor-not-allowed">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </span>
+          <% end %>
+        </nav>
+      </div>
+    </div>
+  </nav>
+<% end %>

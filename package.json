@@ -1,0 +1,15 @@
+{
+  "name": "magi-qa",
+  "version": "1.0.0",
+  "description": "MAGI QA System - NERV-themed Test Management",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:headed": "cypress run --headed"
+  },
+  "devDependencies": {
+    "cypress": "^13.6.0"
+  },
+  "author": "",
+  "license": "MIT"
+}

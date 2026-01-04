@@ -52,27 +52,32 @@ suite_auth = project.test_suites.create!(name: 'Authentication', description: 'T
 suite_cart = project.test_suites.create!(name: 'Shopping Cart', description: 'Tests related to adding, removing, and updating cart items.')
 puts "Test Suites created."
 
-puts "Creating Test Cases..."
-# Test Cases for Authentication Suite
-suite_auth.test_cases.create!(
+puts "Creating Test Scopes and Test Cases..."
+# Create default scope for Authentication Suite
+scope_auth = suite_auth.test_scopes.create!(name: 'Login Tests')
+scope_auth.test_cases.create!(
   title: 'TC-AUTH-001: Valid User Login',
   preconditions: 'User account exists and is active. Site is accessible.',
   steps: "1. Navigate to Login page.\n2. Enter valid email.\n3. Enter valid password.\n4. Click Login button.",
-  expected_result: 'User is successfully logged in and redirected to their dashboard.'
+  expected_result: 'User is successfully logged in and redirected to their dashboard.',
+  cypress_id: 'TC-AUTH-001'
 )
-suite_auth.test_cases.create!(
+scope_auth.test_cases.create!(
   title: 'TC-AUTH-002: Invalid User Login - Wrong Password',
   preconditions: 'User account exists. Site is accessible.',
   steps: "1. Navigate to Login page.\n2. Enter valid email.\n3. Enter invalid password.\n4. Click Login button.",
-  expected_result: 'Error message indicating invalid credentials is displayed. User remains on login page.'
+  expected_result: 'Error message indicating invalid credentials is displayed. User remains on login page.',
+  cypress_id: 'TC-AUTH-002'
 )
 
-# Test Cases for Shopping Cart Suite
-suite_cart.test_cases.create!(
+# Create default scope for Shopping Cart Suite
+scope_cart = suite_cart.test_scopes.create!(name: 'Cart Operations')
+scope_cart.test_cases.create!(
   title: 'TC-CART-001: Add Item to Cart',
   preconditions: 'User is logged in. Product exists and is available.',
   steps: "1. Navigate to a product page.\n2. Click 'Add to Cart' button.",
-  expected_result: 'Product is added to the shopping cart. Cart quantity indicator updates. Confirmation message may be shown.'
+  expected_result: 'Product is added to the shopping cart. Cart quantity indicator updates. Confirmation message may be shown.',
+  cypress_id: 'TC-CART-001'
 )
 puts "Test Cases created."
 

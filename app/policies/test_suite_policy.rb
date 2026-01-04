@@ -2,6 +2,8 @@ class TestSuitePolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     # Definește cine poate vedea ce test suites
     def resolve
+      return scope.none unless user
+
       if user.admin? || user.manager? || user.tester?
         scope.all # Adminii, managerii și testerii pot vedea toate test suites (poate fi filtrat pe proiect ulterior)
       else
@@ -41,5 +43,28 @@ class TestSuitePolicy < ApplicationPolicy
   # Cine poate șterge un test suite?
   def destroy?
     user.admin? || user.manager? # Doar adminii și managerii
+  end
+
+  # CSV Export - oricine logat poate exporta
+  def export_csv?
+    user.present?
+  end
+
+  # PDF Export - oricine logat poate exporta
+  def export_pdf?
+    user.present?
+  end
+
+  def csv_template?
+    user.present?
+  end
+
+  # CSV Import - cei care pot crea test cases
+  def import_csv?
+    user.admin? || user.manager? || user.tester?
+  end
+
+  def process_import_csv?
+    import_csv?
   end
 end

@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
     include Pundit::Authorization # Adaugă linia Pundit
+    include Pagy::Backend
   
     protect_from_forgery with: :exception
     before_action :authenticate_user! # Forțează login pentru majoritatea paginilor

@@ -1,53 +1,199 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Magi</title>
+    <title>NERV - MAGI QA System</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-gray-100">
-    <nav class="bg-blue-600 text-white p-4 shadow-md">
-      <div class="container mx-auto flex justify-between items-center">
-        <%= link_to 'Magi', authenticated_root_path, class: "px-3 py-2 m-2 text-xl font-bold text-red" %>
-        <div class="flex items-center">
-          <% if user_signed_in? %>
-            <%= link_to 'Dashboard', dashboard_path, class: "px-3 py-2 hover:bg-blue-700 rounded" %>
-            <%= link_to 'Projects', projects_path, class: "px-3 py-2 hover:bg-blue-700 rounded" %>
-            <span class="mx-2">|</span>
-            <span class="mr-2">Salut, <%= current_user.display_name %> (<%= current_user.role %>)</span>
-            <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: "px-3 py-1 bg-red-500 hover:bg-red-600 rounded text-sm" %>
-          <% else %>
-            <%= link_to 'Login', new_user_session_path, class: "px-3 py-2 hover:bg-blue-700 rounded" %>
-            <%= link_to 'Sign Up', new_user_registration_path, class: "px-3 py-2 hover:bg-blue-700 rounded" %>
+  <body class="font-mono <%= light_theme? ? 'theme-light' : 'theme-nerv' %>">
+    <% if user_signed_in? %>
+      <!-- COMMAND CORE Sidebar -->
+      <%= render 'shared/sidebar' %>
+
+      <!-- Main Control Interface -->
+      <div class="ml-64 min-h-screen">
+        <!-- Primary Header Bar -->
+        <header class="header-dark">
+          <div class="flex items-center justify-between px-6 py-3">
+            <div class="flex items-center space-x-6">
+              <!-- Page Title -->
+              <div class="flex items-center space-x-3">
+                <span class="text-[10px] font-mono text-theme-muted uppercase tracking-widest">Interface:</span>
+                <h1 class="text-sm font-mono uppercase tracking-wider text-theme-primary">
+                  <%= content_for?(:page_title) ? yield(:page_title) : 'COMMAND OVERVIEW' %>
+                </h1>
+              </div>
+
+              <% if content_for?(:breadcrumbs) %>
+                <div class="divider-vertical"></div>
+                <nav class="flex items-center text-xs font-mono text-theme-secondary">
+                  <%= yield(:breadcrumbs) %>
+                </nav>
+              <% end %>
+            </div>
+
+            <div class="flex items-center space-x-4">
+              <!-- MAGI Status -->
+              <div class="magi-status">
+                <span class="magi-status-dot"></span>
+                <span class="magi-status-text">MAGI System Online</span>
+              </div>
+
+              <!-- Theme Toggle -->
+              <div data-controller="theme-toggle">
+                <button data-action="click->theme-toggle#toggle"
+                        class="flex items-center space-x-2 px-3 py-1.5 border border-theme rounded text-xs font-mono text-theme-secondary hover:text-theme-primary hover:border-eva-purple transition-colors"
+                        title="Toggle Theme">
+                  <svg data-theme-toggle-target="icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                  </svg>
+                  <span data-theme-toggle-target="label" class="hidden sm:inline">EVA-00</span>
+                </button>
+              </div>
+
+              <!-- Search Terminal -->
+              <%= form_with url: search_path, method: :get, local: true, class: "relative" do %>
+                <input type="text" name="q" placeholder="SCAN DATABASE..." class="input-dark w-48 pl-8 pr-4 py-1.5 text-xs">
+                <svg class="w-4 h-4 text-theme-muted absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              <% end %>
+
+              <!-- Notifications -->
+              <div data-controller="notifications"
+                   data-notifications-user-id-value="<%= current_user.id %>"
+                   data-action="click@window->notifications#close"
+                   class="relative">
+                <button data-action="click->notifications#toggle"
+                        class="relative p-2 text-theme-muted hover:text-status-warning transition-colors">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                  </svg>
+                  <span data-notifications-target="badge"
+                        class="absolute -top-1 -right-1 px-1.5 py-0.5 bg-status-error text-white text-[9px] font-mono rounded-full <%= current_user.unread_notifications_count > 0 ? '' : 'hidden' %>">
+                    <%= current_user.unread_notifications_count > 99 ? '99+' : current_user.unread_notifications_count %>
+                  </span>
+                </button>
+
+                <!-- Dropdown -->
+                <div data-notifications-target="dropdown"
+                     class="hidden absolute right-0 mt-2 w-80 bg-nerv-purple border border-terminal-red/20 rounded shadow-lg z-50">
+                  <div class="flex items-center justify-between px-4 py-2 border-b border-terminal-red/20">
+                    <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Transmissions</span>
+                    <%= link_to notifications_path, class: "text-[10px] font-mono text-terminal-cyan uppercase tracking-wider hover:text-terminal-cyan/80" do %>
+                      View All
+                    <% end %>
+                  </div>
+
+                  <div data-notifications-target="emptyState" class="hidden p-4 text-center">
+                    <p class="text-terminal-gray font-mono text-xs uppercase">No notifications</p>
+                  </div>
+
+                  <div data-notifications-target="list" class="max-h-80 overflow-y-auto">
+                    <!-- Notifications will be loaded dynamically -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Operator Avatar -->
+              <div class="avatar avatar-sm avatar-dark">
+                <%= current_user.display_name.first.upcase %>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="p-6">
+          <!-- System Alerts -->
+          <% if notice %>
+            <div class="alert alert-success mb-6" role="alert">
+              <div class="flex items-center space-x-3">
+                <span class="w-2 h-2 bg-status-success rounded-full"></span>
+                <span class="uppercase tracking-wider text-xs">System Notice:</span>
+                <span><%= notice %></span>
+              </div>
+              <button onclick="this.parentElement.remove()" class="hover:opacity-70">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+            </div>
           <% end %>
+
+          <% if alert %>
+            <div class="alert alert-error mb-6" role="alert">
+              <div class="flex items-center space-x-3">
+                <span class="w-2 h-2 bg-status-error rounded-full animate-pulse"></span>
+                <span class="uppercase tracking-wider text-xs">Critical Alert:</span>
+                <span><%= alert %></span>
+              </div>
+              <button onclick="this.parentElement.remove()" class="hover:opacity-70">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+            </div>
+          <% end %>
+
+          <%= yield %>
+        </main>
+
+        <!-- System Footer -->
+        <footer class="footer-dark">
+          <div class="flex items-center justify-between footer-text">
+            <span>NERV HEADQUARTERS - MAGI QA INTERFACE v1.0</span>
+            <span data-controller="system-clock" data-system-clock-target="display">SYSTEM TIME: <%= Time.now.strftime('%Y.%m.%d %H:%M:%S') %></span>
+          </div>
+        </footer>
+      </div>
+    <% else %>
+      <!-- Authentication Interface -->
+      <div class="min-h-screen flex items-center justify-center bg-dark-base">
+        <div class="max-w-md w-full mx-4">
+          <div class="text-center mb-8">
+            <!-- NERV Logo -->
+            <div class="w-32 h-32 mx-auto mb-6 relative">
+              <svg viewBox="0 0 100 100" class="w-full h-full animate-pulse-slow">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#6B5B95" stroke-width="2" opacity="0.8"/>
+                <path d="M50 10 L50 90 M30 30 Q50 50 30 70 M70 30 Q50 50 70 70"
+                      fill="none" stroke="#4ADE80" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="50" cy="50" r="5" fill="#4ADE80"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="#6B5B95" stroke-width="1" opacity="0.4"/>
+              </svg>
+            </div>
+            <h1 class="text-3xl font-mono font-bold text-eva-purple-light tracking-widest">NERV</h1>
+            <p class="text-text-muted font-mono text-sm tracking-wider mt-2">MAGI QA SYSTEM</p>
+            <p class="text-eva-green/50 font-mono text-[10px] tracking-wider mt-4">AUTHENTICATION REQUIRED</p>
+          </div>
+
+          <div class="nerv-panel p-8">
+            <% if notice %>
+              <div class="alert alert-success mb-6" role="alert">
+                <%= notice %>
+              </div>
+            <% end %>
+            <% if alert %>
+              <div class="alert alert-error mb-6" role="alert">
+                <%= alert %>
+              </div>
+            <% end %>
+
+            <%= yield %>
+          </div>
+
+          <div class="text-center mt-8">
+            <p class="text-[9px] font-mono text-text-muted/40 tracking-wide">
+              "GOD'S IN HIS HEAVEN. ALL'S RIGHT WITH THE WORLD."
+            </p>
+          </div>
         </div>
       </div>
-    </nav>
-
-    <main class="container mx-auto mt-8 px-4">
-      <%# Flash Messages %>
-      <% if notice %>
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-          <span class="block sm:inline"><%= notice %></span>
-        </div>
-      <% end %>
-      <% if alert %>
-         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-           <span class="block sm:inline"><%= alert %></span>
-         </div>
-      <% end %>
-
-      <%= yield %>
-    </main>
-
-    <footer class="text-center text-gray-500 mt-10 pb-5">
-      Magi - <%= Time.now.year %>
-    </footer>
+    <% end %>
   </body>
 </html>

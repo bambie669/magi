@@ -1,3 +1,11 @@
-<h1 class="text-2xl font-bold mb-6">New Test Suite for Project: <%= @project.name %></h1>
+<% content_for :page_title, "INITIALIZE PROTOCOL BANK" %>
 
-<%= render 'form', test_suite: @test_suite, project: @project %>
+<% content_for :breadcrumbs do %>
+  <%= link_to @project.name, project_path(@project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+  <span class="text-terminal-red mx-2">/</span>
+  <span class="text-terminal-gray">Initialize Protocol Bank</span>
+<% end %>
+
+<div class="max-w-4xl mx-auto">
+  <%= render 'form', test_suite: @test_suite, project: @project %>
+</div>

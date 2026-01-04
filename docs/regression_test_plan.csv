@@ -1,0 +1,297 @@
+Test ID,Module,Feature,Test Case Title,Preconditions,Test Steps,Expected Result,User Role,Priority,Status,Tester,Date,Comments
+AUTH-001,Authentication,Login,Valid user login with correct credentials,"User account exists (admin@example.com/password), Application is accessible","1. Navigate to login page
+2. Enter email: admin@example.com
+3. Enter password: password
+4. Click 'Sign In' button",User is successfully logged in and redirected to Command Overview dashboard,All Roles,Critical,,,,
+AUTH-002,Authentication,Login,Invalid login - wrong password,"User account exists, Application is accessible","1. Navigate to login page
+2. Enter valid email: admin@example.com
+3. Enter wrong password: wrongpass
+4. Click 'Sign In' button",Error message displayed: 'Invalid Email or password'. User remains on login page,All Roles,Critical,,,,
+AUTH-003,Authentication,Login,Invalid login - non-existent email,"Application is accessible","1. Navigate to login page
+2. Enter non-existent email: fake@test.com
+3. Enter any password
+4. Click 'Sign In' button",Error message displayed: 'Invalid Email or password'. User remains on login page,All Roles,Critical,,,,
+AUTH-004,Authentication,Login,Login with empty fields,"Application is accessible","1. Navigate to login page
+2. Leave email field empty
+3. Leave password field empty
+4. Click 'Sign In' button",Validation error displayed. Form not submitted,All Roles,High,,,,
+AUTH-005,Authentication,Login,Login page displays NERV branding,"Application is accessible","1. Navigate to login page
+2. Observe page layout","NERV logo visible, 'GOD'S IN HIS HEAVEN' motto displayed, Dark theme applied",All Roles,Medium,,,,
+AUTH-006,Authentication,Logout,Successful logout,"User is logged in","1. Click on user avatar/name in sidebar
+2. Click 'Disconnect' button",User is logged out and redirected to login page,All Roles,Critical,,,,
+AUTH-007,Authentication,Session,Session persistence after page refresh,"User is logged in","1. Refresh the browser page
+2. Observe application state",User remains logged in and on the same page,All Roles,High,,,,
+AUTH-008,Authentication,Session,Session timeout handling,"User is logged in, Session has expired","1. Wait for session to expire (or manually expire)
+2. Try to access any protected page",User is redirected to login page with appropriate message,All Roles,Medium,,,,
+DASH-001,Dashboard,Overview,Dashboard loads correctly after login,"User is logged in as any role","1. Login to application
+2. Observe dashboard page","Dashboard displays: stat cards (Missions, Operations, Protocols, Operators), Recent Operations list, MAGI Status indicator",All Roles,Critical,,,,
+DASH-002,Dashboard,Statistics,Stat cards display correct counts,"User is logged in, Projects/Test Runs exist in database","1. Navigate to dashboard
+2. Compare stat card values with actual database counts","All stat cards (Missions, Operations, Protocols, Operators) show accurate counts matching database",All Roles,High,,,,
+DASH-003,Dashboard,Pass Rate Chart,30-day pass rate trend chart displays,"User is logged in, Test runs with results exist","1. Navigate to dashboard
+2. Locate Pass Rate Trend section
+3. Observe chart",Line chart displays showing pass rate over last 30 days with accurate data points,All Roles,Medium,,,,
+DASH-004,Dashboard,Activity Heatmap,Activity heatmap displays correctly,"User is logged in, Test activity exists","1. Navigate to dashboard
+2. Locate Activity Heatmap section",GitHub-style heatmap displays with color intensity reflecting activity levels,All Roles,Medium,,,,
+DASH-005,Dashboard,Top Failed Tests,Top failed tests list displays,"User is logged in, Failed test cases exist","1. Navigate to dashboard
+2. Locate Top Failed Tests section",List shows test cases with highest failure rates with accurate counts,All Roles,Medium,,,,
+DASH-006,Dashboard,Team Activity,Team activity feed displays,"User is logged in, Recent test activities exist","1. Navigate to dashboard
+2. Locate Team Activity section",Recent activities displayed with operator names and timestamps,All Roles,Medium,,,,
+DASH-007,Dashboard,Navigation,Quick navigation links work,"User is logged in","1. Click on each stat card
+2. Click on items in Recent Operations list",Each link navigates to the correct page,All Roles,High,,,,
+DASH-008,Dashboard,Responsive,Dashboard displays correctly on mobile,"User is logged in, Mobile viewport","1. Resize browser to mobile width
+2. Observe dashboard layout",Dashboard elements stack properly and remain usable,All Roles,Low,,,,
+PROJ-001,Projects,List,Projects index page displays all projects,"User is logged in, Multiple projects exist","1. Navigate to Projects (Missions) page
+2. Observe project list",All projects displayed as cards with name and description and stats,All Roles,Critical,,,,
+PROJ-002,Projects,Create,Create new project - Admin,"User is logged in as Admin","1. Navigate to Projects page
+2. Click 'Initialize Mission' button
+3. Enter project name: 'Test Project'
+4. Enter description
+5. Click 'Initialize' button",New project created successfully. Redirected to project show page,Admin,Critical,,,,
+PROJ-003,Projects,Create,Create new project - Manager,"User is logged in as Manager","1. Navigate to Projects page
+2. Click 'Initialize Mission' button
+3. Enter valid project details
+4. Submit form",New project created successfully,Manager,Critical,,,,
+PROJ-004,Projects,Create,Create new project - Tester (should fail),"User is logged in as Tester","1. Navigate to Projects page
+2. Look for 'Initialize Mission' button",Button not visible or returns unauthorized error if accessed directly,Tester,High,,,,
+PROJ-005,Projects,Create,Create project with duplicate name,"User is logged in as Admin, Project 'E-commerce Platform' exists","1. Try to create project with name 'E-commerce Platform'
+2. Submit form",Validation error displayed: name must be unique,Admin,High,,,,
+PROJ-006,Projects,Create,Create project with empty name,"User is logged in as Admin","1. Navigate to new project form
+2. Leave name field empty
+3. Submit form",Validation error displayed: name is required,Admin,High,,,,
+PROJ-007,Projects,View,View project details,"User is logged in, Project exists","1. Navigate to Projects page
+2. Click on a project card",Project detail page displays with test suites and test runs sections,All Roles,Critical,,,,
+PROJ-008,Projects,Edit,Edit project - Owner,"User is logged in as project owner","1. Navigate to owned project
+2. Click 'Modify Mission' button
+3. Change project name/description
+4. Save changes",Project updated successfully,Manager,High,,,,
+PROJ-009,Projects,Edit,Edit project - Admin,"User is logged in as Admin, Not project owner","1. Navigate to any project
+2. Click 'Modify Mission' button
+3. Make changes
+4. Save",Project updated successfully (Admin can edit any project),Admin,High,,,,
+PROJ-010,Projects,Edit,Edit project - Tester (should fail),"User is logged in as Tester","1. Navigate to project
+2. Look for edit button",Edit button not visible or returns unauthorized,Tester,High,,,,
+PROJ-011,Projects,Delete,Delete project - Admin,"User is logged in as Admin","1. Navigate to project
+2. Click 'Terminate Mission' button
+3. Confirm deletion",Project and all related data deleted. Redirected to projects list,Admin,Critical,,,,
+PROJ-012,Projects,Delete,Delete project - Non-admin (should fail),"User is logged in as Manager/Tester","1. Navigate to project
+2. Look for delete button",Delete button not visible or returns unauthorized,Manager/Tester,High,,,,
+SUITE-001,Test Suites,List,View test suites for a project,"User is logged in, Project with test suites exists","1. Navigate to a project
+2. Observe Protocol Banks section",All test suites for the project are displayed,All Roles,Critical,,,,
+SUITE-002,Test Suites,Create,Create new test suite,"User is logged in as Admin/Manager on owned project","1. Navigate to project
+2. Click 'Initialize Bank' button
+3. Enter suite name and description
+4. Submit form",New test suite created and displayed in project,Admin/Manager,Critical,,,,
+SUITE-003,Test Suites,View,View test suite details,"User is logged in, Test suite exists","1. Click on a test suite
+2. Observe detail page",Test suite page displays with test cases list and bulk actions,All Roles,Critical,,,,
+SUITE-004,Test Suites,Edit,Edit test suite,"User is logged in with edit permissions","1. Navigate to test suite
+2. Click edit button
+3. Modify name/description
+4. Save",Test suite updated successfully,Admin/Manager,High,,,,
+SUITE-005,Test Suites,Delete,Delete test suite,"User is logged in as Admin","1. Navigate to test suite
+2. Click delete button
+3. Confirm",Test suite and all test cases deleted,Admin,High,,,,
+SUITE-006,Test Suites,Import CSV,Import test cases from CSV,"User is logged in with edit permissions, Valid CSV file prepared","1. Navigate to test suite
+2. Click 'Import CSV' button
+3. Upload CSV file
+4. Confirm import",Test cases imported from CSV successfully,Admin/Manager,High,,,,
+SUITE-007,Test Suites,Export CSV,Export test cases to CSV,"User is logged in, Test suite with test cases exists","1. Navigate to test suite
+2. Click 'CSV' export button",CSV file downloaded with all test case data,All Roles,High,,,,
+SUITE-008,Test Suites,Export PDF,Export test cases to PDF,"User is logged in, Test suite with test cases exists","1. Navigate to test suite
+2. Click 'PDF' export button",PDF file downloaded with formatted test case data,All Roles,High,,,,
+SUITE-009,Test Suites,Bulk Select,Select all test cases,"User is logged in, Test suite with multiple test cases","1. Navigate to test suite
+2. Click 'Select All' checkbox",All test case checkboxes become checked,All Roles,Medium,,,,
+SUITE-010,Test Suites,Bulk Delete,Bulk delete test cases,"User is logged in as Admin, Multiple test cases selected","1. Select multiple test cases
+2. Click bulk delete button
+3. Confirm",Selected test cases deleted,Admin,High,,,,
+SUITE-011,Test Suites,Bulk Export,Bulk export selected test cases,"User is logged in, Multiple test cases selected","1. Select multiple test cases
+2. Click bulk export button",CSV with selected test cases downloaded,All Roles,Medium,,,,
+TC-001,Test Cases,Create,Create new test case,"User is logged in with permissions, Test suite exists","1. Navigate to test suite
+2. Click 'Initialize Protocol' button
+3. Fill in all fields (title, preconditions, steps, expected result)
+4. Submit form",New test case created and displayed in suite,Admin/Manager,Critical,,,,
+TC-002,Test Cases,Create,Create test case with template,"User is logged in, Template exists for project","1. Navigate to new test case form
+2. Select template from dropdown
+3. Click 'Apply' button
+4. Modify if needed
+5. Submit",Test case created with template data pre-filled,Admin/Manager,Medium,,,,
+TC-003,Test Cases,Create,Create test case - required fields only,"User is logged in with permissions","1. Navigate to new test case form
+2. Enter only title (required field)
+3. Submit form",Test case created with minimal data,Admin/Manager,High,,,,
+TC-004,Test Cases,Create,Create test case - empty title (should fail),"User is logged in with permissions","1. Navigate to new test case form
+2. Leave title empty
+3. Submit form",Validation error: title is required,Admin/Manager,High,,,,
+TC-005,Test Cases,View,View test case details,"User is logged in, Test case exists","1. Navigate to test suite
+2. Click on a test case",Test case detail page displays with all fields and execution history,All Roles,Critical,,,,
+TC-006,Test Cases,View,View execution history,"User is logged in, Test case has been executed in test runs","1. Navigate to test case detail
+2. Scroll to Execution History section",History shows all executions with status, operator, and date,All Roles,Medium,,,,
+TC-007,Test Cases,Edit,Edit test case,"User is logged in with permissions","1. Navigate to test case
+2. Click edit button
+3. Modify fields
+4. Save",Test case updated successfully,Admin/Manager,High,,,,
+TC-008,Test Cases,Delete,Delete test case,"User is logged in as Admin","1. Navigate to test case
+2. Click delete button
+3. Confirm",Test case deleted,Admin,High,,,,
+TC-009,Test Cases,Cypress ID,Set Cypress automation ID,"User is logged in with permissions","1. Edit test case
+2. Enter Cypress ID: TC-001
+3. Save",Cypress ID saved and visible on test case,Admin/Manager,Medium,,,,
+TMPL-001,Templates,List,View templates for project,"User is logged in, Project has templates","1. Navigate to project
+2. Click on Templates section",All templates for project displayed,All Roles,Medium,,,,
+TMPL-002,Templates,Create,Create new template,"User is logged in with permissions","1. Navigate to templates
+2. Click 'Initialize Template'
+3. Fill in all fields
+4. Submit",New template created,Admin/Manager,Medium,,,,
+TMPL-003,Templates,Edit,Edit template,"User is logged in with permissions","1. Navigate to template
+2. Click edit
+3. Modify fields
+4. Save",Template updated,Admin/Manager,Medium,,,,
+TMPL-004,Templates,Delete,Delete template,"User is logged in with permissions","1. Navigate to template
+2. Click delete
+3. Confirm",Template deleted,Admin/Manager,Medium,,,,
+TMPL-005,Templates,Apply,Apply template to new test case,"User is logged in, Template exists","1. Create new test case
+2. Select template
+3. Click Apply",Form fields populated with template data,All Roles,Medium,,,,
+TR-001,Test Runs,List,View test runs for project,"User is logged in, Project has test runs","1. Navigate to project
+2. Click on Operations section
+3. Or navigate to Operations in sidebar",All test runs displayed with status summary,All Roles,Critical,,,,
+TR-002,Test Runs,Create,Create new test run,"User is logged in with permissions","1. Navigate to project
+2. Click 'Initialize Operation'
+3. Enter name, select test suites
+4. Submit",New test run created with test cases from selected suites,Admin/Manager,Critical,,,,
+TR-003,Test Runs,View,View test run details,"User is logged in, Test run exists","1. Navigate to test run detail page",Test run displays with progress bar, status counts, MAGI consensus, and test case list,All Roles,Critical,,,,
+TR-004,Test Runs,Execute,Mark test case as Passed,"User is logged in, Test run in progress","1. Navigate to test run
+2. Find a test case row
+3. Click 'Pass' button",Test case status changes to Passed (NOMINAL), counts update, executor recorded,All Roles,Critical,,,,
+TR-005,Test Runs,Execute,Mark test case as Failed,"User is logged in, Test run in progress","1. Navigate to test run
+2. Find a test case row
+3. Click 'Fail' button",Test case status changes to Failed (BREACH), counts update, row highlights red,All Roles,Critical,,,,
+TR-006,Test Runs,Execute,Mark test case as Blocked,"User is logged in, Test run in progress","1. Navigate to test run
+2. Find a test case row
+3. Click 'Block' button",Test case status changes to Blocked (PATTERN BLUE), counts update,All Roles,Critical,,,,
+TR-007,Test Runs,Execute,Add comments to test result,"User is logged in, Test run in progress","1. Navigate to test run
+2. Expand a test case row
+3. Enter comments
+4. Save",Comments saved and visible,All Roles,High,,,,
+TR-008,Test Runs,Execute,Upload attachment to test result,"User is logged in, Test run in progress","1. Expand test case row
+2. Click attachment upload
+3. Select image file
+4. Save",Attachment uploaded and thumbnail visible,All Roles,High,,,,
+TR-009,Test Runs,Attachments,Preview attachment in lightbox,"User is logged in, Test result has image attachment","1. Navigate to test run
+2. Click on attachment thumbnail",Image opens in lightbox modal with close button,All Roles,Medium,,,,
+TR-010,Test Runs,Progress,Progress bar updates correctly,"User is logged in, Test run in progress","1. Execute several test cases
+2. Observe progress bar",Progress bar percentage matches (executed/total) * 100,All Roles,High,,,,
+TR-011,Test Runs,MAGI,MAGI consensus updates,"User is logged in, Test run in progress","1. Execute test cases to various pass rates
+2. Observe MAGI panel",MAGI Casper/Balthasar/Melchior votes update based on pass rate thresholds,All Roles,Medium,,,,
+TR-012,Test Runs,Export CSV,Export test run to CSV,"User is logged in, Test run exists","1. Navigate to test run
+2. Click CSV export button",CSV downloaded with all test results,All Roles,High,,,,
+TR-013,Test Runs,Export PDF,Export test run to PDF,"User is logged in, Test run exists","1. Navigate to test run
+2. Click PDF export button",PDF downloaded with formatted test run report,All Roles,High,,,,
+TR-014,Test Runs,Edit,Edit test run details,"User is logged in with permissions","1. Navigate to test run
+2. Click 'Modify Operation'
+3. Change name
+4. Save",Test run updated,Admin/Manager,High,,,,
+TR-015,Test Runs,Delete,Delete test run,"User is logged in as Admin","1. Navigate to test run
+2. Click 'Terminate Operation'
+3. Confirm",Test run and all results deleted,Admin,High,,,,
+TR-016,Test Runs,Real-time,Real-time status updates,"Two users logged in viewing same test run","1. User A executes a test case
+2. User B observes test run page",User B sees status update in real-time without refresh (ActionCable),All Roles,High,,,,
+MILE-001,Milestones,List,View milestones for project,"User is logged in, Project has milestones","1. Navigate to project
+2. View milestones section",All milestones displayed with due dates,All Roles,Medium,,,,
+MILE-002,Milestones,Create,Create new milestone,"User is logged in with permissions","1. Navigate to project
+2. Click add milestone
+3. Enter name and due date
+4. Submit",New milestone created,Admin/Manager,Medium,,,,
+MILE-003,Milestones,Edit,Edit milestone,"User is logged in with permissions","1. Navigate to milestone
+2. Edit details
+3. Save",Milestone updated,Admin/Manager,Medium,,,,
+MILE-004,Milestones,Delete,Delete milestone,"User is logged in as Admin","1. Navigate to milestone
+2. Delete
+3. Confirm",Milestone deleted,Admin,Medium,,,,
+NAV-001,Navigation,Sidebar,Sidebar navigation works,"User is logged in","1. Click each sidebar menu item",Each menu item navigates to correct page,All Roles,Critical,,,,
+NAV-002,Navigation,Breadcrumbs,Breadcrumb navigation works,"User is logged in, On nested page","1. Observe breadcrumb trail
+2. Click on each breadcrumb link",Each breadcrumb navigates to correct parent page,All Roles,High,,,,
+NAV-003,Navigation,Search,Global search functionality,"User is logged in, Data exists","1. Enter search term in header search box
+2. Press Enter",Search results page displays with matching projects/test cases/test runs,All Roles,High,,,,
+NAV-004,Navigation,Keyboard,Keyboard shortcuts J/K navigation,"User is logged in, On list page","1. Press J key
+2. Press K key",J moves selection down, K moves selection up through list items,All Roles,Low,,,,
+THEME-001,Theme,Toggle,Toggle theme from header,"User is logged in","1. Click theme toggle button in header
+2. Observe page",Theme switches between NERV (dark) and EVA-00 (light),All Roles,High,,,,
+THEME-002,Theme,Persistence,Theme persists after refresh,"User is logged in, Theme changed","1. Toggle theme
+2. Refresh page",Theme remains as set,All Roles,High,,,,
+THEME-003,Theme,System Config,Theme matches system config,"User is logged in","1. Change theme via header toggle
+2. Navigate to System Config > Theme",Theme setting in System Config matches header toggle,All Roles,High,,,,
+THEME-004,Theme,System Config,Change theme from System Config,"User is logged in","1. Navigate to System Config
+2. Select different theme
+3. Save",Theme changes and persists,All Roles,High,,,,
+NOTIF-001,Notifications,Bell,Notification bell displays count,"User is logged in, Has unread notifications","1. Observe notification bell in header",Bell icon shows unread count badge,All Roles,Medium,,,,
+NOTIF-002,Notifications,Dropdown,Notification dropdown opens,"User is logged in","1. Click notification bell",Dropdown opens showing recent notifications,All Roles,Medium,,,,
+NOTIF-003,Notifications,View All,Navigate to all notifications,"User is logged in","1. Click notification bell
+2. Click 'View All'",Navigates to full notifications page,All Roles,Medium,,,,
+NOTIF-004,Notifications,Mark Read,Mark notification as read,"User is logged in, Has unread notification","1. Click 'Mark Read' on notification",Notification marked as read, badge count decreases,All Roles,Medium,,,,
+NOTIF-005,Notifications,Mark All,Mark all as read,"User is logged in, Has multiple unread","1. Navigate to notifications
+2. Click 'Mark All as Read'",All notifications marked as read, badge cleared,All Roles,Medium,,,,
+SYSCONF-001,System Config,Access,Access system config page,"User is logged in","1. Click 'System Config' in sidebar",System Config page loads with sections,All Roles,High,,,,
+SYSCONF-002,System Config,Operators,View operators list - Admin,"User is logged in as Admin","1. Navigate to System Config
+2. Click Operators section",List of all users/operators displayed,Admin,High,,,,
+SYSCONF-003,System Config,Operators,View operators - Non-admin (should fail),"User is logged in as Tester/Manager","1. Navigate to System Config
+2. Try to access Operators section",Access denied or section not visible,Tester/Manager,High,,,,
+SYSCONF-004,System Config,Operators,Create new operator - Admin,"User is logged in as Admin","1. Navigate to Operators
+2. Click 'Initialize Operator'
+3. Enter email, password, role
+4. Submit",New user created,Admin,High,,,,
+SYSCONF-005,System Config,Operators,Edit operator - Admin,"User is logged in as Admin","1. Navigate to Operators
+2. Click edit on a user
+3. Change role
+4. Save",User updated,Admin,High,,,,
+SYSCONF-006,System Config,Operators,Delete operator - Admin,"User is logged in as Admin","1. Navigate to Operators
+2. Click delete on a user (not self)
+3. Confirm",User deleted,Admin,High,,,,
+SYSCONF-007,System Config,Operators,Cannot delete self,"User is logged in as Admin","1. Navigate to Operators
+2. Try to delete own account",Error: Cannot terminate your own account,Admin,High,,,,
+SYSCONF-008,System Config,API Tokens,View API tokens,"User is logged in","1. Navigate to System Config
+2. Click API Tokens section",User's API tokens displayed,All Roles,High,,,,
+SYSCONF-009,System Config,API Tokens,Create API token,"User is logged in","1. Navigate to API Tokens
+2. Enter token name
+3. Click Initialize",New token created and displayed (shown once),All Roles,High,,,,
+SYSCONF-010,System Config,API Tokens,Delete API token,"User is logged in, Has API tokens","1. Navigate to API Tokens
+2. Click delete on a token
+3. Confirm",Token deleted,All Roles,High,,,,
+SYSCONF-011,System Config,Glossary,View NERV glossary,"User is logged in","1. Navigate to System Config
+2. Click Glossary section",Glossary of NERV terms displayed,All Roles,Low,,,,
+API-001,API,Authentication,API authentication with valid token,"Valid API token exists","1. Send GET /api/v1/projects with Authorization: Bearer <token>",Returns 200 with projects list,API,Critical,,,,
+API-002,API,Authentication,API authentication fails with invalid token,"No valid token","1. Send GET /api/v1/projects with Authorization: Bearer invalid_token",Returns 401 Unauthorized,API,Critical,,,,
+API-003,API,Authentication,API authentication fails without token,"No token provided","1. Send GET /api/v1/projects without Authorization header",Returns 401 Unauthorized,API,Critical,,,,
+API-004,API,Projects,List all projects via API,"Valid API token","1. Send GET /api/v1/projects",Returns JSON array of all projects,API,High,,,,
+API-005,API,Projects,Get single project via API,"Valid API token, Project exists","1. Send GET /api/v1/projects/:id",Returns JSON with project details including test suites,API,High,,,,
+API-006,API,Test Runs,List test runs for project,"Valid API token, Project with test runs","1. Send GET /api/v1/projects/:id/test_runs",Returns JSON array of test runs with status counts,API,High,,,,
+API-007,API,Test Runs,Create test run via API,"Valid API token","1. Send POST /api/v1/projects/:id/test_runs with name and test_suite_ids",Returns 201 with created test run,API,High,,,,
+API-008,API,Test Runs,Get test run details via API,"Valid API token, Test run exists","1. Send GET /api/v1/test_runs/:id",Returns JSON with full test run including test cases,API,High,,,,
+API-009,API,Test Run Cases,Update test case status via API,"Valid API token, Test run case exists","1. Send PATCH /api/v1/test_run_cases/:id with status: passed",Returns updated test run case with new status,API,Critical,,,,
+API-010,API,Test Run Cases,Bulk update test cases via API,"Valid API token, Multiple test run cases","1. Send POST /api/v1/test_run_cases/bulk_update with updates array",Returns summary of updated cases,API,High,,,,
+API-011,API,Cypress,Submit Cypress results,"Valid API token, Test run with cypress_id test cases","1. Send POST /api/v1/test_runs/:id/cypress_results with results array",Returns summary of processed results,API,High,,,,
+API-012,API,Test Cases,Get test case by Cypress ID,"Valid API token, Test case with cypress_id exists","1. Send GET /api/v1/test_cases/by_cypress_id/:cypress_id",Returns test case details,API,Medium,,,,
+PERF-001,Performance,Dashboard,Dashboard loads under 3 seconds,"User is logged in, Large dataset","1. Navigate to dashboard
+2. Measure load time",Page fully loads in under 3 seconds,All Roles,Medium,,,,
+PERF-002,Performance,Test Run,Test run with 100+ cases loads properly,"User is logged in, Test run with 100+ cases","1. Navigate to large test run
+2. Observe load time and scrolling",Page loads and scrolls smoothly,All Roles,Medium,,,,
+PERF-003,Performance,Search,Search returns results quickly,"User is logged in, Large dataset","1. Perform global search
+2. Measure response time",Results return in under 2 seconds,All Roles,Medium,,,,
+SEC-001,Security,Authorization,Tester cannot access admin functions,"User is logged in as Tester","1. Try to access /system_config/operators directly",Access denied,Tester,Critical,,,,
+SEC-002,Security,Authorization,Manager cannot delete projects,"User is logged in as Manager","1. Try to delete a project",Not authorized,Manager,Critical,,,,
+SEC-003,Security,CSRF,CSRF protection on forms,"User is logged in","1. Inspect form for CSRF token
+2. Try to submit form without token",CSRF token present, submission without token fails,All Roles,Critical,,,,
+SEC-004,Security,XSS,XSS prevention in user inputs,"User is logged in","1. Enter <script>alert('xss')</script> in a text field
+2. Save and view",Script is escaped/sanitized, not executed,All Roles,Critical,,,,
+SEC-005,Security,SQL Injection,SQL injection prevention,"User is logged in","1. Enter SQL injection in search: ' OR '1'='1
+2. Submit",Query is parameterized, no SQL injection,All Roles,Critical,,,,
+UI-001,UI,Responsive,Mobile responsive layout,"Mobile viewport","1. View application on mobile device or emulator",All pages display correctly with mobile-friendly navigation,All Roles,Medium,,,,
+UI-002,UI,NERV Theme,NERV aesthetic consistency,"User is logged in with NERV theme","1. Navigate through all pages",Consistent NERV branding: dark purple background, cyan/red accents, monospace fonts,All Roles,Medium,,,,
+UI-003,UI,Light Theme,Light theme displays correctly,"User is logged in with light theme","1. Toggle to light theme
+2. Navigate through all pages",Light theme applied consistently with appropriate contrast,All Roles,Medium,,,,
+UI-004,UI,Animations,Animations and transitions work,"User is logged in","1. Interact with various UI elements",Smooth animations on hover states, status changes, notifications,All Roles,Low,,,,
+UI-005,UI,Error States,Error messages display correctly,"User is logged in","1. Trigger various errors (validation, not found, etc.)",Error messages display with appropriate styling and information,All Roles,High,,,,
+DND-001,Drag & Drop,Reorder,Drag to reorder test cases,"User is logged in with permissions, Test suite with multiple cases","1. Navigate to test suite
+2. Drag a test case to new position",Test case order updated and persisted,Admin/Manager,Medium,,,,
+RT-001,Real-time,Updates,Real-time notification received,"Two users logged in, User A creates notification","1. User A triggers notification (e.g., fails a test)
+2. User B observes notification bell",User B receives real-time notification without refresh,All Roles,Medium,,,,
+RT-002,Real-time,Test Run,Real-time test run status update,"Two users on same test run page","1. User A updates test case status
+2. User B observes",User B sees status change in real-time,All Roles,High,,,,

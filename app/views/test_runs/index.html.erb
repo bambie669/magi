@@ -1,4 +1,139 @@
-<div>
-  <h1 class="font-bold text-4xl">TestRuns#index</h1>
-  <p>Find me in app/views/test_runs/index.html.erb</p>
+<% content_for :page_title, "OPERATIONS REGISTRY" %>
+
+<% content_for :breadcrumbs do %>
+  <% if @project %>
+    <%= link_to @project.name, project_path(@project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+    <span class="text-terminal-red mx-2">/</span>
+    <span class="text-terminal-gray">Operations</span>
+  <% end %>
+<% end %>
+
+<!-- Operations Control Bar -->
+<div class="mb-6 flex items-center justify-between px-4 py-3 bg-nerv-purple border border-terminal-red/30">
+  <div class="flex items-center space-x-6">
+    <!-- Status Filter -->
+    <div class="flex items-center space-x-3">
+      <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Filter:</span>
+      <select class="input-nerv px-3 py-1.5 text-xs rounded">
+        <option value="">All Status</option>
+        <option value="in_progress">Active</option>
+        <option value="completed">Complete</option>
+      </select>
+    </div>
+  </div>
+
+  <% if @project && policy(TestRun).create? %>
+    <%= link_to new_project_test_run_path(@project), class: "btn-nerv-primary flex items-center space-x-2" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+      </svg>
+      <span>INITIALIZE OPERATION</span>
+    <% end %>
+  <% end %>
 </div>
+
+<% if @pagy.count > 0 %>
+  <!-- Operations Table -->
+  <div class="nerv-panel">
+    <div class="nerv-panel-header flex items-center justify-between">
+      <span>Active Operations</span>
+      <span class="text-[10px] font-mono text-terminal-cyan"><%= @pagy.count %> Records</span>
+    </div>
+
+    <!-- Keyboard hint -->
+    <div class="px-4 py-2 border-b border-terminal-red/10 bg-nerv-black/20">
+      <span class="text-[9px] font-mono text-terminal-gray uppercase tracking-wider">Keyboard: <kbd class="keyboard-hint">J</kbd> down <kbd class="keyboard-hint">K</kbd> up <kbd class="keyboard-hint">Enter</kbd> open</span>
+    </div>
+    <table class="table-nerv" data-controller="keyboard-nav">
+      <thead>
+        <tr>
+          <th>Designation</th>
+          <th>Execution Progress</th>
+          <th>System Status</th>
+          <th>Timestamp</th>
+          <th class="text-right">Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @test_runs.each do |run| %>
+          <% has_failures = run.failed_cases > 0 %>
+          <tr class="<%= has_failures ? 'border-l-2 border-terminal-red' : '' %>" data-keyboard-nav-target="item">
+            <td>
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 border <%= has_failures ? 'border-terminal-red/50 bg-terminal-red/10' : 'border-terminal-cyan/30 bg-terminal-cyan/10' %> flex items-center justify-center">
+                  <svg class="w-5 h-5 <%= has_failures ? 'text-terminal-red' : 'text-terminal-cyan' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <%= link_to run.name, test_run_path(run), class: "text-sm font-mono text-terminal-white hover:text-terminal-cyan transition-colors" %>
+                  <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider"><%= run.project.name %></p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="flex items-center space-x-3">
+                <div class="flex-1 w-32 progress-nerv">
+                  <div class="progress-nerv-fill <%= has_failures ? 'critical' : '' %>" style="width: <%= run.completion_percentage %>%"></div>
+                </div>
+                <span class="text-sm font-mono <%= run.completion_percentage == 100 ? 'text-terminal-green' : 'text-terminal-cyan' %>"><%= run.completion_percentage %>%</span>
+              </div>
+            </td>
+            <td>
+              <div class="flex items-center space-x-2">
+                <span class="status-nominal px-2 py-1 text-[10px] font-mono uppercase">
+                  <%= run.passed_cases %> Nominal
+                </span>
+                <% if run.failed_cases > 0 %>
+                  <span class="status-breach px-2 py-1 text-[10px] font-mono uppercase">
+                    <%= run.failed_cases %> Breach
+                  </span>
+                <% end %>
+                <% if run.blocked_cases > 0 %>
+                  <span class="status-caution px-2 py-1 text-[10px] font-mono uppercase">
+                    <%= run.blocked_cases %> Blocked
+                  </span>
+                <% end %>
+              </div>
+            </td>
+            <td>
+              <div class="text-xs font-mono text-terminal-gray">
+                <div><%= run.created_at.strftime('%Y.%m.%d') %></div>
+                <div class="text-[10px] text-terminal-gray/60 uppercase">by <%= run.user.display_name %></div>
+              </div>
+            </td>
+            <td class="text-right">
+              <%= link_to test_run_path(run), class: "inline-flex items-center justify-center w-8 h-8 border border-terminal-cyan/30 text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors" do %>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= render 'shared/pagination', pagy: @pagy %>
+  </div>
+<% else %>
+  <!-- Empty State -->
+  <div class="nerv-panel p-12 text-center">
+    <div class="w-20 h-20 mx-auto mb-6 border border-terminal-cyan/30 flex items-center justify-center">
+      <svg class="w-10 h-10 text-terminal-cyan/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+    </div>
+    <h3 class="text-lg font-mono text-terminal-white uppercase tracking-wider mb-2">No Operations Logged</h3>
+    <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mb-6">Initialize an operation to begin protocol execution</p>
+    <% if @project && policy(TestRun).create? %>
+      <%= link_to new_project_test_run_path(@project), class: "btn-nerv-primary inline-flex items-center space-x-2" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+        </svg>
+        <span>INITIALIZE OPERATION</span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

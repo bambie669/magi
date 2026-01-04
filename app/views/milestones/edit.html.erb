@@ -1,3 +1,11 @@
-<h1 class="text-2xl font-bold mb-6">Editing Milestone: <%= @milestone.name %></h1>
+<% content_for :page_title, "MODIFY DEADLINE" %>
 
-<%= render 'form', milestone: @milestone %>
+<% content_for :breadcrumbs do %>
+  <%= link_to @milestone.project.name, project_path(@milestone.project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+  <span class="text-terminal-red mx-2">/</span>
+  <span class="text-terminal-gray">Modify Deadline</span>
+<% end %>
+
+<div class="max-w-4xl mx-auto">
+  <%= render 'form', milestone: @milestone %>
+</div>

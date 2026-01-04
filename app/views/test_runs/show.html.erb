@@ -1,54 +1,263 @@
-<% @page_title = "Test Run: #{@test_run.name}" %>
+<% content_for :page_title, "OPERATION: #{@test_run.name.upcase}" %>
 
-<div class="flex justify-between items-center mb-6">
-  <h1 class="text-3xl font-bold"><%= @page_title %></h1>
-  <div>
-    <%= link_to 'Back to Project', project_path(@test_run.project), class: "text-blue-600 hover:underline mr-4" %>
-    <% if policy(@test_run).edit? %>
-      <%= link_to 'Edit Run Details', edit_test_run_path(@test_run), class: "bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded text-sm mr-2" %>
-    <% end %>
-    <% if policy(@test_run).destroy? %>
-      <%= button_to 'Delete Run', @test_run, method: :delete, data: { confirm: 'Are you sure you want to delete this entire test run and its results?' }, class: "bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded text-sm" %>
-    <% end %>
-  </div>
-</div>
+<% content_for :breadcrumbs do %>
+  <%= link_to @test_run.project.name, project_path(@test_run.project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+  <span class="text-terminal-red mx-2">/</span>
+  <%= link_to "Operations", project_test_runs_path(@test_run.project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+  <span class="text-terminal-red mx-2">/</span>
+  <span class="text-terminal-gray"><%= @test_run.name %></span>
+<% end %>
 
-<div class="bg-white p-6 rounded-lg shadow mb-6">
-  <p><strong>Project:</strong> <%= link_to @test_run.project.name, project_path(@test_run.project) %></p>
-  <p><strong>Created by:</strong> <%= @test_run.user.display_name %></p>
-  <p><strong>Created at:</strong> <%= @test_run.created_at.strftime('%Y-%m-%d %H:%M') %></p>
-  <div class="mt-4">
-     <h3 class="font-semibold">Run Progress: <%= @test_run.completion_percentage %>%</h3>
-     <div class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700 mt-1">
-        <div class="bg-blue-600 h-4 rounded-full" style="width: <%= @test_run.completion_percentage %>%"></div>
+<% has_failures = @test_run.failed_cases > 0 %>
+<% integrity = @test_run.completion_percentage %>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6"
+     data-controller="test-run-updates"
+     data-test-run-updates-test-run-id-value="<%= @test_run.id %>">
+  <!-- Main Content -->
+  <div class="lg:col-span-2 space-y-6">
+    <!-- Operation Status Panel -->
+    <div class="nerv-panel">
+      <div class="nerv-panel-header flex items-center justify-between">
+        <span>Operation Status</span>
+        <% if has_failures %>
+          <span class="text-[10px] font-mono text-terminal-red uppercase tracking-wider animate-pulse">Critical Breach Detected</span>
+        <% else %>
+          <span class="text-[10px] font-mono text-terminal-green uppercase tracking-wider">Systems Nominal</span>
+        <% end %>
+      </div>
+      <div class="p-6">
+        <!-- Progress Display -->
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-widest">Execution Progress</span>
+          <span class="text-3xl font-mono font-bold <%= integrity == 100 ? 'text-terminal-green text-glow-green' : 'text-terminal-cyan text-glow-cyan' %>"
+                  data-test-run-updates-target="progressText"><%= integrity %>%</span>
+        </div>
+        <div class="progress-nerv h-3 mb-6">
+          <div class="progress-nerv-fill h-3 <%= has_failures ? 'critical' : '' %>"
+               style="width: <%= integrity %>%"
+               data-test-run-updates-target="progressBar"></div>
+        </div>
+
+        <!-- Status Grid -->
+        <div class="grid grid-cols-4 gap-4">
+          <div class="text-center p-4 bg-terminal-green/10 border border-terminal-green/30">
+            <p class="text-2xl font-mono font-bold text-terminal-green text-glow-green"
+               data-test-run-updates-target="passedCount"><%= @test_run.passed_cases %></p>
+            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Nominal</p>
+          </div>
+          <div class="text-center p-4 bg-terminal-red/10 border border-terminal-red/30 <%= has_failures ? 'animate-pulse' : '' %>">
+            <p class="text-2xl font-mono font-bold text-terminal-red text-glow-red"
+               data-test-run-updates-target="failedCount"><%= @test_run.failed_cases %></p>
+            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Breach</p>
+          </div>
+          <div class="text-center p-4 bg-terminal-amber/10 border border-terminal-amber/30">
+            <p class="text-2xl font-mono font-bold text-terminal-amber text-glow-amber"
+               data-test-run-updates-target="blockedCount"><%= @test_run.blocked_cases %></p>
+            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Pattern Blue</p>
+          </div>
+          <div class="text-center p-4 bg-nerv-purple-mid border border-terminal-gray-dark/50">
+            <p class="text-2xl font-mono font-bold text-terminal-gray"
+               data-test-run-updates-target="untestedCount"><%= @test_run.untested_cases %></p>
+            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Standby</p>
+          </div>
+        </div>
+      </div>
     </div>
-     <div class="flex justify-around text-sm mt-2">
-        <span><span class="font-bold text-green-600"><%= @test_run.passed_cases %></span> Passed</span>
-        <span><span class="font-bold text-red-600"><%= @test_run.failed_cases %></span> Failed</span>
-        <span><span class="font-bold text-yellow-600"><%= @test_run.blocked_cases %></span> Blocked</span>
-        <span><span class="font-bold text-gray-500"><%= @test_run.untested_cases %></span> Untested</span>
-     </div>
+
+    <!-- Protocol Execution Console -->
+    <div class="nerv-panel">
+      <div class="nerv-panel-header flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <span>PROTOCOL EXECUTION</span>
+          <div class="h-3 w-px bg-terminal-red/30"></div>
+          <span class="text-[10px] font-mono text-terminal-cyan"><%= @test_run_cases.count %> Protocols</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button class="px-2 py-1 text-[10px] font-mono text-terminal-cyan border border-terminal-cyan/30 hover:bg-terminal-cyan/10 transition-colors">All</button>
+          <button class="px-2 py-1 text-[10px] font-mono text-terminal-gray hover:text-terminal-white transition-colors">Breach</button>
+          <button class="px-2 py-1 text-[10px] font-mono text-terminal-gray hover:text-terminal-white transition-colors">Standby</button>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="px-4 py-3 border-b border-terminal-red/20 bg-nerv-black/50 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Filter:</span>
+          <select class="input-nerv px-3 py-1 text-xs rounded">
+            <option value="">All Status</option>
+            <option value="passed">Nominal</option>
+            <option value="failed">Breach</option>
+            <option value="blocked">Pattern Blue</option>
+            <option value="untested">Standby</option>
+          </select>
+        </div>
+        <span class="text-[10px] font-mono text-terminal-gray">
+          <span class="text-terminal-cyan"><%= @test_run_cases.count %></span> protocols loaded
+        </span>
+      </div>
+
+      <!-- Protocol Table -->
+      <div class="overflow-x-auto">
+        <table class="table-nerv">
+          <thead>
+            <tr>
+              <th class="w-8"></th>
+              <th>Protocol Designation</th>
+              <th>Status</th>
+              <th>Operator</th>
+              <th class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @test_run_cases.each do |trc| %>
+              <%= render 'test_run_case_row', trc: trc %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="space-y-6">
+    <!-- MAGI Consensus Panel -->
+    <div class="nerv-panel">
+      <div class="nerv-panel-header">MAGI CONSENSUS</div>
+      <div class="p-4 space-y-3">
+        <%
+          # Simulate MAGI consensus based on pass rate
+          pass_rate = @test_run.passed_cases.to_f / [@test_run_cases.count, 1].max
+          casper_pass = pass_rate > 0.6
+          balthasar_pass = pass_rate > 0.5
+          melchior_pass = pass_rate > 0.7
+        %>
+        <div class="flex items-center justify-between p-3 magi-casper rounded">
+          <div class="flex items-center space-x-3">
+            <span class="w-2 h-2 bg-magi-casper rounded-full <%= casper_pass ? 'animate-pulse' : '' %>"></span>
+            <span class="text-xs font-mono uppercase tracking-wider">CASPER</span>
+          </div>
+          <span class="text-[10px] font-mono uppercase <%= casper_pass ? 'text-terminal-green' : 'text-terminal-red' %>">
+            <%= casper_pass ? 'Approve' : 'Reject' %>
+          </span>
+        </div>
+        <div class="flex items-center justify-between p-3 magi-balthasar rounded">
+          <div class="flex items-center space-x-3">
+            <span class="w-2 h-2 bg-magi-balthasar rounded-full <%= balthasar_pass ? 'animate-pulse' : '' %>"></span>
+            <span class="text-xs font-mono uppercase tracking-wider">BALTHASAR</span>
+          </div>
+          <span class="text-[10px] font-mono uppercase <%= balthasar_pass ? 'text-terminal-green' : 'text-terminal-red' %>">
+            <%= balthasar_pass ? 'Approve' : 'Reject' %>
+          </span>
+        </div>
+        <div class="flex items-center justify-between p-3 magi-melchior rounded">
+          <div class="flex items-center space-x-3">
+            <span class="w-2 h-2 bg-magi-melchior rounded-full <%= melchior_pass ? 'animate-pulse' : '' %>"></span>
+            <span class="text-xs font-mono uppercase tracking-wider">MELCHIOR</span>
+          </div>
+          <span class="text-[10px] font-mono uppercase <%= melchior_pass ? 'text-terminal-green' : 'text-terminal-red' %>">
+            <%= melchior_pass ? 'Approve' : 'Reject' %>
+          </span>
+        </div>
+
+        <!-- Consensus Result -->
+        <div class="mt-4 pt-4 border-t border-terminal-red/20 text-center">
+          <%
+            approvals = [casper_pass, balthasar_pass, melchior_pass].count(true)
+            consensus = approvals >= 2
+          %>
+          <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-widest mb-2">MAGI Verdict</p>
+          <p class="text-lg font-mono font-bold <%= consensus ? 'text-terminal-green text-glow-green' : 'text-terminal-red text-glow-red animate-pulse' %> uppercase">
+            <%= consensus ? 'Approved' : 'Rejected' %>
+          </p>
+          <p class="text-[10px] font-mono text-terminal-gray mt-1"><%= approvals %>/3 Systems Agree</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Operation Details -->
+    <div class="nerv-panel">
+      <div class="nerv-panel-header">MISSION CONTEXT</div>
+      <div class="p-4 space-y-4">
+        <dl class="space-y-3 text-sm font-mono">
+          <div class="flex justify-between">
+            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">Mission</dt>
+            <dd class="text-terminal-cyan">
+              <%= link_to @test_run.project.name, project_path(@test_run.project), class: "hover:text-terminal-cyan/80" %>
+            </dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">OPERATION COMMANDER</dt>
+            <dd class="text-terminal-white"><%= @test_run.user.display_name %></dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">Initialized</dt>
+            <dd class="text-terminal-white"><%= @test_run.created_at.strftime('%Y.%m.%d %H:%M') %></dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">Operation ID</dt>
+            <dd class="text-terminal-gray">#<%= @test_run.id %></dd>
+          </div>
+        </dl>
+
+        <!-- Export Buttons -->
+        <div class="pt-4 border-t border-terminal-red/20 space-y-2">
+          <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-widest mb-2">Export Report</p>
+          <div class="flex space-x-2">
+            <%= link_to export_csv_test_run_path(@test_run), class: "flex-1 flex items-center justify-center px-3 py-2 bg-nerv-purple-mid border border-terminal-cyan/30 text-terminal-cyan text-xs font-mono uppercase tracking-wider hover:bg-terminal-cyan/10 transition-colors" do %>
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              CSV
+            <% end %>
+            <%= link_to export_pdf_test_run_path(@test_run), class: "flex-1 flex items-center justify-center px-3 py-2 bg-nerv-purple-mid border border-terminal-amber/30 text-terminal-amber text-xs font-mono uppercase tracking-wider hover:bg-terminal-amber/10 transition-colors" do %>
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+              </svg>
+              PDF
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-4 border-t border-terminal-red/20 space-y-2">
+          <% if policy(@test_run).edit? %>
+            <%= link_to edit_test_run_path(@test_run), class: "flex items-center justify-center w-full px-4 py-2 bg-nerv-purple-mid border border-terminal-cyan/30 text-terminal-cyan text-xs font-mono uppercase tracking-wider hover:bg-terminal-cyan/10 transition-colors" do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+              </svg>
+              Modify Operation
+            <% end %>
+          <% end %>
+          <% if policy(@test_run).destroy? %>
+            <%= button_to test_run_path(@test_run), method: :delete, data: { confirm: 'TERMINATE OPERATION? This action cannot be undone.' }, class: "flex items-center justify-center w-full px-4 py-2 bg-terminal-red/10 border border-terminal-red/50 text-terminal-red text-xs font-mono uppercase tracking-wider hover:bg-terminal-red/20 transition-colors" do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Terminate Operation
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Navigation -->
+    <div class="nerv-panel">
+      <div class="nerv-panel-header">Navigation</div>
+      <div class="p-4 space-y-1">
+        <%= link_to project_path(@test_run.project), class: "flex items-center px-3 py-2 text-terminal-white/70 hover:text-terminal-cyan hover:bg-nerv-purple-mid transition-colors" do %>
+          <svg class="w-4 h-4 mr-3 text-terminal-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+          </svg>
+          <span class="text-xs font-mono uppercase tracking-wider">View Mission</span>
+        <% end %>
+        <%= link_to project_test_runs_path(@test_run.project), class: "flex items-center px-3 py-2 text-terminal-white/70 hover:text-terminal-cyan hover:bg-nerv-purple-mid transition-colors" do %>
+          <svg class="w-4 h-4 mr-3 text-terminal-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+          <span class="text-xs font-mono uppercase tracking-wider">All Operations</span>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
-
-<h2 class="text-2xl font-bold mb-4">Test Cases (<%= @test_run_cases.count %>)</h2>
-
-<div class="bg-white rounded-lg shadow overflow-hidden">
-  <table class="min-w-full divide-y divide-gray-200">
-    <thead class="bg-gray-50">
-      <tr>
-        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Case Title</th>
-        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Executor</th>
-        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-      </tr>
-    </thead>
-    <tbody class="bg-white divide-y divide-gray-200">
-      <% @test_run_cases.each do |trc| %>
-        <%# Folosim un partial pentru fiecare rând pentru a fi mai curat %>
-        <%= render 'test_run_case_row', trc: trc %>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-

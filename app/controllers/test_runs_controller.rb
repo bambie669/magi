@@ -1,11 +1,17 @@
 class TestRunsController < ApplicationController
-  before_action :set_project, only: [:index, :new, :create] # Contextul proiectului
-  before_action :set_test_run, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:new, :create] # Contextul proiectului
+  before_action :set_project_optional, only: [:index]
+  before_action :set_test_run, only: [:show, :edit, :update, :destroy, :export_csv, :export_pdf]
 
-  # GET /projects/:project_id/test_runs
+  # GET /test_runs or GET /projects/:project_id/test_runs
   def index
-    @test_runs = policy_scope(@project.test_runs).order(created_at: :desc)
-    authorize TestRun # Sau authorize @project, :index_test_runs? dacă ai acțiune custom în policy
+    if @project
+      test_runs = policy_scope(@project.test_runs).order(created_at: :desc)
+    else
+      test_runs = policy_scope(TestRun).order(created_at: :desc)
+    end
+    @pagy, @test_runs = pagy(test_runs, items: 15)
+    authorize TestRun
   end
 
   # GET /test_runs/:id
@@ -20,7 +26,7 @@ class TestRunsController < ApplicationController
     @test_run = @project.test_runs.new
     authorize @test_run
     # Load all test cases for the project to display in the form
-    @available_test_cases = @project.test_cases.order(:name)
+    @available_test_cases = @project.all_project_test_cases.sort_by(&:title)
   end
 
   # POST /projects/:project_id/test_runs
@@ -36,7 +42,7 @@ class TestRunsController < ApplicationController
     if selected_test_case_ids.empty?
        flash.now[:alert] = "Please select at least one Test Case to include in the run."
        # Add this line to ensure @available_test_cases is set for the re-rendered form
-       @available_test_cases = @project.test_cases.order(:title)
+       @available_test_cases = @project.all_project_test_cases.sort_by(&:title)
        render :new, status: :unprocessable_entity
        return
     end
@@ -45,7 +51,7 @@ class TestRunsController < ApplicationController
        # Adaugă TestRunCases după salvarea TestRun-ului
        selected_test_case_ids = params.dig(:test_run, :test_case_ids)&.reject(&:blank?) || []
        selected_test_case_ids.each do |test_case_id|
-        if @project.test_case_ids.include?(test_case_id.to_i)
+        if @project.all_project_test_cases.map(&:id).include?(test_case_id.to_i)
           @test_run.test_run_cases.create(test_case_id: test_case_id, status: :untested)
         end
       end
@@ -55,7 +61,7 @@ class TestRunsController < ApplicationController
     else
       flash.now[:alert] = @test_run.errors.full_messages.join(', ')
       # Ensure this is also set in the other failure path, using :title
-      @available_test_cases = @project.test_cases.order(:title)
+      @available_test_cases = @project.all_project_test_cases.sort_by(&:title)
 
       render :new, status: :unprocessable_entity
     end
@@ -83,10 +89,35 @@ class TestRunsController < ApplicationController
     redirect_to project_test_runs_url(@test_run.project), notice: 'Test run was successfully destroyed.', status: :see_other
   end
 
+  # GET /test_runs/:id/export_csv
+  def export_csv
+    authorize @test_run
+    csv_data = TestRunCsvExporter.new(@test_run).to_csv
+
+    send_data csv_data,
+      filename: "#{@test_run.name.parameterize}-results-#{Date.current}.csv",
+      type: 'text/csv; charset=utf-8'
+  end
+
+  # GET /test_runs/:id/export_pdf
+  def export_pdf
+    authorize @test_run
+    pdf_data = TestRunPdfExporter.new(@test_run).to_pdf
+
+    send_data pdf_data,
+      filename: "#{@test_run.name.parameterize}-report-#{Date.current}.pdf",
+      type: 'application/pdf',
+      disposition: 'attachment'
+  end
+
   private
 
   def set_project
     @project = Project.find(params[:project_id])
+  end
+
+  def set_project_optional
+    @project = Project.find(params[:project_id]) if params[:project_id].present?
   end
 
   def set_test_run

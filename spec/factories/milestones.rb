@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :milestone do
-    name { "MyString" }
-    due_date { "2025-05-01" }
-    project { nil }
+    sequence(:name) { |n| "Milestone #{n}" }
+    due_date { 1.month.from_now.to_date }
+    association :project
   end
 end

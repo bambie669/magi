@@ -2,7 +2,7 @@ class MilestonePolicy < ApplicationPolicy
   class Scope < Scope
     # Definește cine poate vedea ce milestones
     def resolve
-      if user.admin? || user.manager? || user.tester?
+      if user&.admin? || user&.manager? || user&.tester?
         scope.all # Adminii, managerii și testerii pot vedea toate milestones (poate fi filtrat pe proiect ulterior)
       else
         scope.none # Alți utilizatori nu văd nimic

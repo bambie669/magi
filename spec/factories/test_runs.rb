@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :test_run do
-    name { "MyString" }
-    project { nil }
-    user { nil }
+    sequence(:name) { |n| "Test Run #{n}" }
+    project
+    user
   end
 end

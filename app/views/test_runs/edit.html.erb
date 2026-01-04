@@ -1,4 +1,49 @@
-<div>
-  <h1 class="font-bold text-4xl">TestRuns#edit</h1>
-  <p>Find me in app/views/test_runs/edit.html.erb</p>
+<% content_for :page_title, "MODIFY OPERATION" %>
+
+<% content_for :breadcrumbs do %>
+  <%= link_to @test_run.project.name, project_path(@test_run.project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+  <span class="text-terminal-red mx-2">/</span>
+  <%= link_to "Operations", project_test_runs_path(@test_run.project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+  <span class="text-terminal-red mx-2">/</span>
+  <%= link_to @test_run.name, test_run_path(@test_run), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+  <span class="text-terminal-red mx-2">/</span>
+  <span class="text-terminal-gray">Modify</span>
+<% end %>
+
+<div class="max-w-4xl mx-auto">
+  <div class="nerv-panel">
+    <div class="nerv-panel-header flex items-center justify-between">
+      <span>MODIFY OPERATION</span>
+      <span class="text-[10px] font-mono text-terminal-cyan">ID: #<%= @test_run.id %></span>
+    </div>
+
+    <div class="p-6">
+      <%= form_with(model: @test_run, class: "space-y-6") do |form| %>
+        <% if @test_run.errors.any? %>
+          <div class="p-4 bg-terminal-red/10 border border-terminal-red/50 text-terminal-red font-mono text-sm animate-pulse" role="alert">
+            <div class="flex items-center space-x-2 mb-2">
+              <span class="w-2 h-2 bg-terminal-red rounded-full"></span>
+              <span class="uppercase tracking-wider text-xs">System Error:</span>
+            </div>
+            <strong class="font-bold"><%= pluralize(@test_run.errors.count, "error") %> prohibited this operation from being updated:</strong>
+            <ul class="mt-2 list-disc list-inside text-sm">
+              <% @test_run.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div>
+          <%= form.label :name, "Operation Designation", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
+          <%= form.text_field :name, class: "input-nerv w-full px-4 py-3 text-sm", placeholder: "Enter operation designation..." %>
+        </div>
+
+        <div class="flex justify-end space-x-3 pt-6 border-t border-terminal-red/20">
+          <%= link_to 'Abort', test_run_path(@test_run), class: "px-4 py-2 bg-nerv-purple-mid border border-terminal-gray-dark text-terminal-gray text-xs font-mono uppercase tracking-wider hover:text-terminal-white transition-colors" %>
+          <%= form.submit "Update Operation", class: "btn-nerv-primary cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>

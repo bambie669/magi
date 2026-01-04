@@ -1,8 +1,15 @@
-<h1 class="text-2xl font-bold mb-6">Editing Test Case: <%= @test_case.title %></h1>
+<% content_for :page_title, "MODIFY PROTOCOL" %>
 
-<%= render 'form', test_case: @test_case %>
+<% content_for :breadcrumbs do %>
+  <%= link_to @test_case.test_suite.project.name, project_path(@test_case.test_suite.project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+  <span class="text-terminal-red mx-2">/</span>
+  <%= link_to @test_case.test_suite.name, test_suite_path(@test_case.test_suite), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+  <span class="text-terminal-red mx-2">/</span>
+  <%= link_to @test_case.title.truncate(30), test_case_path(@test_case), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
+  <span class="text-terminal-red mx-2">/</span>
+  <span class="text-terminal-gray">Modify</span>
+<% end %>
 
-<div class="mt-4">
-  <%= link_to 'Show Test Case', @test_case, class: "text-blue-600 hover:underline mr-4" %> |
-  <%= link_to 'Back to Test Suite', test_suite_path(@test_case.test_suite), class: "text-blue-600 hover:underline ml-4" %>
+<div class="max-w-4xl mx-auto">
+  <%= render 'form', test_case: @test_case %>
 </div>

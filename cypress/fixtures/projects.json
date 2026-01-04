@@ -1,0 +1,10 @@
+{
+  "sampleProject": {
+    "name": "EVA-01 Activation Protocol",
+    "description": "Critical testing protocol for Unit-01 activation sequence"
+  },
+  "testProject": {
+    "name": "MAGI System Integration",
+    "description": "Integration tests for MAGI supercomputer systems"
+  }
+}
