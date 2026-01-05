@@ -103,12 +103,14 @@ class TestSuitesController < ApplicationController
       result = TestCasesCsvImporter.new(@test_suite, params[:csv_file]).import
 
       if result[:success]
-        redirect_to test_suite_path(@test_suite),
-          notice: "Successfully imported #{result[:imported]} test cases."
+        message = "Successfully imported #{result[:imported]} test cases."
+        message += " #{result[:duplicates]} duplicate(s) skipped." if result[:duplicates] > 0
+        redirect_to test_suite_path(@test_suite), notice: message
       else
-        flash.now[:alert] = "Import completed with #{result[:errors].size} error(s). #{result[:imported]} test cases imported."
+        flash.now[:alert] = "Import completed with #{result[:errors].size} error(s). #{result[:imported]} test cases imported. #{result[:duplicates]} duplicate(s) skipped."
         @errors = result[:errors]
         @imported_count = result[:imported]
+        @duplicate_count = result[:duplicates]
         render :import_csv, status: :unprocessable_entity
       end
     end

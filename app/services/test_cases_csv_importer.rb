@@ -1,7 +1,7 @@
 require 'csv'
 
 class TestCasesCsvImporter
-  attr_reader :errors, :imported_count, :skipped_count
+  attr_reader :errors, :imported_count, :skipped_count, :duplicate_count
 
   # Column mappings for different CSV formats
   COLUMN_MAPPINGS = {
@@ -31,6 +31,7 @@ class TestCasesCsvImporter
     @errors = []
     @imported_count = 0
     @skipped_count = 0
+    @duplicate_count = 0
     @scope_cache = {}
     @row_number = 0
     @current_scope_path = nil
@@ -73,6 +74,7 @@ class TestCasesCsvImporter
       success: @errors.empty?,
       imported: @imported_count,
       skipped: @skipped_count,
+      duplicates: @duplicate_count,
       errors: @errors
     }
   end
@@ -166,6 +168,12 @@ class TestCasesCsvImporter
       return
     end
 
+    # Check for duplicates
+    if duplicate_exists?(scope, title, cypress_id)
+      @duplicate_count += 1
+      return
+    end
+
     test_case = scope.test_cases.new(
       title: title,
       preconditions: preconditions,
@@ -179,6 +187,16 @@ class TestCasesCsvImporter
     else
       @errors << "Row #{@row_number}: #{test_case.errors.full_messages.join(', ')}"
     end
+  end
+
+  def duplicate_exists?(scope, title, cypress_id)
+    # Check by cypress_id first (if present) - search across entire test suite
+    if cypress_id.present?
+      return true if @test_suite.test_cases.exists?(cypress_id: cypress_id)
+    end
+
+    # Check by title within the same scope
+    scope.test_cases.exists?(title: title)
   end
 
   def find_or_create_scope(path)

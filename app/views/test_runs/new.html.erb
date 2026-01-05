@@ -38,7 +38,14 @@
         </div>
 
         <div>
-          <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-3">Select Protocols to Execute:</p>
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-wider">Select Protocols to Execute:</p>
+            <% if @available_test_cases.any? %>
+              <button type="button" id="select-all-btn" onclick="toggleSelectAll()" class="px-3 py-1 text-[10px] font-mono uppercase tracking-wider border border-terminal-cyan/50 text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors">
+                Select All
+              </button>
+            <% end %>
+          </div>
           <div class="max-h-80 overflow-y-auto border border-terminal-cyan/30 bg-nerv-black/50 p-4 space-y-2">
             <% if @available_test_cases.any? %>
               <% @available_test_cases.each do |test_case| %>
@@ -64,3 +71,14 @@
     </div>
   </div>
 </div>
+
+<script>
+  function toggleSelectAll() {
+    const checkboxes = document.querySelectorAll('input[name="test_run[test_case_ids][]"]');
+    const btn = document.getElementById('select-all-btn');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+    checkboxes.forEach(cb => cb.checked = !allChecked);
+    btn.textContent = allChecked ? 'Select All' : 'Deselect All';
+  }
+</script>
