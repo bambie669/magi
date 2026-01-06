@@ -58,6 +58,40 @@
         </div>
       <% end %>
 
+      <% unless test_case.persisted? %>
+        <div data-controller="scope-selector">
+          <%= form.label :test_scope_id, "Test Scope", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
+          <% scope_options = @available_test_scopes.present? ? @available_test_scopes.map { |s|
+              depth = 0
+              parent = s.parent
+              while parent
+                depth += 1
+                parent = parent.parent
+              end
+              ["#{'— ' * depth}#{s.name}", s.id]
+            } : []
+          %>
+          <select name="test_case[test_scope_id]" id="test_case_test_scope_id"
+                  class="input-nerv w-full px-4 py-3 text-sm"
+                  data-scope-selector-target="select"
+                  data-action="change->scope-selector#toggle">
+            <option value="">Select a scope...</option>
+            <% scope_options.each do |label, value| %>
+              <option value="<%= value %>" <%= 'selected' if test_case.test_scope_id == value %>><%= label %></option>
+            <% end %>
+            <option value="new_scope">+ Create new scope...</option>
+          </select>
+
+          <div class="mt-2 hidden" data-scope-selector-target="newScopeInput">
+            <input type="text" name="test_case[new_scope_name]" placeholder="Enter new scope name..."
+                   class="input-nerv w-full px-4 py-3 text-sm"
+                   data-scope-selector-target="scopeName">
+            <p class="mt-1 text-[10px] font-mono text-terminal-gray">New scope will be created at root level</p>
+          </div>
+          <p class="mt-1 text-[10px] font-mono text-terminal-gray" data-scope-selector-target="hint">Select or create a folder/scope for this test case</p>
+        </div>
+      <% end %>
+
       <div>
         <%= form.label :title, "Protocol Designation", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
         <%= form.text_field :title, class: "input-nerv w-full px-4 py-3 text-sm", placeholder: "Enter protocol designation...", data: { template_selector_target: "title" } %>

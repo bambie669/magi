@@ -389,6 +389,89 @@ describe('Test Cases (Protocols)', () => {
   })
 
   // ============================================
+  // TEST SCOPE SELECTOR
+  // ============================================
+  describe('Test Scope Selector', () => {
+    beforeEach(() => {
+      cy.loginAsAdmin()
+    })
+
+    it('TC-CASE-021: Scope selector is visible when creating test case', () => {
+      cy.visit('/projects')
+      cy.get('.nerv-panel a[href^="/projects/"]').first().click()
+
+      cy.get('body').then($body => {
+        if ($body.find('[href*="/test_suites/"]').length > 0) {
+          cy.get('[href*="/test_suites/"]').first().click()
+
+          cy.contains('Initialize Protocol').click()
+          cy.get('select[name="test_case[test_scope_id]"]').should('exist')
+        }
+      })
+    })
+
+    it('TC-CASE-022: Can create new scope inline', () => {
+      cy.visit('/projects')
+      cy.get('.nerv-panel a[href^="/projects/"]').first().click()
+
+      cy.get('body').then($body => {
+        if ($body.find('[href*="/test_suites/"]').length > 0) {
+          cy.get('[href*="/test_suites/"]').first().click()
+
+          cy.contains('Initialize Protocol').click()
+
+          // Select "Create new scope" option
+          cy.get('select[name="test_case[test_scope_id]"]').select('new_scope')
+
+          // Input for new scope name should appear
+          cy.get('input[name="test_case[new_scope_name]"]').should('be.visible')
+        }
+      })
+    })
+
+    it('TC-CASE-023: New scope name input shows when create option selected', () => {
+      cy.visit('/projects')
+      cy.get('.nerv-panel a[href^="/projects/"]').first().click()
+
+      cy.get('body').then($body => {
+        if ($body.find('[href*="/test_suites/"]').length > 0) {
+          cy.get('[href*="/test_suites/"]').first().click()
+
+          cy.contains('Initialize Protocol').click()
+          cy.get('select[name="test_case[test_scope_id]"]').select('new_scope')
+          cy.get('input[name="test_case[new_scope_name]"]')
+            .should('be.visible')
+            .type('New Test Scope')
+        }
+      })
+    })
+
+    it('TC-CASE-024: Can create test case with new scope', () => {
+      cy.visit('/projects')
+      cy.get('.nerv-panel a[href^="/projects/"]').first().click()
+
+      cy.get('body').then($body => {
+        if ($body.find('[href*="/test_suites/"]').length > 0) {
+          cy.get('[href*="/test_suites/"]').first().click()
+
+          const caseTitle = `New Scope Case ${Date.now()}`
+          const scopeName = `Scope ${Date.now()}`
+
+          cy.contains('Initialize Protocol').click()
+          cy.get('select[name="test_case[test_scope_id]"]').select('new_scope')
+          cy.get('input[name="test_case[new_scope_name]"]').type(scopeName)
+          cy.get('input[name="test_case[title]"]').type(caseTitle)
+          cy.get('textarea[name="test_case[steps]"]').type('Test steps')
+          cy.get('textarea[name="test_case[expected_result]"]').type('Expected result')
+          cy.get('input[type="submit"]').click()
+
+          cy.contains(caseTitle).should('be.visible')
+        }
+      })
+    })
+  })
+
+  // ============================================
   // AUTOMATION INTEGRATION
   // ============================================
   describe('Automation Integration', () => {

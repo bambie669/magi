@@ -27,29 +27,41 @@ class TestCasesController < ApplicationController
     # POST /test_suites/:test_suite_id/test_cases
     def create
       selected_test_scope_id = test_case_params[:test_scope_id]
+      new_scope_name = params[:test_case][:new_scope_name]&.strip
 
       if selected_test_scope_id.blank?
-        @test_case = TestCase.new(test_case_params.except(:test_scope_id)) # Build without scope_id for error display
+        @test_case = TestCase.new(test_case_params.except(:test_scope_id, :new_scope_name))
         @test_case.errors.add(:test_scope_id, "must be selected")
+      elsif selected_test_scope_id == "new_scope"
+        # Create a new scope with the provided name
+        if new_scope_name.blank?
+          @test_case = TestCase.new(test_case_params.except(:test_scope_id, :new_scope_name))
+          @test_case.errors.add(:base, "Please enter a name for the new scope")
+        else
+          @test_scope = @test_suite.root_test_scopes.find_or_create_by!(name: new_scope_name)
+          @test_case = @test_scope.test_cases.new(test_case_params.except(:test_scope_id, :new_scope_name))
+        end
+      elsif selected_test_scope_id == "new_default"
+        # Create a default scope if none exists
+        @test_scope = @test_suite.root_test_scopes.find_or_create_by!(name: "General")
+        @test_case = @test_scope.test_cases.new(test_case_params.except(:test_scope_id, :new_scope_name))
       else
-        # Găsește TestScope-ul și asigură-te că aparține suitei curente
+        # Find the TestScope and ensure it belongs to the current suite
         @test_scope = TestScope.find_by(id: selected_test_scope_id, test_suite_id: @test_suite.id)
 
         if @test_scope
-          @test_case = @test_scope.test_cases.new(test_case_params.except(:test_scope_id))
+          @test_case = @test_scope.test_cases.new(test_case_params.except(:test_scope_id, :new_scope_name))
         else
-          @test_case = TestCase.new(test_case_params.except(:test_scope_id)) # Build without scope_id for error display
+          @test_case = TestCase.new(test_case_params.except(:test_scope_id, :new_scope_name))
           @test_case.errors.add(:test_scope_id, "is invalid or does not belong to this test suite.")
         end
       end
 
-      authorize @test_case # Verifică politica pentru TestCase
+      authorize @test_case
 
-      # Verifică dacă @test_case a fost initializat corect și nu are erori de la căutarea scope-ului
       if @test_case.errors.empty? && @test_case.save
          redirect_to test_suite_path(@test_suite), notice: 'Test case was successfully created.'
       else
-        # Repopulează @available_test_scopes pentru re-afișarea formularului
         @available_test_scopes = @test_suite.root_test_scopes.flat_map do |root_scope|
           [root_scope] + root_scope.all_descendant_scopes
         end

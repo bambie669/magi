@@ -37,12 +37,12 @@
     <div class="p-6">
       <%= form_with url: process_import_csv_test_suite_path(@test_suite), method: :post, local: true, multipart: true, class: "space-y-6" do |form| %>
         <div>
-          <label class="block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2">Select CSV File</label>
+          <label class="block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2">Select CSV Files</label>
           <div class="relative">
-            <input type="file" name="csv_file" accept=".csv" required
+            <input type="file" name="csv_files[]" accept=".csv" required multiple
               class="input-nerv w-full px-4 py-3 text-sm file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-mono file:uppercase file:tracking-wider file:bg-terminal-cyan/20 file:text-terminal-cyan hover:file:bg-terminal-cyan/30 file:cursor-pointer">
           </div>
-          <p class="mt-2 text-[10px] font-mono text-terminal-gray">Upload CSV file containing protocol data</p>
+          <p class="mt-2 text-[10px] font-mono text-terminal-gray">Upload one or more CSV files containing protocol data (hold Ctrl/Cmd to select multiple)</p>
         </div>
 
         <div class="flex justify-end space-x-3 pt-6 border-t border-terminal-red/20">

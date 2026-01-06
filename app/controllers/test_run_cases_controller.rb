@@ -29,7 +29,7 @@ class TestRunCasesController < ApplicationController
       respond_to do |format|
         format.html { redirect_to test_run_path(test_run), notice: 'Test case result updated.' }
         # format.turbo_stream # Pentru update-uri dinamice cu Turbo
-        format.json { render json: { status: 'success', test_run_case: @test_run_case.as_json(include: :executor) }, status: :ok }
+        format.json { render json: { status: 'success', test_run_case: @test_run_case.as_json(include: :user) }, status: :ok }
       end
     else
        respond_to do |format|

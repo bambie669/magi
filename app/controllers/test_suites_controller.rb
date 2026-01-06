@@ -95,22 +95,37 @@ class TestSuitesController < ApplicationController
     def process_import_csv
       authorize @test_suite
 
-      unless params[:csv_file].present?
-        redirect_to import_csv_test_suite_path(@test_suite), alert: 'Please select a CSV file.'
+      csv_files = params[:csv_files].presence || [params[:csv_file]].compact
+
+      if csv_files.empty?
+        redirect_to import_csv_test_suite_path(@test_suite), alert: 'Please select at least one CSV file.'
         return
       end
 
-      result = TestCasesCsvImporter.new(@test_suite, params[:csv_file]).import
+      total_imported = 0
+      total_duplicates = 0
+      all_errors = []
 
-      if result[:success]
-        message = "Successfully imported #{result[:imported]} test cases."
-        message += " #{result[:duplicates]} duplicate(s) skipped." if result[:duplicates] > 0
+      csv_files.each do |csv_file|
+        result = TestCasesCsvImporter.new(@test_suite, csv_file).import
+        total_imported += result[:imported]
+        total_duplicates += result[:duplicates]
+
+        if result[:errors].any?
+          all_errors << "#{csv_file.original_filename}:"
+          all_errors.concat(result[:errors].map { |e| "  #{e}" })
+        end
+      end
+
+      if all_errors.empty?
+        message = "Successfully imported #{total_imported} test cases from #{csv_files.size} file(s)."
+        message += " #{total_duplicates} duplicate(s) skipped." if total_duplicates > 0
         redirect_to test_suite_path(@test_suite), notice: message
       else
-        flash.now[:alert] = "Import completed with #{result[:errors].size} error(s). #{result[:imported]} test cases imported. #{result[:duplicates]} duplicate(s) skipped."
-        @errors = result[:errors]
-        @imported_count = result[:imported]
-        @duplicate_count = result[:duplicates]
+        flash.now[:alert] = "Import completed with errors. #{total_imported} test cases imported. #{total_duplicates} duplicate(s) skipped."
+        @errors = all_errors
+        @imported_count = total_imported
+        @duplicate_count = total_duplicates
         render :import_csv, status: :unprocessable_entity
       end
     end
@@ -123,7 +138,7 @@ class TestSuitesController < ApplicationController
       return head :bad_request if ids.empty?
 
       # Only destroy test cases that belong to this test suite
-      test_cases = @test_suite.all_test_cases.where(id: ids)
+      test_cases = @test_suite.test_cases.where(id: ids)
       destroyed_count = test_cases.destroy_all.count
 
       respond_to do |format|

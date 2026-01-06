@@ -261,3 +261,32 @@
     </div>
   </div>
 </div>
+
+<script>
+  async function updateStatus(trcId, status) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+    try {
+      const response = await fetch(`/test_run_cases/${trcId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ test_run_case: { status: status } })
+      });
+
+      if (response.ok) {
+        // Reload the page to show updated status
+        window.location.reload();
+      } else {
+        const data = await response.json();
+        alert('Error: ' + (data.errors || ['Update failed']).join(', '));
+      }
+    } catch (error) {
+      console.error('Error updating status:', error);
+      alert('Failed to update status');
+    }
+  }
+</script>
