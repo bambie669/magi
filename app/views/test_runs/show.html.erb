@@ -44,22 +44,22 @@
           <div class="text-center p-4 bg-terminal-green/10 border border-terminal-green/30">
             <p class="text-2xl font-mono font-bold text-terminal-green text-glow-green"
                data-test-run-updates-target="passedCount"><%= @test_run.passed_cases %></p>
-            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Nominal</p>
+            <p class="text-[10px] font-mono text-terminal-green uppercase tracking-wider mt-1">NOMINAL</p>
           </div>
           <div class="text-center p-4 bg-terminal-red/10 border border-terminal-red/30 <%= has_failures ? 'animate-pulse' : '' %>">
             <p class="text-2xl font-mono font-bold text-terminal-red text-glow-red"
                data-test-run-updates-target="failedCount"><%= @test_run.failed_cases %></p>
-            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Breach</p>
+            <p class="text-[10px] font-mono text-terminal-red uppercase tracking-wider mt-1">BREACH</p>
           </div>
           <div class="text-center p-4 bg-terminal-amber/10 border border-terminal-amber/30">
             <p class="text-2xl font-mono font-bold text-terminal-amber text-glow-amber"
                data-test-run-updates-target="blockedCount"><%= @test_run.blocked_cases %></p>
-            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Pattern Blue</p>
+            <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-wider mt-1">PATTERN BLUE</p>
           </div>
           <div class="text-center p-4 bg-nerv-purple-mid border border-terminal-gray-dark/50">
             <p class="text-2xl font-mono font-bold text-terminal-gray"
                data-test-run-updates-target="untestedCount"><%= @test_run.untested_cases %></p>
-            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Standby</p>
+            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">STANDBY</p>
           </div>
         </div>
       </div>
