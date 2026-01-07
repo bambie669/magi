@@ -82,16 +82,33 @@
 
       <!-- Filter Bar -->
       <div class="px-4 py-3 border-b border-terminal-red/20 bg-nerv-black/50 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
+        <form action="<%= test_run_path(@test_run) %>" method="get" class="flex items-center space-x-3">
+          <!-- Search -->
+          <input type="text" name="q" value="<%= params[:q] %>" placeholder="Search title or ID..." class="input-nerv px-3 py-1 text-xs rounded w-40" oninput="if(this.value === '' && '<%= params[:q] %>' !== '') this.form.submit()">
+
+          <!-- Status Filter -->
           <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Filter:</span>
-          <select class="input-nerv px-3 py-1 text-xs rounded">
+          <select name="status" class="input-nerv px-3 py-1 text-xs rounded" onchange="this.form.submit()">
             <option value="">All Status</option>
-            <option value="passed">Nominal</option>
-            <option value="failed">Breach</option>
-            <option value="blocked">Pattern Blue</option>
-            <option value="untested">Standby</option>
+            <option value="passed" <%= 'selected' if params[:status] == 'passed' %>>Nominal</option>
+            <option value="failed" <%= 'selected' if params[:status] == 'failed' %>>Breach</option>
+            <option value="blocked" <%= 'selected' if params[:status] == 'blocked' %>>Pattern Blue</option>
+            <option value="untested" <%= 'selected' if params[:status] == 'untested' %>>Standby</option>
           </select>
-        </div>
+
+          <!-- Sort -->
+          <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Sort:</span>
+          <select name="sort" class="input-nerv px-3 py-1 text-xs rounded" onchange="this.form.submit()">
+            <option value="title" <%= 'selected' if params[:sort] == 'title' || params[:sort].blank? %>>Title</option>
+            <option value="status" <%= 'selected' if params[:sort] == 'status' %>>Status</option>
+            <option value="cypress_id" <%= 'selected' if params[:sort] == 'cypress_id' %>>ID</option>
+          </select>
+
+          <button type="submit" class="btn-nerv px-2 py-1 text-xs">Go</button>
+          <% if params[:q].present? || params[:status].present? || params[:sort].present? %>
+            <%= link_to "Clear", test_run_path(@test_run), class: "text-xs text-terminal-gray hover:text-terminal-cyan" %>
+          <% end %>
+        </form>
         <span class="text-[10px] font-mono text-terminal-gray">
           <span class="text-terminal-cyan"><%= @test_run_cases.count %></span> protocols loaded
         </span>

@@ -36,7 +36,7 @@ module Api
           error_message = result[:error_message] || result['error_message']
           duration_ms = result[:duration_ms] || result['duration_ms']
 
-          test_case = TestCase.find_by(cypress_id: cypress_id)
+          test_case = find_test_case_by_cypress_id(cypress_id)
 
           unless test_case
             summary[:not_found] += 1
@@ -87,6 +87,41 @@ module Api
         return new_comment if existing_comments.blank?
 
         "#{existing_comments}\n\n---\n#{new_comment}"
+      end
+
+      # Caută TestCase încercând mai multe formate de cypress_id
+      # Cypress trimite: TC1, TC600, TC285A
+      # DB poate avea: TC001, 600, TC285a
+      def find_test_case_by_cypress_id(cypress_id)
+        return nil if cypress_id.blank?
+
+        # 1. Încercăm match exact
+        test_case = TestCase.find_by(cypress_id: cypress_id)
+        return test_case if test_case
+
+        # 2. Încercăm fără prefix TC (TC600 -> 600)
+        if cypress_id.match?(/^TC/i)
+          without_prefix = cypress_id.sub(/^TC/i, '')
+          test_case = TestCase.find_by(cypress_id: without_prefix)
+          return test_case if test_case
+        end
+
+        # 3. Încercăm cu leading zeros (TC1 -> TC001, TC01)
+        if cypress_id.match?(/^TC(\d+)$/i)
+          number = cypress_id.match(/^TC(\d+)$/i)[1]
+          # Încearcă TC001, TC01
+          [3, 2].each do |padding|
+            padded = "TC#{number.rjust(padding, '0')}"
+            test_case = TestCase.find_by(cypress_id: padded)
+            return test_case if test_case
+          end
+        end
+
+        # 4. Încercăm case insensitive pentru litere (TC285A -> TC285a)
+        test_case = TestCase.where('LOWER(cypress_id) = LOWER(?)', cypress_id).first
+        return test_case if test_case
+
+        nil
       end
     end
   end
