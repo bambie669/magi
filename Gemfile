@@ -57,6 +57,7 @@ gem 'pagy', '~> 6.0'
 gem 'prawn', '~> 2.4'
 gem 'prawn-table', '~> 0.2'
 gem 'caxlsx' # Excel file generation
+gem 'roo', '~> 2.10' # Excel file reading
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

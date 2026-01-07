@@ -8,5 +8,19 @@ class TestCase < ApplicationRecord
   validates :steps, presence: true
   validates :expected_result, presence: true
   validates :test_scope_id, presence: true # Actualizat de la test_folder_id
-  validates :cypress_id, uniqueness: true, allow_blank: true
+  validate :cypress_id_unique_within_test_suite
+
+  private
+
+  def cypress_id_unique_within_test_suite
+    return if cypress_id.blank?
+    return unless test_scope&.test_suite
+
+    existing = test_scope.test_suite.test_cases
+                         .where(cypress_id: cypress_id)
+                         .where.not(id: id)
+                         .exists?
+
+    errors.add(:cypress_id, "has already been taken in this test suite") if existing
+  end
 end
