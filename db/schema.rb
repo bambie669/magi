@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_31_104358) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_07_222551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -109,7 +109,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_31_104358) do
     t.datetime "updated_at", null: false
     t.bigint "test_scope_id", null: false
     t.string "cypress_id"
-    t.index ["cypress_id"], name: "index_test_cases_on_cypress_id", unique: true
+    t.index ["cypress_id"], name: "index_test_cases_on_cypress_id"
     t.index ["test_scope_id"], name: "index_test_cases_on_test_scope_id"
   end
 

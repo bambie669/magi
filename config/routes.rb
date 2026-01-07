@@ -47,6 +47,8 @@ Rails.application.routes.draw do
         get :export_pdf
         get :import_csv
         post :process_import_csv
+        get :import_excel
+        post :process_import_excel
         get :csv_template
         delete :bulk_destroy_cases
         post :bulk_export_cases

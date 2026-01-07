@@ -17,29 +17,39 @@ RSpec.describe TestCase, type: :model do
     it { should validate_presence_of(:test_scope_id) }
 
     describe "cypress_id uniqueness" do
-      let(:test_scope) { create(:test_scope) }
+      let(:test_suite) { create(:test_suite) }
+      let(:test_scope) { create(:test_scope, test_suite: test_suite) }
+      let(:other_test_scope) { create(:test_scope, test_suite: test_suite) }
 
       it "allows blank cypress_id" do
         test_case = build(:test_case, test_scope: test_scope, cypress_id: nil)
         expect(test_case).to be_valid
       end
 
-      it "allows unique cypress_id" do
-        create(:test_case, cypress_id: "TC-001")
+      it "allows unique cypress_id within same test suite" do
+        create(:test_case, test_scope: test_scope, cypress_id: "TC-001")
         test_case = build(:test_case, test_scope: test_scope, cypress_id: "TC-002")
         expect(test_case).to be_valid
       end
 
-      it "rejects duplicate cypress_id" do
-        create(:test_case, cypress_id: "TC-001")
-        test_case = build(:test_case, test_scope: test_scope, cypress_id: "TC-001")
+      it "rejects duplicate cypress_id within same test suite" do
+        create(:test_case, test_scope: test_scope, cypress_id: "TC-001")
+        test_case = build(:test_case, test_scope: other_test_scope, cypress_id: "TC-001")
         expect(test_case).not_to be_valid
-        expect(test_case.errors[:cypress_id]).to include("has already been taken")
+        expect(test_case.errors[:cypress_id]).to include("has already been taken in this test suite")
+      end
+
+      it "allows same cypress_id in different test suites" do
+        other_suite = create(:test_suite)
+        other_scope = create(:test_scope, test_suite: other_suite)
+        create(:test_case, test_scope: test_scope, cypress_id: "TC-001")
+        test_case = build(:test_case, test_scope: other_scope, cypress_id: "TC-001")
+        expect(test_case).to be_valid
       end
 
       it "allows multiple blank cypress_ids" do
-        create(:test_case, cypress_id: nil)
-        create(:test_case, cypress_id: "")
+        create(:test_case, test_scope: test_scope, cypress_id: nil)
+        create(:test_case, test_scope: test_scope, cypress_id: "")
         test_case = build(:test_case, test_scope: test_scope, cypress_id: nil)
         expect(test_case).to be_valid
       end

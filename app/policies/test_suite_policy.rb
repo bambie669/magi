@@ -67,4 +67,13 @@ class TestSuitePolicy < ApplicationPolicy
   def process_import_csv?
     import_csv?
   end
+
+  # Excel Import - cei care pot crea test cases
+  def import_excel?
+    user.admin? || user.manager? || user.tester?
+  end
+
+  def process_import_excel?
+    import_excel?
+  end
 end
