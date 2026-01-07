@@ -8,8 +8,32 @@ class TestSuitesController < ApplicationController
     # GET /test_suites/:id
     def show
       authorize @test_suite
-      # Eager load test cases pentru afișare cu paginare
-      all_test_cases = @test_suite.all_test_cases.sort_by(&:title)
+
+      # Get all test cases
+      all_test_cases = @test_suite.all_test_cases
+
+      # Search
+      if params[:q].present?
+        query = params[:q].downcase
+        all_test_cases = all_test_cases.select { |tc| tc.title.downcase.include?(query) || tc.cypress_id.to_s.downcase.include?(query) }
+      end
+
+      # Sort
+      sort_column = params[:sort] || 'title'
+      sort_direction = params[:direction] == 'desc' ? -1 : 1
+
+      all_test_cases = all_test_cases.sort_by do |tc|
+        case sort_column
+        when 'cypress_id'
+          tc.cypress_id.to_s
+        when 'created_at'
+          tc.created_at
+        else
+          tc.title.downcase
+        end
+      end
+      all_test_cases = all_test_cases.reverse if sort_direction == -1
+
       @pagy, @test_cases = pagy_array(all_test_cases, items: 15)
     end
   

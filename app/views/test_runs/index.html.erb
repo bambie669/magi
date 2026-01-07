@@ -11,15 +11,35 @@
 <!-- Operations Control Bar -->
 <div class="mb-6 flex items-center justify-between px-4 py-3 bg-nerv-purple border border-terminal-red/30">
   <div class="flex items-center space-x-6">
-    <!-- Status Filter -->
-    <div class="flex items-center space-x-3">
+    <!-- Search & Filter Form -->
+    <form action="<%= @project ? project_test_runs_path(@project) : test_runs_path %>" method="get" class="flex items-center space-x-3">
+      <input type="text" name="q" value="<%= params[:q] %>" placeholder="Search..." class="input-nerv px-3 py-1.5 text-xs rounded w-40">
+
+      <!-- Status Filter -->
       <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Filter:</span>
-      <select class="input-nerv px-3 py-1.5 text-xs rounded">
+      <select name="status" class="input-nerv px-3 py-1.5 text-xs rounded" onchange="this.form.submit()">
         <option value="">All Status</option>
-        <option value="in_progress">Active</option>
-        <option value="completed">Complete</option>
+        <option value="in_progress" <%= 'selected' if params[:status] == 'in_progress' %>>Active</option>
+        <option value="completed" <%= 'selected' if params[:status] == 'completed' %>>Complete</option>
+        <option value="has_failures" <%= 'selected' if params[:status] == 'has_failures' %>>Has Failures</option>
       </select>
-    </div>
+
+      <!-- Sort -->
+      <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Sort:</span>
+      <select name="sort" class="input-nerv px-3 py-1.5 text-xs rounded" onchange="this.form.submit()">
+        <option value="created_at" <%= 'selected' if params[:sort] == 'created_at' || params[:sort].blank? %>>Date</option>
+        <option value="name" <%= 'selected' if params[:sort] == 'name' %>>Name</option>
+      </select>
+      <select name="direction" class="input-nerv px-3 py-1.5 text-xs rounded" onchange="this.form.submit()">
+        <option value="desc" <%= 'selected' if params[:direction] == 'desc' || params[:direction].blank? %>>Desc</option>
+        <option value="asc" <%= 'selected' if params[:direction] == 'asc' %>>Asc</option>
+      </select>
+
+      <button type="submit" class="btn-nerv px-3 py-1.5 text-xs">Apply</button>
+      <% if params[:q].present? || params[:status].present? || params[:sort].present? %>
+        <%= link_to "Clear", (@project ? project_test_runs_path(@project) : test_runs_path), class: "text-xs text-terminal-gray hover:text-terminal-cyan" %>
+      <% end %>
+    </form>
   </div>
 
   <% if @project && policy(TestRun).create? %>

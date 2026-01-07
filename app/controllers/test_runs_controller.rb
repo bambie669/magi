@@ -6,10 +6,33 @@ class TestRunsController < ApplicationController
   # GET /test_runs or GET /projects/:project_id/test_runs
   def index
     if @project
-      test_runs = policy_scope(@project.test_runs).order(created_at: :desc)
+      test_runs = policy_scope(@project.test_runs)
     else
-      test_runs = policy_scope(TestRun).order(created_at: :desc)
+      test_runs = policy_scope(TestRun)
     end
+
+    # Search
+    if params[:q].present?
+      test_runs = test_runs.where("name ILIKE ?", "%#{params[:q]}%")
+    end
+
+    # Filter by status
+    if params[:status].present?
+      case params[:status]
+      when 'in_progress'
+        test_runs = test_runs.joins(:test_run_cases).where(test_run_cases: { status: :untested }).distinct
+      when 'completed'
+        test_runs = test_runs.left_joins(:test_run_cases).group(:id).having("COUNT(CASE WHEN test_run_cases.status = 0 THEN 1 END) = 0")
+      when 'has_failures'
+        test_runs = test_runs.joins(:test_run_cases).where(test_run_cases: { status: :failed }).distinct
+      end
+    end
+
+    # Sorting
+    sort_column = %w[name created_at].include?(params[:sort]) ? params[:sort] : 'created_at'
+    sort_direction = %w[asc desc].include?(params[:direction]) ? params[:direction] : 'desc'
+    test_runs = test_runs.order("#{sort_column} #{sort_direction}")
+
     @pagy, @test_runs = pagy(test_runs, items: 15)
     authorize TestRun
   end
@@ -17,8 +40,37 @@ class TestRunsController < ApplicationController
   # GET /test_runs/:id
   def show
     authorize @test_run
-    # Eager load pentru a afișa detaliile cazurilor și a executorilor
-    @test_run_cases = @test_run.test_run_cases.includes(:test_case, :user, attachments_attachments: :blob).order('test_cases.title ASC') # Changed :executor to :user
+
+    # Get test run cases with eager loading
+    test_run_cases = @test_run.test_run_cases.includes(:test_case, :user, attachments_attachments: :blob)
+
+    # Filter by status
+    if params[:status].present? && %w[passed failed blocked untested].include?(params[:status])
+      test_run_cases = test_run_cases.where(status: params[:status])
+    end
+
+    # Search by test case title or cypress_id
+    if params[:q].present?
+      test_run_cases = test_run_cases.joins(:test_case).where(
+        "test_cases.title ILIKE :q OR test_cases.cypress_id ILIKE :q",
+        q: "%#{params[:q]}%"
+      )
+    end
+
+    # Sort
+    sort_column = params[:sort] || 'title'
+    sort_direction = params[:direction] == 'desc' ? 'DESC' : 'ASC'
+
+    case sort_column
+    when 'status'
+      test_run_cases = test_run_cases.order("test_run_cases.status #{sort_direction}")
+    when 'cypress_id'
+      test_run_cases = test_run_cases.joins(:test_case).order("test_cases.cypress_id #{sort_direction}")
+    else
+      test_run_cases = test_run_cases.joins(:test_case).order("test_cases.title #{sort_direction}")
+    end
+
+    @test_run_cases = test_run_cases
   end
 
   # GET /projects/:project_id/test_runs/new
