@@ -1013,121 +1013,208 @@ body {
 
 /* Background overrides - using direct hex values for reliability */
 .theme-light .bg-dark-surface {
-  background-color: #FFFFFF !important;
+  background-color: #FFFFFF;
 }
 
 .theme-light .bg-dark-base {
-  background-color: #F8FAFC !important;
+  background-color: #F8FAFC;
 }
 
 .theme-light .bg-dark-elevated {
-  background-color: #F1F5F9 !important;
+  background-color: #F1F5F9;
 }
 
 .theme-light .bg-dark-hover {
-  background-color: #F1F5F9 !important;
+  background-color: #F1F5F9;
 }
 
-/* Background with opacity overrides */
+/* Background with opacity overrides - multiple selector strategies */
 .theme-light .bg-dark-base\/50,
 .theme-light .bg-dark-base\/30,
-.theme-light [class*="bg-dark-base/"] {
-  background-color: #F1F5F9 !important;
+.theme-light [class*="bg-dark-base/"],
+.theme-light [class*="bg-dark-base\\/"] {
+  background-color: #F1F5F9;
 }
 
 .theme-light .bg-dark-surface\/50,
 .theme-light .bg-dark-surface\/30,
-.theme-light [class*="bg-dark-surface/"] {
-  background-color: #F8FAFC !important;
+.theme-light [class*="bg-dark-surface/"],
+.theme-light [class*="bg-dark-surface\\/"] {
+  background-color: #F8FAFC;
+}
+
+/* Direct class overrides for Tailwind opacity classes */
+.theme-light [class^="bg-dark-base"],
+.theme-light [class*=" bg-dark-base"] {
+  background-color: #F1F5F9;
+}
+
+/* =====================================================
+   THEME-AWARE UTILITY CLASSES
+   Use these instead of direct dark-* classes in views
+   ===================================================== */
+
+/* Stat box style */
+.stat-box {
+  background-color: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  text-align: center;
+  padding: 0.75rem;
+}
+.theme-light .stat-box {
+  background-color: #EFF6FF;
+  border-color: #BFDBFE;
+}
+
+/* Empty state / chart placeholder */
+.empty-state {
+  background-color: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+.theme-light .empty-state {
+  background-color: #F8FAFC;
+  border-color: #CBD5E1;
+}
+
+/* Test run item card */
+.run-card {
+  display: block;
+  padding: 0.75rem;
+  background-color: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.theme-light .run-card {
+  background-color: #FFFFFF;
+  border-color: #E2E8F0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.run-card:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+.theme-light .run-card:hover {
+  border-color: #3B82F6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Activity item */
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background-color: rgba(15, 23, 42, 0.3);
+}
+.theme-light .activity-item {
+  background-color: #F8FAFC;
+}
+
+/* Failure item */
+.failure-item {
+  display: block;
+  padding: 0.5rem;
+  background-color: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  transition: border-color 0.15s;
+}
+.theme-light .failure-item {
+  background-color: #FEF2F2;
+  border-color: #FECACA;
+}
+.failure-item:hover {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+.theme-light .failure-item:hover {
+  border-color: #F87171;
 }
 
 /* Border overrides */
 .theme-light .border-dark-border {
-  border-color: #CBD5E1 !important;
+  border-color: #CBD5E1;
 }
 
 .theme-light .border-dark-border-light {
-  border-color: #94A3B8 !important;
+  border-color: #94A3B8;
 }
 
 .theme-light [class*="border-dark-border/"],
 .theme-light .border-dark-border\/30,
 .theme-light .border-dark-border\/50 {
-  border-color: #CBD5E1 !important;
+  border-color: #CBD5E1;
 }
 
 /* Text color overrides - high contrast for accessibility */
 .theme-light .text-text-primary {
-  color: #1E293B !important; /* slate-800 - very dark for max contrast */
+  color: #1E293B; /* slate-800 - very dark for max contrast */
 }
 
 .theme-light .text-text-secondary {
-  color: #334155 !important; /* slate-700 - dark for good contrast */
+  color: #334155; /* slate-700 - dark for good contrast */
 }
 
 .theme-light .text-text-muted {
-  color: #475569 !important; /* slate-600 - readable muted text */
+  color: #475569; /* slate-600 - readable muted text */
 }
 
 .theme-light .text-text-muted\/50 {
-  color: #64748B !important; /* slate-500 - still readable at 50% */
+  color: #64748B; /* slate-500 - still readable at 50% */
 }
 
 /* Divider overrides */
 .theme-light .bg-dark-border {
-  background-color: var(--color-light-border) !important;
+  background-color: var(--color-light-border);
 }
 
 .theme-light [class*="divide-dark-border"] > * + * {
-  border-color: var(--color-light-border) !important;
+  border-color: var(--color-light-border);
 }
 
 /* Primary text stays the same but slightly darker in light mode */
 .theme-light .text-primary {
-  color: var(--color-light-primary) !important;
+  color: var(--color-light-primary);
 }
 
 .theme-light .text-primary\/80,
 .theme-light .text-primary\/50,
 .theme-light .text-primary\/30 {
-  color: var(--color-light-primary) !important;
+  color: var(--color-light-primary);
   opacity: 0.8;
 }
 
 /* Border primary overrides */
 .theme-light .border-primary\/30,
 .theme-light .border-primary\/20 {
-  border-color: rgba(37, 99, 235, 0.3) !important;
+  border-color: rgba(37, 99, 235, 0.3);
 }
 
 /* Hover states for light theme */
 .theme-light .hover\:bg-dark-hover:hover {
-  background-color: var(--color-light-surface) !important;
+  background-color: var(--color-light-surface);
 }
 
 .theme-light .hover\:border-primary\/30:hover {
-  border-color: var(--color-light-primary) !important;
+  border-color: var(--color-light-primary);
 }
 
 /* Group hover text */
 .theme-light .group:hover .group-hover\:text-primary {
-  color: var(--color-light-primary) !important;
+  color: var(--color-light-primary);
 }
 
 /* Status error border */
 .theme-light .border-status-error\/20,
 .theme-light .border-status-error\/50 {
-  border-color: rgba(239, 68, 68, 0.3) !important;
+  border-color: rgba(239, 68, 68, 0.3);
 }
 
 /* Status warning border */
 .theme-light .border-status-warning\/30 {
-  border-color: rgba(245, 158, 11, 0.3) !important;
+  border-color: rgba(245, 158, 11, 0.3);
 }
 
 /* Activity feed items */
 .theme-light [class*="border-l-2"][class*="border-status-"] {
-  background-color: var(--color-light-surface) !important;
+  background-color: var(--color-light-surface);
 }
 
 /* Panel content text in light theme */
@@ -1139,49 +1226,49 @@ body {
 
 /* Ensure links and interactive elements are visible */
 .theme-light a.text-text-primary:hover {
-  color: #1D4ED8 !important;
+  color: #1D4ED8;
 }
 
 /* Fix notification dropdown in light theme - add shadow for depth */
 .theme-light [data-notifications-target="dropdown"] {
-  background-color: #FFFFFF !important;
-  border-color: #CBD5E1 !important;
+  background-color: #FFFFFF;
+  border-color: #CBD5E1;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Chart and empty state backgrounds */
 .theme-light [class*="bg-dark-base"][class*="border"] {
-  background-color: #F8FAFC !important;
-  border-color: #CBD5E1 !important;
+  background-color: #F8FAFC;
+  border-color: #CBD5E1;
 }
 
 /* Fix opacity variations in light theme */
 .theme-light .text-primary\/50 {
-  color: rgba(29, 78, 216, 0.7) !important;
+  color: rgba(29, 78, 216, 0.7);
 }
 
 .theme-light .text-primary\/30 {
-  color: rgba(29, 78, 216, 0.5) !important;
+  color: rgba(29, 78, 216, 0.5);
 }
 
 /* Ensure status colors remain vibrant */
 .theme-light .text-status-success {
-  color: #059669 !important; /* emerald-600 for better contrast on light */
+  color: #059669; /* emerald-600 for better contrast on light */
 }
 
 .theme-light .text-status-error {
-  color: #DC2626 !important; /* red-600 */
+  color: #DC2626; /* red-600 */
 }
 
 .theme-light .text-status-warning {
-  color: #D97706 !important; /* amber-600 */
+  color: #D97706; /* amber-600 */
 }
 
 /* Fix hover states */
 .theme-light .hover\:text-primary:hover {
-  color: #1D4ED8 !important;
+  color: #1D4ED8;
 }
 
 .theme-light .group:hover .group-hover\:text-status-error {
-  color: #DC2626 !important;
+  color: #DC2626;
 }

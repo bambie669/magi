@@ -110,7 +110,7 @@
             <span class="text-text-muted uppercase tracking-wider">Test Execution Log</span>
           </div>
         <% else %>
-          <div class="h-48 flex items-center justify-center border border-primary/20 bg-dark-base/50 relative overflow-hidden">
+          <div class="h-48 flex items-center justify-center empty-state relative overflow-hidden">
             <div class="text-center">
               <svg class="w-12 h-12 mx-auto text-primary/30 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
@@ -147,7 +147,7 @@
             </div>
           <% end %>
         <% else %>
-          <div class="h-32 flex items-center justify-center border border-primary/20 bg-dark-base/50">
+          <div class="h-32 flex items-center justify-center empty-state">
             <p class="text-[10px] font-mono text-text-muted/50 uppercase">No trend data available</p>
           </div>
         <% end %>
@@ -194,19 +194,19 @@
     <div class="panel">
       <div class="panel-header">System Overview</div>
       <div class="p-4 grid grid-cols-2 gap-3">
-        <div class="text-center p-3 bg-dark-base/50 border border-primary/20">
+        <div class="stat-box">
           <p class="text-2xl font-mono font-bold text-primary"><%= @total_projects %></p>
           <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Projects</p>
         </div>
-        <div class="text-center p-3 bg-dark-base/50 border border-primary/20">
+        <div class="stat-box">
           <p class="text-2xl font-mono font-bold text-primary"><%= @total_test_suites %></p>
           <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Test Suites</p>
         </div>
-        <div class="text-center p-3 bg-dark-base/50 border border-primary/20">
+        <div class="stat-box">
           <p class="text-2xl font-mono font-bold text-primary"><%= @total_test_cases %></p>
           <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Test Cases</p>
         </div>
-        <div class="text-center p-3 bg-dark-base/50 border border-primary/20">
+        <div class="stat-box">
           <p class="text-2xl font-mono font-bold text-primary"><%= @total_test_runs %></p>
           <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Test Runs</p>
         </div>
@@ -223,7 +223,7 @@
         <% if @recent_test_runs.any? %>
           <div class="space-y-3">
             <% @recent_test_runs.each do |run| %>
-              <%= link_to test_run_path(run), class: "block p-3 bg-dark-base/30 border border-text-muted-dark/30 hover:border-primary/30 transition-colors group" do %>
+              <%= link_to test_run_path(run), class: "run-card group" do %>
                 <div class="flex items-center justify-between mb-2">
                   <span class="text-sm font-mono text-text-primary group-hover:text-primary truncate"><%= run.name %></span>
                   <span class="text-[10px] font-mono text-text-muted"><%= time_ago_in_words(run.created_at) %></span>
@@ -260,7 +260,7 @@
         <% if @top_failed_tests.any? %>
           <div class="space-y-2">
             <% @top_failed_tests.each_with_index do |test, index| %>
-              <%= link_to test_case_path(test[:id]), class: "block p-2 bg-dark-base/30 border border-status-error/20 hover:border-status-error/50 transition-colors group" do %>
+              <%= link_to test_case_path(test[:id]), class: "failure-item group" do %>
                 <div class="flex items-center justify-between">
                   <div class="flex items-center space-x-2 flex-1 min-w-0">
                     <span class="text-[10px] font-mono text-status-error">#<%= index + 1 %></span>
@@ -296,7 +296,7 @@
       <% if @team_activity.any? %>
         <div class="space-y-2 max-h-64 overflow-y-auto">
           <% @team_activity.each do |activity| %>
-            <div class="flex items-start space-x-3 p-2 bg-dark-base/30 border-l-2 <%= activity.status == 'passed' ? 'border-status-success' : activity.status == 'failed' ? 'border-status-error' : 'border-status-warning' %>">
+            <div class="activity-item border-l-2 <%= activity.status == 'passed' ? 'border-status-success' : activity.status == 'failed' ? 'border-status-error' : 'border-status-warning' %>">
               <div class="flex-1 min-w-0">
                 <div class="flex items-center space-x-2">
                   <span class="w-2 h-2 rounded-full <%= activity.status == 'passed' ? 'bg-status-success' : activity.status == 'failed' ? 'bg-status-error' : 'bg-status-warning' %>"></span>
