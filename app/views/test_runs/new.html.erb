@@ -1,29 +1,29 @@
-<% content_for :page_title, "INITIALIZE OPERATION" %>
+<% content_for :page_title, "New Test Run" %>
 
 <% content_for :breadcrumbs do %>
   <%= link_to @project.name, project_path(@project), class: "text-primary hover:text-primary/80" %>
-  <span class="text-status-error mx-2">/</span>
-  <%= link_to "Operations", project_test_runs_path(@project), class: "text-primary hover:text-primary/80" %>
-  <span class="text-status-error mx-2">/</span>
-  <span class="text-text-muted">Initialize</span>
+  <span class="text-text-muted mx-2">/</span>
+  <%= link_to "Test Runs", project_test_runs_path(@project), class: "text-primary hover:text-primary/80" %>
+  <span class="text-text-muted mx-2">/</span>
+  <span class="text-text-muted">New</span>
 <% end %>
 
 <div class="max-w-4xl mx-auto">
   <div class="panel">
     <div class="panel-header flex items-center justify-between">
-      <span>INITIALIZE OPERATION</span>
-      <span class="text-[10px] font-mono text-primary">Mission: <%= @project.name %></span>
+      <span>New Test Run</span>
+      <span class="text-[10px] font-mono text-primary">Project: <%= @project.name %></span>
     </div>
 
     <div class="p-6">
       <%= form_with(model: [@project, @test_run], class: "space-y-6") do |form| %>
         <% if @test_run.errors.any? %>
-          <div class="p-4 bg-status-error/10 border border-status-error/50 text-status-error font-mono text-sm animate-pulse" role="alert">
+          <div class="p-4 bg-status-error/10 border border-status-error/50 text-status-error font-mono text-sm" role="alert">
             <div class="flex items-center space-x-2 mb-2">
               <span class="w-2 h-2 bg-status-error rounded-full"></span>
-              <span class="uppercase tracking-wider text-xs">System Error:</span>
+              <span class="uppercase tracking-wider text-xs">Validation Error:</span>
             </div>
-            <strong class="font-bold"><%= pluralize(@test_run.errors.count, "error") %> prohibited this operation from being initialized:</strong>
+            <strong class="font-bold"><%= pluralize(@test_run.errors.count, "error") %> prevented this test run from being created:</strong>
             <ul class="mt-2 list-disc list-inside text-sm">
               <% @test_run.errors.each do |error| %>
                 <li><%= error.full_message %></li>
@@ -33,52 +33,86 @@
         <% end %>
 
         <div>
-          <%= form.label :name, "Operation Designation", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
-          <%= form.text_field :name, class: "input-field w-full px-4 py-3 text-sm", placeholder: "Enter operation designation..." %>
+          <%= form.label :name, "Run Name", class: "block text-[10px] font-mono text-text-secondary uppercase tracking-wider mb-2" %>
+          <%= form.text_field :name, class: "input-field w-full px-4 py-3 text-sm", placeholder: "Enter test run name..." %>
         </div>
 
-        <div>
+        <div data-controller="test-case-search">
           <div class="flex items-center justify-between mb-3">
-            <p class="text-[10px] font-mono text-status-warning uppercase tracking-wider">Select Protocols to Execute:</p>
-            <% if @available_test_cases.any? %>
-              <button type="button" id="select-all-btn" onclick="toggleSelectAll()" class="px-3 py-1 text-[10px] font-mono uppercase tracking-wider border border-primary/50 text-primary hover:bg-primary/10 transition-colors">
-                Select All
-              </button>
-            <% end %>
+            <p class="text-[10px] font-mono text-text-secondary uppercase tracking-wider">Select Test Cases:</p>
+            <div class="flex items-center space-x-2">
+              <span data-test-case-search-target="counter" class="text-[10px] font-mono text-text-muted">
+                <span data-test-case-search-target="selectedCount">0</span> selected
+              </span>
+              <% if @available_test_cases.any? %>
+                <button type="button" data-action="click->test-case-search#toggleSelectAll" data-test-case-search-target="selectAllBtn" class="px-3 py-1 text-[10px] font-mono uppercase tracking-wider border border-primary/50 text-primary hover:bg-primary/10 transition-colors">
+                  Select All
+                </button>
+              <% end %>
+            </div>
           </div>
-          <div class="max-h-80 overflow-y-auto border border-primary/30 bg-dark-base/50 p-4 space-y-2">
+
+          <!-- Search Input -->
+          <div class="mb-3">
+            <div class="relative">
+              <input type="text"
+                     data-test-case-search-target="searchInput"
+                     data-action="input->test-case-search#filter"
+                     placeholder="Search test cases..."
+                     class="input-field w-full pl-10 pr-4 py-2 text-sm">
+              <svg class="w-4 h-4 text-text-muted absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+            <p class="mt-1 text-[10px] font-mono text-text-muted">
+              <span data-test-case-search-target="visibleCount"><%= @available_test_cases.count %></span> of <%= @available_test_cases.count %> test cases shown
+            </p>
+          </div>
+
+          <div class="max-h-96 overflow-y-auto border border-dark-border bg-dark-base/50 p-2 space-y-1" data-test-case-search-target="list">
             <% if @available_test_cases.any? %>
-              <% @available_test_cases.each do |test_case| %>
-                <label class="flex items-center p-3 bg-dark-surface-mid border border-text-muted-dark/30 hover:border-primary/50 cursor-pointer transition-colors group">
-                  <%= check_box_tag "test_run[test_case_ids][]", test_case.id, false, class: "w-4 h-4 bg-dark-base border-primary/50 text-primary focus:ring-primary/50" %>
-                  <span class="ml-3 text-sm font-mono text-text-primary group-hover:text-primary transition-colors"><%= test_case.title %></span>
-                </label>
+              <% @available_test_cases.group_by { |tc| tc.test_scope }.each do |scope, test_cases| %>
+                <div class="mb-2">
+                  <div class="px-3 py-1.5 bg-dark-elevated/50 text-[10px] font-mono text-text-muted uppercase tracking-wider sticky top-0">
+                    <%= scope&.full_path || 'Uncategorized' %> (<%= test_cases.count %>)
+                  </div>
+                  <% test_cases.each do |test_case| %>
+                    <label class="flex items-center p-2 hover:bg-dark-hover cursor-pointer transition-colors group test-case-item"
+                           data-test-case-search-target="item"
+                           data-title="<%= test_case.title.downcase %>"
+                           data-scope="<%= scope&.full_path&.downcase %>">
+                      <%= check_box_tag "test_run[test_case_ids][]", test_case.id, false,
+                          class: "w-4 h-4 bg-dark-base border-dark-border text-primary focus:ring-primary/50 rounded",
+                          data: { action: "change->test-case-search#updateCount", test_case_search_target: "checkbox" } %>
+                      <div class="ml-3 flex-1 min-w-0">
+                        <span class="text-sm font-mono text-text-primary group-hover:text-primary transition-colors block truncate"><%= test_case.title %></span>
+                        <% if test_case.cypress_id.present? %>
+                          <span class="text-[10px] font-mono text-text-muted"><%= test_case.cypress_id %></span>
+                        <% end %>
+                      </div>
+                    </label>
+                  <% end %>
+                </div>
               <% end %>
             <% else %>
               <div class="text-center py-8">
-                <p class="text-sm font-mono text-text-muted uppercase tracking-wider">No protocols available in this mission</p>
+                <p class="text-sm font-mono text-text-muted uppercase tracking-wider">No test cases available</p>
+                <p class="text-[10px] font-mono text-text-muted mt-1">Create test cases in a test suite first</p>
               </div>
             <% end %>
           </div>
-          <p class="mt-2 text-[10px] font-mono text-text-muted">Select protocols to include in this operation</p>
+
+          <!-- No results message -->
+          <div data-test-case-search-target="noResults" class="hidden text-center py-4 text-sm font-mono text-text-muted">
+            No test cases match your search
+          </div>
         </div>
 
-        <div class="flex justify-end space-x-3 pt-6 border-t border-status-error/20">
-          <%= link_to 'Abort', project_path(@project), class: "px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors" %>
-          <%= form.submit "Initialize Operation", class: "btn-primary cursor-pointer" %>
+        <div class="flex justify-end space-x-3 pt-6 border-t border-dark-border">
+          <%= link_to 'Cancel', project_path(@project), class: "px-4 py-2 bg-dark-surface border border-dark-border text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors" %>
+          <%= form.submit "Create Test Run", class: "btn-primary cursor-pointer" %>
         </div>
       <% end %>
     </div>
   </div>
 </div>
-
-<script>
-  function toggleSelectAll() {
-    const checkboxes = document.querySelectorAll('input[name="test_run[test_case_ids][]"]');
-    const btn = document.getElementById('select-all-btn');
-    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-
-    checkboxes.forEach(cb => cb.checked = !allChecked);
-    btn.textContent = allChecked ? 'Select All' : 'Deselect All';
-  }
-</script>

@@ -19,7 +19,7 @@ RSpec.describe TestScope, type: :model do
 
       duplicate = build(:test_scope, name: "Scope A", test_suite: test_suite, parent: nil)
       expect(duplicate).not_to be_valid
-      expect(duplicate.errors[:name]).to include("Folder name must be unique within its parent folder or at the root of the suite.")
+      expect(duplicate.errors[:name]).to include("must be unique within its parent")
     end
 
     it "allows same name in different parents" do
