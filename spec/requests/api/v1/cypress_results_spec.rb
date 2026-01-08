@@ -131,16 +131,18 @@ RSpec.describe "Api::V1::CypressResults", type: :request do
       context "when test case exists but not in test run" do
         let!(:other_test_case) { create(:test_case, test_scope: test_scope, cypress_id: "TC-999") }
 
-        it "reports not_found in summary" do
+        it "auto-adds test case to test run and updates it" do
           results = [{ cypress_id: "TC-999", status: "passed", duration_ms: 1000 }]
 
-          post endpoint, params: { results: results }.to_json, headers: headers
+          expect {
+            post endpoint, params: { results: results }.to_json, headers: headers
+          }.to change { test_run.test_run_cases.count }.by(1)
 
           expect(response).to have_http_status(:ok)
           json = JSON.parse(response.body)
 
-          expect(json["summary"]["not_found"]).to eq(1)
-          expect(json["summary"]["errors"]).to include("TestCase 'TC-999' is not part of this test run")
+          expect(json["summary"]["not_found"]).to eq(0)
+          expect(json["summary"]["updated"]).to eq(1)
         end
       end
 

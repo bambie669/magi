@@ -71,6 +71,7 @@ Rails.application.routes.draw do
       # Projects
       resources :projects, only: [:index, :show] do
         resources :test_runs, only: [:index, :create]
+        post 'cypress_results', to: 'cypress_results#create_for_project'
       end
 
       # Test Runs
