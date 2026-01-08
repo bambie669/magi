@@ -46,7 +46,7 @@
                   <span class="w-2 h-2 bg-terminal-cyan rounded-full group-hover:animate-pulse"></span>
                   <%= link_to suite.name, test_suite_path(suite), class: "text-sm font-mono text-terminal-white hover:text-terminal-cyan transition-colors" %>
                   <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">
-                    <%= pluralize(suite.all_test_cases.size, 'protocol') %>
+                    <%= pluralize(suite.test_cases_count, 'protocol') %>
                   </span>
                 </div>
                 <%= link_to test_suite_path(suite), class: "p-2 border border-terminal-cyan/30 text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors opacity-0 group-hover:opacity-100" do %>

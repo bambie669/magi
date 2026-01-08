@@ -18,7 +18,7 @@ RSpec.describe TestSuite, type: :model do
     end
   end
 
-  describe "#all_test_cases" do
+  describe "#test_cases association" do
     let(:user) { create(:user) }
     let(:project) { create(:project, user: user) }
     let(:test_suite) { create(:test_suite, project: project) }
@@ -29,7 +29,7 @@ RSpec.describe TestSuite, type: :model do
       let!(:test_case2) { create(:test_case, test_scope: test_scope, title: "Test 2") }
 
       it "returns all test cases" do
-        expect(test_suite.all_test_cases).to contain_exactly(test_case1, test_case2)
+        expect(test_suite.test_cases).to contain_exactly(test_case1, test_case2)
       end
     end
 
@@ -40,13 +40,13 @@ RSpec.describe TestSuite, type: :model do
       let!(:child_test) { create(:test_case, test_scope: child_scope) }
 
       it "returns test cases from all levels" do
-        expect(test_suite.all_test_cases).to contain_exactly(parent_test, child_test)
+        expect(test_suite.test_cases).to contain_exactly(parent_test, child_test)
       end
     end
 
     context "with no test cases" do
-      it "returns empty array" do
-        expect(test_suite.all_test_cases).to eq([])
+      it "returns empty relation" do
+        expect(test_suite.test_cases.to_a).to eq([])
       end
     end
   end

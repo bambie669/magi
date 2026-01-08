@@ -34,12 +34,18 @@ module Api
         }
 
         if full
-          data[:test_suites] = project.test_suites.map do |ts|
+          # Eager load test cases count for all test suites
+          test_suites_with_counts = project.test_suites
+                                           .left_joins(:test_cases)
+                                           .select('test_suites.*, COUNT(test_cases.id) as test_cases_count')
+                                           .group('test_suites.id')
+
+          data[:test_suites] = test_suites_with_counts.map do |ts|
             {
               id: ts.id,
               name: ts.name,
               description: ts.description,
-              test_cases_count: ts.all_test_cases.count
+              test_cases_count: ts.test_cases_count
             }
           end
         end

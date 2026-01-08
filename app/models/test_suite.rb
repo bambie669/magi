@@ -10,10 +10,4 @@ class TestSuite < ApplicationRecord
            foreign_key: 'test_suite_id'
 
   validates :name, presence: true
-
-  # Metodă pentru a obține toate test case-urile dintr-o suită, indiferent de scope.
-  # Eager loads test_cases pentru root_scopes pentru a optimiza primul nivel al recursivității.
-  def all_test_cases
-    self.root_test_scopes.includes(:test_cases).flat_map(&:all_test_cases_recursive) # Actualizat de la root_test_folders
-  end
 end

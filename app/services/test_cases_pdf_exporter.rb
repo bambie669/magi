@@ -32,7 +32,7 @@ class TestCasesPdfExporter
     pdf.font('Helvetica', size: 10, style: :normal) do
       pdf.text sanitize_text("Mission: #{@project.name}"), color: '666666'
       pdf.text "Export Date: #{Time.current.strftime('%Y.%m.%d %H:%M')}", color: '666666'
-      pdf.text "Total Protocols: #{@test_suite.all_test_cases.count}", color: '666666'
+      pdf.text "Total Protocols: #{@test_suite.test_cases.count}", color: '666666'
     end
 
     pdf.move_down 5
