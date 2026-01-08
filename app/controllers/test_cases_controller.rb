@@ -17,10 +17,8 @@ class TestCasesController < ApplicationController
     # GET /test_suites/:test_suite_id/test_cases/new
     def new
       @test_case = TestCase.new # Inițializează un nou TestCase
-      # Pregătește lista de TestScope-uri disponibile pentru formular
-      @available_test_scopes = @test_suite.root_test_scopes.flat_map do |root_scope|
-        [root_scope] + root_scope.all_descendant_scopes
-      end
+      # Get all test scopes belonging to this test suite (regardless of hierarchy)
+      @available_test_scopes = @test_suite.test_scopes.order(:name)
       authorize @test_case
     end
   

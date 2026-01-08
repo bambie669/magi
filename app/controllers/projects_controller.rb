@@ -13,14 +13,14 @@ class ProjectsController < ApplicationController
   def show
     authorize @project # Verifică permisiunea pentru show
     # Eager load pentru performanță
-    @project = Project.includes(
-      :milestones,
-      { test_suites: { root_test_scopes: [:test_cases, { children: :test_cases }] } },
-      { test_runs: :user }
-    ).find(params[:id])
+    @project = Project.includes(:milestones, { test_runs: :user }).find(params[:id])
 
     @milestones = @project.milestones.order(due_date: :asc)
-    @test_suites = @project.test_suites.order(:name)
+    @test_suites = @project.test_suites
+                            .left_joins(:test_cases)
+                            .select('test_suites.*, COUNT(test_cases.id) as test_cases_count')
+                            .group('test_suites.id')
+                            .order(:name)
     @test_runs = @project.test_runs.order(created_at: :desc)
   end
 

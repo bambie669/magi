@@ -62,7 +62,7 @@ module Api
 
       def create_test_run_cases(test_suite_ids)
         TestSuite.where(id: test_suite_ids, project: @project).each do |suite|
-          suite.all_test_cases.each do |test_case|
+          suite.test_cases.each do |test_case|
             @test_run.test_run_cases.create(test_case: test_case, status: :untested)
           end
         end

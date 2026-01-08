@@ -9,32 +9,30 @@ class TestSuitesController < ApplicationController
     def show
       authorize @test_suite
 
-      # Get all test cases
-      all_test_cases = @test_suite.all_test_cases
+      # Start with an ActiveRecord::Relation instead of array
+      test_cases = @test_suite.test_cases
 
-      # Search
+      # Search with SQL ILIKE instead of Ruby select
       if params[:q].present?
-        query = params[:q].downcase
-        all_test_cases = all_test_cases.select { |tc| tc.title.downcase.include?(query) || tc.cypress_id.to_s.downcase.include?(query) }
+        query = params[:q]
+        test_cases = test_cases.where("title ILIKE ? OR cypress_id ILIKE ?", "%#{query}%", "%#{query}%")
       end
 
-      # Sort
+      # Sort with SQL ORDER BY instead of Ruby sort_by
       sort_column = params[:sort] || 'title'
-      sort_direction = params[:direction] == 'desc' ? -1 : 1
+      sort_direction = params[:direction] == 'desc' ? 'DESC' : 'ASC'
 
-      all_test_cases = all_test_cases.sort_by do |tc|
-        case sort_column
-        when 'cypress_id'
-          tc.cypress_id.to_s
-        when 'created_at'
-          tc.created_at
-        else
-          tc.title.downcase
-        end
+      case sort_column
+      when 'cypress_id'
+        test_cases = test_cases.order("cypress_id #{sort_direction}")
+      when 'created_at'
+        test_cases = test_cases.order("created_at #{sort_direction}")
+      else
+        test_cases = test_cases.order("title #{sort_direction}")
       end
-      all_test_cases = all_test_cases.reverse if sort_direction == -1
 
-      @pagy, @test_cases = pagy_array(all_test_cases, items: 15)
+      # Database pagination instead of pagy_array
+      @pagy, @test_cases = pagy(test_cases, items: 15)
     end
   
     # GET /projects/:project_id/test_suites/new
@@ -179,7 +177,7 @@ class TestSuitesController < ApplicationController
       return head :bad_request if ids.empty?
 
       # Only export test cases that belong to this test suite
-      test_cases = @test_suite.all_test_cases.where(id: ids).order(:title)
+      test_cases = @test_suite.test_cases.where(id: ids).order(:title)
 
       csv_data = CSV.generate(headers: true) do |csv|
         csv << %w[title preconditions steps expected_result cypress_id]

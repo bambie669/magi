@@ -2,6 +2,7 @@ class TestRunsController < ApplicationController
   before_action :set_project, only: [:new, :create] # Contextul proiectului
   before_action :set_project_optional, only: [:index]
   before_action :set_test_run, only: [:show, :edit, :update, :destroy, :export_csv, :export_pdf]
+  before_action :load_available_test_cases, only: [:new, :create]
 
   # GET /test_runs or GET /projects/:project_id/test_runs
   def index
@@ -77,8 +78,6 @@ class TestRunsController < ApplicationController
   def new
     @test_run = @project.test_runs.new
     authorize @test_run
-    # Load all test cases for the project to display in the form
-    @available_test_cases = @project.all_project_test_cases.sort_by(&:title)
   end
 
   # POST /projects/:project_id/test_runs
@@ -88,33 +87,35 @@ class TestRunsController < ApplicationController
     authorize @test_run
 
     # Get the selected test case IDs directly from the form parameters
-    selected_test_case_ids = params.dig(:test_run, :test_case_ids)&.reject(&:blank?) || []
+    selected_test_case_ids = params.dig(:test_run, :test_case_ids)&.reject(&:blank?)&.map(&:to_i) || []
 
     # Check if any test cases were actually selected
     if selected_test_case_ids.empty?
        flash.now[:alert] = "Please select at least one Test Case to include in the run."
-       # Add this line to ensure @available_test_cases is set for the re-rendered form
-       @available_test_cases = @project.all_project_test_cases.sort_by(&:title)
        render :new, status: :unprocessable_entity
        return
     end
 
     if @test_run.save
        # Adaugă TestRunCases după salvarea TestRun-ului
-       selected_test_case_ids = params.dig(:test_run, :test_case_ids)&.reject(&:blank?) || []
-       selected_test_case_ids.each do |test_case_id|
-        if @project.all_project_test_cases.map(&:id).include?(test_case_id.to_i)
-          @test_run.test_run_cases.create(test_case_id: test_case_id, status: :untested)
-        end
-      end
+       # Verify that selected test cases belong to this project
+       valid_test_case_ids = @project.all_project_test_cases.where(id: selected_test_case_ids).pluck(:id)
 
-       # The loop above replaces the need for @test_run.add_test_cases
+       # Bulk insert all test run cases at once
+       test_run_cases_data = valid_test_case_ids.map do |test_case_id|
+         {
+           test_run_id: @test_run.id,
+           test_case_id: test_case_id,
+           status: 0,  # 0 = :untested (from enum)
+           created_at: Time.current,
+           updated_at: Time.current
+         }
+       end
+       TestRunCase.insert_all(test_run_cases_data) if test_run_cases_data.any?
+
       redirect_to @test_run, notice: 'Test run was successfully created.'
     else
       flash.now[:alert] = @test_run.errors.full_messages.join(', ')
-      # Ensure this is also set in the other failure path, using :title
-      @available_test_cases = @project.all_project_test_cases.sort_by(&:title)
-
       render :new, status: :unprocessable_entity
     end
   end
@@ -180,5 +181,9 @@ class TestRunsController < ApplicationController
   def test_run_params
     # Allow name and the array of test_case_ids from the checkboxes
     params.require(:test_run).permit(:name, test_case_ids: [])
+  end
+
+  def load_available_test_cases
+    @available_test_cases ||= @project.all_project_test_cases.order(:title)
   end
 end

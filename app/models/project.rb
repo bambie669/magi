@@ -10,6 +10,8 @@ class Project < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   def all_project_test_cases
-    self.test_suites.flat_map(&:all_test_cases)
+    TestCase.joins(test_scope: :test_suite)
+            .where(test_suites: { project_id: id })
+            .distinct
   end
 end
