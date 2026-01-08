@@ -1,37 +1,36 @@
-<div class="nerv-panel">
-  <div class="nerv-panel-header">
-    <span>VISUAL INTERFACE CONFIGURATION</span>
+<div class="panel">
+  <div class="panel-header">
+    <span>Theme Settings</span>
   </div>
   <div class="p-6">
     <p class="text-sm font-mono text-theme-secondary mb-6">
-      Select the visual theme for the MAGI system interface. Changes will take effect immediately.
+      Select your preferred theme. Changes will take effect immediately.
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- EVA-01 Theme (Dark) -->
+      <!-- Dark Theme -->
       <%= form_with url: update_theme_path, method: :patch, local: true, class: "block" do %>
         <input type="hidden" name="theme" value="nerv">
         <button type="submit" class="w-full text-left group">
-          <div class="p-6 rounded-lg border-2 transition-all duration-200 <%= current_user.theme == 'nerv' ? 'border-eva-green bg-eva-green/10' : 'border-dark-border hover:border-eva-purple' %>">
+          <div class="p-6 rounded-lg border-2 transition-all duration-200 <%= current_user.theme == 'nerv' ? 'border-primary bg-primary/10' : 'border-dark-border hover:border-primary' %>">
             <!-- Preview -->
             <div class="mb-4 p-4 bg-dark-base border border-dark-border rounded">
               <div class="flex items-center space-x-2 mb-3">
-                <div class="w-3 h-3 bg-eva-purple rounded-full"></div>
+                <div class="w-3 h-3 bg-primary rounded-full"></div>
                 <div class="w-3 h-3 bg-status-warning rounded-full"></div>
-                <div class="w-3 h-3 bg-eva-green rounded-full"></div>
+                <div class="w-3 h-3 bg-accent rounded-full"></div>
               </div>
               <div class="space-y-2">
-                <div class="h-2 w-3/4 bg-eva-green/40 rounded"></div>
-                <div class="h-2 w-1/2 bg-eva-purple/40 rounded"></div>
+                <div class="h-2 w-3/4 bg-primary/40 rounded"></div>
+                <div class="h-2 w-1/2 bg-text-secondary/40 rounded"></div>
                 <div class="h-2 w-2/3 bg-status-warning/40 rounded"></div>
               </div>
             </div>
 
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="text-lg font-mono text-theme-primary uppercase tracking-wider">EVA-01 UNIT</h3>
-                <p class="text-xs font-mono text-theme-secondary mt-1">Shinji's Unit - Purple & Green</p>
-                <p class="text-[10px] font-mono text-eva-green/70 mt-1">DARK INTERFACE</p>
+                <h3 class="text-lg font-mono text-theme-primary uppercase tracking-wider">Dark Mode</h3>
+                <p class="text-xs font-mono text-theme-secondary mt-1">Professional dark interface</p>
               </div>
               <% if current_user.theme == 'nerv' %>
                 <span class="badge badge-success">
@@ -43,33 +42,32 @@
         </button>
       <% end %>
 
-      <!-- EVA-00 Theme (Light) -->
+      <!-- Light Theme -->
       <%= form_with url: update_theme_path, method: :patch, local: true, class: "block" do %>
         <input type="hidden" name="theme" value="light">
         <button type="submit" class="w-full text-left group">
-          <div class="p-6 rounded-lg border-2 transition-all duration-200 <%= current_user.theme == 'light' ? 'border-eva00-blue bg-eva00-blue/10' : 'border-dark-border hover:border-eva-purple' %>">
+          <div class="p-6 rounded-lg border-2 transition-all duration-200 <%= current_user.theme == 'light' ? 'border-primary bg-primary/10' : 'border-dark-border hover:border-primary' %>">
             <!-- Preview -->
-            <div class="mb-4 p-4 bg-eva00-white border border-eva00-blue/30 rounded">
+            <div class="mb-4 p-4 bg-white border border-light-border rounded">
               <div class="flex items-center space-x-2 mb-3">
-                <div class="w-3 h-3 bg-eva00-blue rounded-full"></div>
-                <div class="w-3 h-3 bg-eva00-orange rounded-full"></div>
-                <div class="w-3 h-3 bg-eva00-blue-dark rounded-full"></div>
+                <div class="w-3 h-3 bg-primary rounded-full"></div>
+                <div class="w-3 h-3 bg-status-warning rounded-full"></div>
+                <div class="w-3 h-3 bg-accent rounded-full"></div>
               </div>
               <div class="space-y-2">
-                <div class="h-2 w-3/4 bg-eva00-blue/50 rounded"></div>
-                <div class="h-2 w-1/2 bg-eva00-gray/30 rounded"></div>
-                <div class="h-2 w-2/3 bg-eva00-orange/50 rounded"></div>
+                <div class="h-2 w-3/4 bg-primary/50 rounded"></div>
+                <div class="h-2 w-1/2 bg-light-gray/30 rounded"></div>
+                <div class="h-2 w-2/3 bg-status-warning/50 rounded"></div>
               </div>
             </div>
 
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="text-lg font-mono text-theme-primary uppercase tracking-wider">EVA-00 UNIT</h3>
-                <p class="text-xs font-mono text-theme-secondary mt-1">Rei's Unit - Blue, White & Orange</p>
-                <p class="text-[10px] font-mono text-eva00-blue mt-1">LIGHT INTERFACE</p>
+                <h3 class="text-lg font-mono text-theme-primary uppercase tracking-wider">Light Mode</h3>
+                <p class="text-xs font-mono text-theme-secondary mt-1">Clean light interface</p>
               </div>
               <% if current_user.theme == 'light' %>
-                <span class="px-3 py-1 bg-eva00-blue/20 text-eva00-blue text-xs font-mono uppercase border border-eva00-blue rounded">
+                <span class="px-3 py-1 bg-primary/20 text-primary text-xs font-mono uppercase border border-primary rounded">
                   Active
                 </span>
               <% end %>

@@ -1,11 +1,11 @@
 <% content_for :page_title, "MODIFY TEMPLATE" %>
 
 <% content_for :breadcrumbs do %>
-  <%= link_to @project.name, project_path(@project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
-  <span class="text-terminal-red mx-2">/</span>
-  <%= link_to "Templates", project_test_case_templates_path(@project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
-  <span class="text-terminal-red mx-2">/</span>
-  <span class="text-terminal-gray"><%= @template.name %></span>
+  <%= link_to @project.name, project_path(@project), class: "text-primary hover:text-primary/80" %>
+  <span class="text-status-error mx-2">/</span>
+  <%= link_to "Templates", project_test_case_templates_path(@project), class: "text-primary hover:text-primary/80" %>
+  <span class="text-status-error mx-2">/</span>
+  <span class="text-text-muted"><%= @template.name %></span>
 <% end %>
 
 <div class="max-w-3xl">

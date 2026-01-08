@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   enum role: { tester: 0, manager: 1, admin: 2 }
 
-  THEMES = %w[nerv light].freeze
+  THEMES = %w[dark light].freeze
   validates :theme, inclusion: { in: THEMES }
 
   has_many :projects # Proiecte create de utilizator

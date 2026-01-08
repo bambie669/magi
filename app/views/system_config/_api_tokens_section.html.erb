@@ -1,20 +1,20 @@
 <div class="space-y-6">
   <!-- New Token Display (shown only once after creation) -->
   <% if flash[:new_token].present? %>
-    <div class="nerv-panel border-terminal-green">
-      <div class="nerv-panel-header bg-terminal-green/20">
-        <span class="text-terminal-green">NEW TOKEN GENERATED - COPY NOW</span>
+    <div class="panel border-status-success">
+      <div class="panel-header bg-status-success/20">
+        <span class="text-status-success">NEW TOKEN GENERATED - COPY NOW</span>
       </div>
       <div class="p-4 space-y-4">
-        <div class="bg-nerv-black p-4 border border-terminal-green/50 rounded">
+        <div class="bg-dark-base p-4 border border-status-success/50 rounded">
           <div class="flex items-center justify-between">
-            <code class="text-terminal-green font-mono text-sm break-all select-all" id="new-token-value"><%= flash[:new_token] %></code>
-            <button onclick="copyToken()" class="ml-4 px-3 py-1 text-xs font-mono uppercase bg-terminal-green/20 text-terminal-green border border-terminal-green/50 hover:bg-terminal-green/30 transition-colors">
+            <code class="text-status-success font-mono text-sm break-all select-all" id="new-token-value"><%= flash[:new_token] %></code>
+            <button onclick="copyToken()" class="ml-4 px-3 py-1 text-xs font-mono uppercase bg-status-success/20 text-status-success border border-status-success/50 hover:bg-status-success/30 transition-colors">
               Copy
             </button>
           </div>
         </div>
-        <p class="text-terminal-amber text-xs font-mono">
+        <p class="text-status-warning text-xs font-mono">
           WARNING: This token will not be displayed again. Store it securely.
         </p>
       </div>
@@ -22,15 +22,15 @@
   <% end %>
 
   <!-- Create New Token -->
-  <div class="nerv-panel">
-    <div class="nerv-panel-header">
-      <span>INITIALIZE NEW API TOKEN</span>
+  <div class="panel">
+    <div class="panel-header">
+      <span>Create New API Token</span>
     </div>
     <div class="p-4">
       <%= form_with model: @new_api_token, url: create_api_token_path, method: :post, class: "space-y-4" do |f| %>
         <% if @new_api_token&.errors&.any? %>
-          <div class="bg-terminal-red/10 border border-terminal-red/50 p-3 rounded">
-            <ul class="list-disc list-inside text-terminal-red text-sm font-mono">
+          <div class="bg-status-error/10 border border-status-error/50 p-3 rounded">
+            <ul class="list-disc list-inside text-status-error text-sm font-mono">
               <% @new_api_token.errors.full_messages.each do |msg| %>
                 <li><%= msg %></li>
               <% end %>
@@ -40,76 +40,76 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-mono uppercase text-terminal-gray mb-2">Token Designation</label>
-            <%= f.text_field :name, class: "input-nerv w-full", placeholder: "e.g., Cypress Integration" %>
+            <label class="block text-xs font-mono uppercase text-text-muted mb-2">Token Name</label>
+            <%= f.text_field :name, class: "input-field w-full", placeholder: "e.g., Cypress Integration" %>
           </div>
           <div>
-            <label class="block text-xs font-mono uppercase text-terminal-gray mb-2">Expiration (Optional)</label>
-            <%= f.datetime_local_field :expires_at, class: "input-nerv w-full" %>
+            <label class="block text-xs font-mono uppercase text-text-muted mb-2">Expiration (Optional)</label>
+            <%= f.datetime_local_field :expires_at, class: "input-field w-full" %>
           </div>
         </div>
 
         <div class="flex justify-end">
-          <%= f.submit "INITIALIZE TOKEN", class: "btn-nerv" %>
+          <%= f.submit "Create Token", class: "btn-secondary" %>
         </div>
       <% end %>
     </div>
   </div>
 
   <!-- Existing Tokens -->
-  <div class="nerv-panel">
-    <div class="nerv-panel-header">
-      <span>ACTIVE API TOKENS</span>
-      <span class="text-xs text-terminal-gray"><%= @api_tokens&.count || 0 %> TOKEN(S)</span>
+  <div class="panel">
+    <div class="panel-header">
+      <span>Active API Tokens</span>
+      <span class="text-xs text-text-muted"><%= @api_tokens&.count || 0 %> token(s)</span>
     </div>
     <div class="p-4">
       <% if @api_tokens.blank? || @api_tokens.empty? %>
         <div class="text-center py-8">
-          <div class="text-terminal-gray font-mono text-sm">NO ACTIVE TOKENS</div>
-          <div class="text-terminal-gray/50 font-mono text-xs mt-2">Initialize a new token to enable API access</div>
+          <div class="text-text-muted font-mono text-sm">No active tokens</div>
+          <div class="text-text-muted/50 font-mono text-xs mt-2">Create a new token to enable API access</div>
         </div>
       <% else %>
         <div class="overflow-x-auto">
-          <table class="nerv-table w-full">
+          <table class="table-dark w-full">
             <thead>
               <tr>
-                <th class="text-left">DESIGNATION</th>
-                <th class="text-left">TOKEN PREFIX</th>
-                <th class="text-left">CREATED</th>
-                <th class="text-left">LAST USED</th>
-                <th class="text-left">EXPIRES</th>
-                <th class="text-left">STATUS</th>
-                <th class="text-right">ACTIONS</th>
+                <th class="text-left">Name</th>
+                <th class="text-left">Token Prefix</th>
+                <th class="text-left">Created</th>
+                <th class="text-left">Last Used</th>
+                <th class="text-left">Expires</th>
+                <th class="text-left">Status</th>
+                <th class="text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
               <% @api_tokens.each do |token| %>
                 <tr class="<%= token.expired? ? 'opacity-50' : '' %>">
-                  <td class="font-mono text-terminal-white"><%= token.name %></td>
-                  <td class="font-mono text-terminal-cyan"><%= token.token[0..7] %>...</td>
-                  <td class="font-mono text-terminal-gray text-xs"><%= token.created_at.strftime('%Y.%m.%d') %></td>
-                  <td class="font-mono text-terminal-gray text-xs">
+                  <td class="font-mono text-text-primary"><%= token.name %></td>
+                  <td class="font-mono text-primary"><%= token.token[0..7] %>...</td>
+                  <td class="font-mono text-text-muted text-xs"><%= token.created_at.strftime('%Y.%m.%d') %></td>
+                  <td class="font-mono text-text-muted text-xs">
                     <%= token.last_used_at ? token.last_used_at.strftime('%Y.%m.%d %H:%M') : 'NEVER' %>
                   </td>
-                  <td class="font-mono text-terminal-gray text-xs">
+                  <td class="font-mono text-text-muted text-xs">
                     <%= token.expires_at ? token.expires_at.strftime('%Y.%m.%d') : 'PERMANENT' %>
                   </td>
                   <td>
                     <% if token.expired? %>
-                      <span class="inline-flex items-center px-2 py-1 text-xs font-mono uppercase bg-terminal-red/20 text-terminal-red border border-terminal-red/30 rounded">
+                      <span class="inline-flex items-center px-2 py-1 text-xs font-mono uppercase bg-status-error/20 text-status-error border border-status-error/30 rounded">
                         EXPIRED
                       </span>
                     <% else %>
-                      <span class="inline-flex items-center px-2 py-1 text-xs font-mono uppercase bg-terminal-green/20 text-terminal-green border border-terminal-green/30 rounded">
+                      <span class="inline-flex items-center px-2 py-1 text-xs font-mono uppercase bg-status-success/20 text-status-success border border-status-success/30 rounded">
                         ACTIVE
                       </span>
                     <% end %>
                   </td>
                   <td class="text-right">
                     <%= button_to destroy_api_token_path(token), method: :delete,
-                        class: "px-3 py-1 text-xs font-mono uppercase bg-terminal-red/10 text-terminal-red border border-terminal-red/30 hover:bg-terminal-red/20 transition-colors",
-                        data: { turbo_confirm: "TERMINATE this API token? This action cannot be undone." } do %>
-                      TERMINATE
+                        class: "px-3 py-1 text-xs font-mono uppercase bg-status-error/10 text-status-error border border-status-error/30 hover:bg-status-error/20 transition-colors",
+                        data: { turbo_confirm: "Revoke this API token? This action cannot be undone." } do %>
+                      Revoke
                     <% end %>
                   </td>
                 </tr>
@@ -122,22 +122,22 @@
   </div>
 
   <!-- Usage Instructions -->
-  <div class="nerv-panel">
-    <div class="nerv-panel-header">
-      <span>CYPRESS INTEGRATION PROTOCOL</span>
+  <div class="panel">
+    <div class="panel-header">
+      <span>Cypress Integration Guide</span>
     </div>
     <div class="p-4 space-y-4">
-      <div class="text-sm font-mono text-terminal-gray">
+      <div class="text-sm font-mono text-text-muted">
         <p class="mb-4">To integrate with Cypress, set the following environment variable:</p>
 
-        <div class="bg-nerv-black p-4 border border-terminal-cyan/30 rounded">
-          <code class="text-terminal-cyan">export MAGI_API_TOKEN=your_token_here</code>
+        <div class="bg-dark-base p-4 border border-primary/30 rounded">
+          <code class="text-primary">export MAGI_API_TOKEN=your_token_here</code>
         </div>
 
-        <p class="mt-4 mb-2">Or in your <span class="text-terminal-cyan">cypress.config.js</span>:</p>
+        <p class="mt-4 mb-2">Or in your <span class="text-primary">cypress.config.js</span>:</p>
 
-        <div class="bg-nerv-black p-4 border border-terminal-cyan/30 rounded">
-          <pre class="text-terminal-cyan text-xs">module.exports = defineConfig({
+        <div class="bg-dark-base p-4 border border-primary/30 rounded">
+          <pre class="text-primary text-xs">module.exports = defineConfig({
   env: {
     MAGI_API_TOKEN: process.env.MAGI_API_TOKEN || 'your_token_here',
     MAGI_API_URL: '<%= request.base_url %>/api/v1'
@@ -145,7 +145,7 @@
 });</pre>
         </div>
 
-        <p class="mt-4 text-terminal-amber text-xs">
+        <p class="mt-4 text-status-warning text-xs">
           NOTE: API tokens provide full access to test run operations. Keep them secure.
         </p>
       </div>

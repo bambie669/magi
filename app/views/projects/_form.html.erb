@@ -1,15 +1,15 @@
 <%# locals: (project:) %>
-<div class="nerv-panel">
-  <div class="nerv-panel-header flex items-center justify-between">
+<div class="panel">
+  <div class="panel-header flex items-center justify-between">
     <span><%= project.persisted? ? 'MODIFY MISSION' : 'INITIALIZE MISSION' %></span>
   </div>
 
   <div class="p-6">
     <%= form_with(model: project, class: "space-y-6") do |form| %>
       <% if project.errors.any? %>
-        <div class="p-4 bg-terminal-red/10 border border-terminal-red/50 text-terminal-red font-mono text-sm animate-pulse" role="alert">
+        <div class="p-4 bg-status-error/10 border border-status-error/50 text-status-error font-mono text-sm animate-pulse" role="alert">
           <div class="flex items-center space-x-2 mb-2">
-            <span class="w-2 h-2 bg-terminal-red rounded-full"></span>
+            <span class="w-2 h-2 bg-status-error rounded-full"></span>
             <span class="uppercase tracking-wider text-xs">System Error:</span>
           </div>
           <strong class="font-bold"><%= pluralize(project.errors.count, "error") %> prohibited this mission from being saved:</strong>
@@ -22,19 +22,19 @@
       <% end %>
 
       <div>
-        <%= form.label :name, "Mission Designation", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
-        <%= form.text_field :name, class: "input-nerv w-full px-4 py-3 text-sm", placeholder: "Enter mission designation..." %>
+        <%= form.label :name, "Mission Designation", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
+        <%= form.text_field :name, class: "input-field w-full px-4 py-3 text-sm", placeholder: "Enter mission designation..." %>
       </div>
 
       <div>
-        <%= form.label :description, "Mission Brief", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
-        <%= form.text_area :description, rows: 4, class: "input-nerv w-full px-4 py-3 text-sm resize-none", placeholder: "Describe mission objectives..." %>
-        <p class="mt-1 text-[10px] font-mono text-terminal-gray">Overview of mission scope and objectives</p>
+        <%= form.label :description, "Mission Brief", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
+        <%= form.text_area :description, rows: 4, class: "input-field w-full px-4 py-3 text-sm resize-none", placeholder: "Describe mission objectives..." %>
+        <p class="mt-1 text-[10px] font-mono text-text-muted">Overview of mission scope and objectives</p>
       </div>
 
-      <div class="flex justify-end space-x-3 pt-6 border-t border-terminal-red/20">
-        <%= link_to 'Abort', projects_path, class: "px-4 py-2 bg-nerv-purple-mid border border-terminal-gray-dark text-terminal-gray text-xs font-mono uppercase tracking-wider hover:text-terminal-white transition-colors" %>
-        <%= form.submit project.persisted? ? 'Update Mission' : 'Initialize Mission', class: "btn-nerv-primary cursor-pointer" %>
+      <div class="flex justify-end space-x-3 pt-6 border-t border-status-error/20">
+        <%= link_to 'Abort', projects_path, class: "px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors" %>
+        <%= form.submit project.persisted? ? 'Update Mission' : 'Initialize Mission', class: "btn-primary cursor-pointer" %>
       </div>
     <% end %>
   </div>

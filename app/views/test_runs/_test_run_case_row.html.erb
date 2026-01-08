@@ -4,40 +4,40 @@
   status_config = case status_symbol
                   when :passed
                     {
-                      bg: 'bg-terminal-green/10',
-                      text: 'text-terminal-green',
-                      border: 'border-l-2 border-terminal-green',
-                      dot: 'bg-terminal-green animate-pulse',
-                      label: 'NOMINAL'
+                      bg: 'bg-status-success/10',
+                      text: 'text-status-success',
+                      border: 'border-l-2 border-status-success',
+                      dot: 'bg-status-success animate-pulse',
+                      label: 'Passed'
                     }
                   when :failed
                     {
-                      bg: 'bg-terminal-red/10',
-                      text: 'text-terminal-red',
-                      border: 'border-l-2 border-terminal-red',
-                      dot: 'bg-terminal-red animate-pulse',
-                      label: 'BREACH'
+                      bg: 'bg-status-error/10',
+                      text: 'text-status-error',
+                      border: 'border-l-2 border-status-error',
+                      dot: 'bg-status-error animate-pulse',
+                      label: 'Failed'
                     }
                   when :blocked
                     {
-                      bg: 'bg-terminal-amber/10',
-                      text: 'text-terminal-amber',
-                      border: 'border-l-2 border-terminal-amber',
-                      dot: 'bg-terminal-amber',
-                      label: 'PATTERN BLUE'
+                      bg: 'bg-status-warning/10',
+                      text: 'text-status-warning',
+                      border: 'border-l-2 border-status-warning',
+                      dot: 'bg-status-warning',
+                      label: 'Blocked'
                     }
                   else
                     {
-                      bg: 'bg-nerv-purple-mid',
-                      text: 'text-terminal-gray',
-                      border: 'border-l-2 border-terminal-gray-dark',
-                      dot: 'bg-terminal-gray',
-                      label: 'STANDBY'
+                      bg: 'bg-dark-surface-mid',
+                      text: 'text-text-muted',
+                      border: 'border-l-2 border-text-muted-dark',
+                      dot: 'bg-text-muted',
+                      label: 'Not Run'
                     }
                   end
 %>
 
-<tr id="test_run_case_<%= trc.id %>" class="<%= status_config[:border] %> hover:bg-nerv-purple-mid/50 transition-colors">
+<tr id="test_run_case_<%= trc.id %>" class="<%= status_config[:border] %> hover:bg-dark-surface-mid/50 transition-colors">
   <td class="px-4 py-3">
     <div class="w-3 h-3 rounded-full <%= status_config[:dot] %>"></div>
   </td>
@@ -45,28 +45,28 @@
     <div class="flex flex-col">
       <div class="flex items-center gap-2">
         <% if test_case.cypress_id.present? %>
-          <span class="px-2 py-0.5 bg-terminal-cyan/10 border border-terminal-cyan/30 text-[10px] font-mono text-terminal-cyan uppercase"><%= test_case.cypress_id %></span>
+          <span class="px-2 py-0.5 bg-primary/10 border border-primary/30 text-[10px] font-mono text-primary uppercase"><%= test_case.cypress_id %></span>
         <% end %>
-        <%= link_to test_case.title, test_case_path(test_case), class: "text-sm font-mono text-terminal-white hover:text-terminal-cyan transition-colors", target: "_blank" %>
+        <%= link_to test_case.title, test_case_path(test_case), class: "text-sm font-mono text-text-primary hover:text-primary transition-colors", target: "_blank" %>
       </div>
       <details class="mt-2">
-        <summary class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider cursor-pointer hover:text-terminal-cyan transition-colors">
+        <summary class="text-[10px] font-mono text-text-muted uppercase tracking-wider cursor-pointer hover:text-primary transition-colors">
           &gt; Access Protocol Details
         </summary>
-        <div class="mt-3 p-4 bg-nerv-black/50 border border-terminal-cyan/20 text-xs font-mono space-y-3">
+        <div class="mt-3 p-4 bg-dark-base/50 border border-primary/20 text-xs font-mono space-y-3">
           <% if test_case.preconditions.present? %>
             <div>
-              <span class="text-[10px] text-terminal-amber uppercase tracking-wider">Preconditions:</span>
-              <p class="text-terminal-white/80 whitespace-pre-wrap mt-1"><%= test_case.preconditions %></p>
+              <span class="text-[10px] text-status-warning uppercase tracking-wider">Preconditions:</span>
+              <p class="text-text-primary/80 whitespace-pre-wrap mt-1"><%= test_case.preconditions %></p>
             </div>
           <% end %>
           <div>
-            <span class="text-[10px] text-terminal-amber uppercase tracking-wider">Execution Steps:</span>
-            <p class="text-terminal-white/80 whitespace-pre-wrap mt-1"><%= test_case.steps %></p>
+            <span class="text-[10px] text-status-warning uppercase tracking-wider">Execution Steps:</span>
+            <p class="text-text-primary/80 whitespace-pre-wrap mt-1"><%= test_case.steps %></p>
           </div>
           <div>
-            <span class="text-[10px] text-terminal-amber uppercase tracking-wider">Expected Result:</span>
-            <p class="text-terminal-cyan whitespace-pre-wrap mt-1"><%= test_case.expected_result %></p>
+            <span class="text-[10px] text-status-warning uppercase tracking-wider">Expected Result:</span>
+            <p class="text-primary whitespace-pre-wrap mt-1"><%= test_case.expected_result %></p>
           </div>
         </div>
       </details>
@@ -74,26 +74,26 @@
   </td>
   <td class="px-4 py-3">
     <div class="flex items-center gap-1" data-trc-id="<%= trc.id %>">
-      <button type="button" onclick="updateStatus(<%= trc.id %>, 'passed')" title="Pass" class="w-7 h-7 flex items-center justify-center border transition-colors <%= status_symbol == :passed ? 'bg-terminal-green/20 border-terminal-green text-terminal-green' : 'border-terminal-gray-dark/50 text-terminal-gray hover:border-terminal-green hover:text-terminal-green' %>">
+      <button type="button" onclick="updateStatus(<%= trc.id %>, 'passed')" title="Pass" class="w-7 h-7 flex items-center justify-center border transition-colors <%= status_symbol == :passed ? 'bg-status-success/20 border-status-success text-status-success' : 'border-text-muted-dark/50 text-text-muted hover:border-status-success hover:text-status-success' %>">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
       </button>
-      <button type="button" onclick="updateStatus(<%= trc.id %>, 'failed')" title="Fail" class="w-7 h-7 flex items-center justify-center border transition-colors <%= status_symbol == :failed ? 'bg-terminal-red/20 border-terminal-red text-terminal-red' : 'border-terminal-gray-dark/50 text-terminal-gray hover:border-terminal-red hover:text-terminal-red' %>">
+      <button type="button" onclick="updateStatus(<%= trc.id %>, 'failed')" title="Fail" class="w-7 h-7 flex items-center justify-center border transition-colors <%= status_symbol == :failed ? 'bg-status-error/20 border-status-error text-status-error' : 'border-text-muted-dark/50 text-text-muted hover:border-status-error hover:text-status-error' %>">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
-      <button type="button" onclick="updateStatus(<%= trc.id %>, 'blocked')" title="Blocked" class="w-7 h-7 flex items-center justify-center border transition-colors <%= status_symbol == :blocked ? 'bg-terminal-amber/20 border-terminal-amber text-terminal-amber' : 'border-terminal-gray-dark/50 text-terminal-gray hover:border-terminal-amber hover:text-terminal-amber' %>">
+      <button type="button" onclick="updateStatus(<%= trc.id %>, 'blocked')" title="Blocked" class="w-7 h-7 flex items-center justify-center border transition-colors <%= status_symbol == :blocked ? 'bg-status-warning/20 border-status-warning text-status-warning' : 'border-text-muted-dark/50 text-text-muted hover:border-status-warning hover:text-status-warning' %>">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
       </button>
-      <button type="button" onclick="updateStatus(<%= trc.id %>, 'untested')" title="Reset" class="w-7 h-7 flex items-center justify-center border transition-colors <%= status_symbol == :untested ? 'bg-terminal-gray/20 border-terminal-gray text-terminal-gray' : 'border-terminal-gray-dark/50 text-terminal-gray hover:border-terminal-white hover:text-terminal-white' %>">
+      <button type="button" onclick="updateStatus(<%= trc.id %>, 'untested')" title="Reset" class="w-7 h-7 flex items-center justify-center border transition-colors <%= status_symbol == :untested ? 'bg-text-muted/20 border-text-muted text-text-muted' : 'border-text-muted-dark/50 text-text-muted hover:border-text-primary hover:text-text-primary' %>">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
       </button>
     </div>
   </td>
-  <td class="px-4 py-3 text-sm font-mono text-terminal-gray">
+  <td class="px-4 py-3 text-sm font-mono text-text-muted">
     <%= trc.user&.display_name || 'Unassigned' %>
   </td>
   <td class="px-4 py-3">
     <div class="flex justify-end">
-      <button onclick="document.getElementById('form_<%= trc.id %>').classList.toggle('hidden')" class="p-2 border border-terminal-cyan/30 text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors">
+      <button onclick="document.getElementById('form_<%= trc.id %>').classList.toggle('hidden')" class="p-2 border border-primary/30 text-primary hover:bg-primary/10 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
         </svg>
@@ -103,31 +103,31 @@
 </tr>
 
 <!-- Expandable Form Row -->
-<tr id="form_<%= trc.id %>" class="hidden bg-nerv-black/50">
-  <td colspan="5" class="px-4 py-4 border-t border-terminal-cyan/20">
+<tr id="form_<%= trc.id %>" class="hidden bg-dark-base/50">
+  <td colspan="5" class="px-4 py-4 border-t border-primary/20">
     <%= form_with(model: trc, url: test_run_case_path(trc), method: :patch, data: { turbo: false }, class: "space-y-4") do |form| %>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <%= form.label :status, "Status Override", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
+          <%= form.label :status, "Status Override", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
           <%= form.select :status, TestRunCase.statuses.keys.map { |s|
             label = case s
-                    when 'passed' then 'NOMINAL'
-                    when 'failed' then 'BREACH'
-                    when 'blocked' then 'PATTERN BLUE'
-                    else 'STANDBY'
+                    when 'passed' then 'Passed'
+                    when 'failed' then 'Failed'
+                    when 'blocked' then 'Blocked'
+                    else 'Not Run'
                     end
             [label, s]
-          }, {}, { class: "input-nerv w-full px-3 py-2 text-sm" } %>
+          }, {}, { class: "input-field w-full px-3 py-2 text-sm" } %>
         </div>
         <div class="md:col-span-2">
-          <%= form.label :comments, "Operation Log", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
-          <%= form.text_area :comments, rows: 2, placeholder: "Enter operation notes...", class: "input-nerv w-full px-3 py-2 text-sm resize-none" %>
+          <%= form.label :comments, "Operation Log", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
+          <%= form.text_area :comments, rows: 2, placeholder: "Enter operation notes...", class: "input-field w-full px-3 py-2 text-sm resize-none" %>
         </div>
       </div>
 
       <div>
-        <%= form.label :attachments, "Evidence Files", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
-        <%= form.file_field :attachments, multiple: true, class: "block w-full text-sm text-terminal-gray file:mr-4 file:py-2 file:px-4 file:border file:border-terminal-cyan/30 file:text-xs file:font-mono file:uppercase file:tracking-wider file:bg-nerv-purple-mid file:text-terminal-cyan hover:file:bg-terminal-cyan/10 file:cursor-pointer" %>
+        <%= form.label :attachments, "Evidence Files", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
+        <%= form.file_field :attachments, multiple: true, class: "block w-full text-sm text-text-muted file:mr-4 file:py-2 file:px-4 file:border file:border-primary/30 file:text-xs file:font-mono file:uppercase file:tracking-wider file:bg-dark-surface-mid file:text-primary hover:file:bg-primary/10 file:cursor-pointer" %>
 
         <% if trc.attachments.attached? %>
           <%
@@ -137,7 +137,7 @@
 
           <% if images.any? %>
             <div class="mt-3" data-controller="lightbox" data-lightbox-images-value="<%= images.map.with_index { |img, i| { url: url_for(img), caption: img.filename.to_s } }.to_json %>">
-              <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mb-2">Image Evidence</p>
+              <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mb-2">Image Evidence</p>
               <div class="flex flex-wrap gap-2">
                 <% images.each_with_index do |attachment, index| %>
                   <button type="button"
@@ -145,10 +145,10 @@
                           data-lightbox-url="<%= url_for(attachment) %>"
                           data-lightbox-caption="<%= attachment.filename %>"
                           data-lightbox-index="<%= index %>"
-                          class="relative group w-16 h-16 border border-terminal-cyan/30 overflow-hidden hover:border-terminal-cyan transition-colors">
+                          class="relative group w-16 h-16 border border-primary/30 overflow-hidden hover:border-primary transition-colors">
                     <%= image_tag url_for(attachment.variant(resize_to_fill: [64, 64])), class: "w-full h-full object-cover", alt: attachment.filename %>
-                    <div class="absolute inset-0 bg-nerv-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <svg class="w-5 h-5 text-terminal-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="absolute inset-0 bg-dark-base/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/>
                       </svg>
                     </div>
@@ -157,20 +157,20 @@
               </div>
 
               <!-- Lightbox Modal -->
-              <div data-lightbox-target="modal" class="hidden fixed inset-0 z-50 bg-nerv-black/95 flex items-center justify-center" data-action="click->lightbox#closeOnBackdrop">
-                <button data-action="click->lightbox#close" class="absolute top-4 right-4 p-2 text-terminal-gray hover:text-terminal-white transition-colors">
+              <div data-lightbox-target="modal" class="hidden fixed inset-0 z-50 bg-dark-base/95 flex items-center justify-center" data-action="click->lightbox#closeOnBackdrop">
+                <button data-action="click->lightbox#close" class="absolute top-4 right-4 p-2 text-text-muted hover:text-text-primary transition-colors">
                   <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                   </svg>
                 </button>
 
                 <% if images.size > 1 %>
-                  <button data-action="click->lightbox#previous" class="absolute left-4 p-2 text-terminal-gray hover:text-terminal-cyan transition-colors">
+                  <button data-action="click->lightbox#previous" class="absolute left-4 p-2 text-text-muted hover:text-primary transition-colors">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                     </svg>
                   </button>
-                  <button data-action="click->lightbox#next" class="absolute right-16 p-2 text-terminal-gray hover:text-terminal-cyan transition-colors">
+                  <button data-action="click->lightbox#next" class="absolute right-16 p-2 text-text-muted hover:text-primary transition-colors">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
@@ -178,10 +178,10 @@
                 <% end %>
 
                 <div class="max-w-4xl max-h-[80vh] flex flex-col items-center">
-                  <img data-lightbox-target="image" src="" alt="" class="max-w-full max-h-[70vh] object-contain border border-terminal-cyan/30">
+                  <img data-lightbox-target="image" src="" alt="" class="max-w-full max-h-[70vh] object-contain border border-primary/30">
                   <div class="mt-4 text-center">
-                    <p data-lightbox-target="caption" class="text-sm font-mono text-terminal-white"></p>
-                    <p data-lightbox-target="counter" class="hidden text-[10px] font-mono text-terminal-gray mt-1"></p>
+                    <p data-lightbox-target="caption" class="text-sm font-mono text-text-primary"></p>
+                    <p data-lightbox-target="counter" class="hidden text-[10px] font-mono text-text-muted mt-1"></p>
                   </div>
                 </div>
               </div>
@@ -190,11 +190,11 @@
 
           <% if other_files.any? %>
             <div class="mt-3">
-              <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mb-2">Other Files</p>
+              <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mb-2">Other Files</p>
               <div class="flex flex-wrap gap-2">
                 <% other_files.each do |attachment| %>
-                  <%= link_to url_for(attachment), target: "_blank", class: "inline-flex items-center px-3 py-1 bg-nerv-purple-mid border border-terminal-cyan/20 text-xs font-mono text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors" do %>
-                    <svg class="w-4 h-4 mr-2 text-terminal-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <%= link_to url_for(attachment), target: "_blank", class: "inline-flex items-center px-3 py-1 bg-dark-surface-mid border border-primary/20 text-xs font-mono text-primary hover:bg-primary/10 transition-colors" do %>
+                    <svg class="w-4 h-4 mr-2 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
                     </svg>
                     <%= attachment.filename %>
@@ -206,11 +206,11 @@
         <% end %>
       </div>
 
-      <div class="flex justify-end space-x-3 pt-4 border-t border-terminal-red/20">
-        <button type="button" onclick="document.getElementById('form_<%= trc.id %>').classList.add('hidden')" class="px-4 py-2 bg-nerv-purple-mid border border-terminal-gray-dark text-terminal-gray text-xs font-mono uppercase tracking-wider hover:text-terminal-white transition-colors">
+      <div class="flex justify-end space-x-3 pt-4 border-t border-status-error/20">
+        <button type="button" onclick="document.getElementById('form_<%= trc.id %>').classList.add('hidden')" class="px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors">
           Cancel
         </button>
-        <%= form.submit 'Execute Update', class: "px-4 py-2 bg-terminal-cyan/10 border border-terminal-cyan text-terminal-cyan text-xs font-mono uppercase tracking-wider hover:bg-terminal-cyan/20 transition-colors cursor-pointer" %>
+        <%= form.submit 'Execute Update', class: "px-4 py-2 bg-primary/10 border border-primary text-primary text-xs font-mono uppercase tracking-wider hover:bg-primary/20 transition-colors cursor-pointer" %>
       </div>
     <% end %>
   </td>

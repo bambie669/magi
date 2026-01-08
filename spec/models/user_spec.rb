@@ -9,8 +9,8 @@ RSpec.describe User, type: :model do
     describe "theme validation" do
       it { should validate_inclusion_of(:theme).in_array(User::THEMES) }
 
-      it "accepts 'nerv' theme" do
-        user = build(:user, theme: 'nerv')
+      it "accepts 'dark' theme" do
+        user = build(:user, theme: 'dark')
         expect(user).to be_valid
       end
 
@@ -45,15 +45,15 @@ RSpec.describe User, type: :model do
       expect(user.tester?).to be true
     end
 
-    it "defaults theme to 'nerv'" do
+    it "defaults theme to 'dark'" do
       user = create(:user)
-      expect(user.theme).to eq("nerv")
+      expect(user.theme).to eq("dark")
     end
   end
 
   describe "constants" do
     it "defines available themes" do
-      expect(User::THEMES).to eq(%w[nerv light])
+      expect(User::THEMES).to eq(%w[dark light])
     end
   end
 

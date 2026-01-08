@@ -58,26 +58,26 @@ RSpec.describe Notification, type: :model do
   end
 
   describe '#type_label' do
-    it 'returns OPERATION COMPLETE for test_run_completed' do
+    it 'returns Test Run Complete for test_run_completed' do
       notification = build(:notification, notification_type: 'test_run_completed')
-      expect(notification.type_label).to eq('OPERATION COMPLETE')
+      expect(notification.type_label).to eq('Test Run Complete')
     end
 
-    it 'returns BREACH DETECTED for test_case_failed' do
+    it 'returns Test Failed for test_case_failed' do
       notification = build(:notification, notification_type: 'test_case_failed')
-      expect(notification.type_label).to eq('BREACH DETECTED')
+      expect(notification.type_label).to eq('Test Failed')
     end
   end
 
   describe '#type_class' do
-    it 'returns terminal-green for test_run_completed' do
+    it 'returns status-success for test_run_completed' do
       notification = build(:notification, notification_type: 'test_run_completed')
-      expect(notification.type_class).to eq('text-terminal-green')
+      expect(notification.type_class).to eq('text-status-success')
     end
 
-    it 'returns terminal-red for test_case_failed' do
+    it 'returns status-error for test_case_failed' do
       notification = build(:notification, notification_type: 'test_case_failed')
-      expect(notification.type_class).to eq('text-terminal-red')
+      expect(notification.type_class).to eq('text-status-error')
     end
   end
 end

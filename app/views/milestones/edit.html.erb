@@ -1,9 +1,9 @@
 <% content_for :page_title, "MODIFY DEADLINE" %>
 
 <% content_for :breadcrumbs do %>
-  <%= link_to @milestone.project.name, project_path(@milestone.project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
-  <span class="text-terminal-red mx-2">/</span>
-  <span class="text-terminal-gray">Modify Deadline</span>
+  <%= link_to @milestone.project.name, project_path(@milestone.project), class: "text-primary hover:text-primary/80" %>
+  <span class="text-status-error mx-2">/</span>
+  <span class="text-text-muted">Modify Deadline</span>
 <% end %>
 
 <div class="max-w-4xl mx-auto">

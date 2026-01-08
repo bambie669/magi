@@ -23,7 +23,7 @@ RSpec.describe "Search", type: :request do
 
         it "shows empty state" do
           get search_path
-          expect(response.body).to include("MAGI Database Scanner Ready")
+          expect(response.body).to include("Enter a search query")
         end
       end
 
@@ -81,7 +81,7 @@ RSpec.describe "Search", type: :request do
         context "with whitespace query" do
           it "handles empty trimmed query" do
             get search_path, params: { q: "   " }
-            expect(response.body).to include("MAGI Database Scanner Ready")
+            expect(response.body).to include("Enter a search query")
           end
         end
       end

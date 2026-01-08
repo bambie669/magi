@@ -1,11 +1,11 @@
 <% content_for :page_title, "INITIALIZE PROTOCOL" %>
 
 <% content_for :breadcrumbs do %>
-  <%= link_to @test_suite.project.name, project_path(@test_suite.project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
-  <span class="text-terminal-red mx-2">/</span>
-  <%= link_to @test_suite.name, test_suite_path(@test_suite), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
-  <span class="text-terminal-red mx-2">/</span>
-  <span class="text-terminal-gray">Initialize Protocol</span>
+  <%= link_to @test_suite.project.name, project_path(@test_suite.project), class: "text-primary hover:text-primary/80" %>
+  <span class="text-status-error mx-2">/</span>
+  <%= link_to @test_suite.name, test_suite_path(@test_suite), class: "text-primary hover:text-primary/80" %>
+  <span class="text-status-error mx-2">/</span>
+  <span class="text-text-muted">Initialize Protocol</span>
 <% end %>
 
 <div class="max-w-4xl mx-auto">

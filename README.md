@@ -1,4 +1,4 @@
-# MAGI QA System
+# MAGI QA
 
 <div align="center">
 
@@ -9,12 +9,10 @@
     ██║╚██╔╝██║██╔══██║██║   ██║██║
     ██║ ╚═╝ ██║██║  ██║╚██████╔╝██║
     ╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝
-         QA SYSTEM v1.0
+         Test Management System
 ```
 
-**"GOD'S IN HIS HEAVEN. ALL'S RIGHT WITH THE WORLD."**
-
-*A NERV-themed Test Management System inspired by Neon Genesis Evangelion*
+*A comprehensive test management platform for software QA teams*
 
 </div>
 
@@ -22,40 +20,40 @@
 
 ## Overview
 
-MAGI QA is a comprehensive test management web application built with Ruby on Rails. It features a unique **NERV Command Center** aesthetic with two themes inspired by Evangelion units:
+MAGI QA is a web-based test management application built with Ruby on Rails. It provides a professional interface for organizing, executing, and tracking software testing activities.
 
-- **EVA-01 (Dark Theme)** - Shinji's Unit: Purple & Green
-- **EVA-00 (Light Theme)** - Rei's Unit: Blue, White & Orange
+- **Dark Mode** - Professional dark interface (default)
+- **Light Mode** - Clean light interface
 
 ## Features
 
 ### Core Functionality
 
-| Feature | NERV Terminology | Description |
-|---------|------------------|-------------|
-| **Projects** | Missions | Organize testing by project/product |
-| **Test Suites** | Protocol Banks | Group related test cases |
-| **Test Cases** | Protocols | Individual test specifications |
-| **Test Runs** | Operations | Execute tests and track results |
-| **Milestones** | Mission Deadlines | Track project milestones |
+| Feature | Description |
+|---------|-------------|
+| **Projects** | Organize testing by project/product |
+| **Test Suites** | Group related test cases |
+| **Test Cases** | Individual test specifications |
+| **Test Runs** | Execute tests and track results |
+| **Milestones** | Track project milestones and deadlines |
 
 ### Additional Features
 
 - **Global Search** - Search across all entities (projects, suites, cases, runs)
-- **Analysis Dashboard** - Comprehensive statistics and MAGI consensus reports
-- **User Management** - Role-based access (Admin, Tester)
-- **Theme Switching** - Toggle between EVA-01 (dark) and EVA-00 (light) themes
+- **Analysis Dashboard** - Comprehensive statistics and quality reports
+- **User Management** - Role-based access (Admin, Manager, Tester)
+- **Theme Switching** - Toggle between dark and light themes
 - **API Integration** - REST API for Cypress and external tool integration
-- **CSV Import/Export** - Bulk import/export test cases
+- **CSV/Excel Import/Export** - Bulk import/export test cases
 
-### Status Terminology
+### Test Status Types
 
-| Standard Term | NERV Term | Color |
-|--------------|-----------|-------|
-| Passed | NOMINAL | Green |
-| Failed | BREACH | Red |
-| Blocked | PATTERN BLUE | Amber |
-| Untested | STANDBY | Gray |
+| Status | Color | Description |
+|--------|-------|-------------|
+| Passed | Green | Test executed successfully |
+| Failed | Red | Test failed with errors |
+| Blocked | Amber | Test blocked by dependencies |
+| Not Run | Gray | Test not yet executed |
 
 ---
 
@@ -120,7 +118,7 @@ rails console
 
 ```ruby
 User.create!(
-  email: 'commander@nerv.org',
+  email: 'admin@company.com',
   password: 'password123',
   password_confirmation: 'password123',
   role: :admin
@@ -137,21 +135,21 @@ magi/
 │   ├── controllers/
 │   │   ├── analysis_controller.rb    # Statistics & reports
 │   │   ├── dashboard_controller.rb   # Main dashboard
-│   │   ├── projects_controller.rb    # Mission management
+│   │   ├── projects_controller.rb    # Project management
 │   │   ├── search_controller.rb      # Global search
 │   │   ├── system_config_controller.rb # Settings & users
-│   │   ├── test_cases_controller.rb  # Protocol management
-│   │   ├── test_runs_controller.rb   # Operation execution
-│   │   └── test_suites_controller.rb # Protocol bank mgmt
+│   │   ├── test_cases_controller.rb  # Test case management
+│   │   ├── test_runs_controller.rb   # Test run execution
+│   │   └── test_suites_controller.rb # Test suite management
 │   ├── models/
-│   │   ├── user.rb                   # Operators
-│   │   ├── project.rb                # Missions
-│   │   ├── test_suite.rb             # Protocol Banks
+│   │   ├── user.rb                   # Users
+│   │   ├── project.rb                # Projects
+│   │   ├── test_suite.rb             # Test Suites
 │   │   ├── test_scope.rb             # Test organization
-│   │   ├── test_case.rb              # Protocols
-│   │   ├── test_run.rb               # Operations
+│   │   ├── test_case.rb              # Test Cases
+│   │   ├── test_run.rb               # Test Runs
 │   │   ├── test_run_case.rb          # Execution results
-│   │   └── milestone.rb              # Deadlines
+│   │   └── milestone.rb              # Milestones
 │   ├── policies/                     # Pundit authorization
 │   ├── views/
 │   │   ├── layouts/application.html.erb
@@ -165,7 +163,7 @@ magi/
 │           └── application.css       # Tailwind v4 config
 ├── config/
 │   ├── routes.rb
-│   └── tailwind.config.js            # (legacy, not used in v4)
+│   └── tailwind.config.js
 ├── db/
 │   ├── migrate/
 │   └── schema.rb
@@ -186,21 +184,21 @@ magi/
 ## Domain Model
 
 ```
-User (Operator)
-├── role: [admin, tester]
-└── theme: [nerv, light]
+User
+├── role: [admin, manager, tester]
+└── theme: [dark, light]
 
-Project (Mission)
+Project
 ├── owner: User
-├── Milestones (Deadlines)
-├── TestSuites (Protocol Banks)
+├── Milestones
+├── TestSuites
 │   └── TestScopes (hierarchical organization)
-│       └── TestCases (Protocols)
+│       └── TestCases
 │           ├── title
 │           ├── preconditions
 │           ├── steps
 │           └── expected_result
-└── TestRuns (Operations)
+└── TestRuns
     └── TestRunCases (Execution Results)
         ├── status: [passed, failed, blocked, untested]
         ├── comments
@@ -219,7 +217,7 @@ API requests require a valid API token in the header:
 Authorization: Bearer <api_token>
 ```
 
-Generate tokens in **System Config > API Tokens**.
+Generate tokens in **Settings > API Tokens**.
 
 ### Endpoints
 
@@ -291,25 +289,25 @@ npx cypress run
 
 ## Themes
 
-### EVA-01 Dark Theme (Default)
+### Dark Mode (Default)
 
-A professional, WCAG AA compliant dark theme inspired by EVA-01:
+A professional dark theme optimized for extended use:
 
-- **Background**: Deep charcoal with purple undertones (`#0C0C10`)
-- **Primary**: Muted purple (`#6B5B95`)
-- **Accent**: Soft green for active states (`#4ADE80`)
-- **Text**: High contrast off-white (`#EAEAF0`)
+- **Background**: Deep slate (`#0F172A`)
+- **Primary**: Blue (`#3B82F6`)
+- **Accent**: Emerald (`#10B981`)
+- **Text**: High contrast off-white
 
-### EVA-00 Light Theme
+### Light Mode
 
-A clean light theme inspired by EVA-00:
+A clean light theme for bright environments:
 
-- **Background**: Soft white/cream (`#F8FAFC`)
-- **Primary**: Sky blue (`#0EA5E9`)
-- **Accent**: Orange highlights (`#F97316`)
-- **Text**: Dark gray (`#475569`)
+- **Background**: Soft white (`#F8FAFC`)
+- **Primary**: Blue (`#2563EB`)
+- **Accent**: Emerald (`#059669`)
+- **Text**: Dark slate
 
-Switch themes in **System Config > Theme**.
+Switch themes in **Settings > Theme**.
 
 ---
 
@@ -337,9 +335,9 @@ Tailwind configuration is in `app/assets/tailwind/application.css` using the `@t
 @import "tailwindcss";
 
 @theme {
-  --color-dark-base: #0C0C10;
-  --color-eva-purple: #6B5B95;
-  --color-eva-green: #4ADE80;
+  --color-dark-base: #0F172A;
+  --color-primary: #3B82F6;
+  --color-accent: #10B981;
   /* ... */
 }
 ```
@@ -364,18 +362,8 @@ This project is licensed under the MIT License.
 
 ---
 
-## Acknowledgments
-
-- Inspired by **Neon Genesis Evangelion** and NERV's command interfaces
-- Built with Ruby on Rails and the amazing Rails community
-- UI components styled with Tailwind CSS
-
----
-
 <div align="center">
 
-**NERV HEADQUARTERS - MAGI QA INTERFACE v1.0**
-
-*"The fate of destruction is also the joy of rebirth."*
+**MAGI QA - Test Management System**
 
 </div>

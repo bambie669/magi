@@ -27,26 +27,26 @@ class Notification < ApplicationRecord
     update(read_at: Time.current) unless read?
   end
 
-  # NERV-style notification labels
+  # Notification type labels
   def type_label
     case notification_type
-    when 'test_run_completed' then 'OPERATION COMPLETE'
-    when 'test_case_failed' then 'BREACH DETECTED'
-    when 'test_run_assigned' then 'DEPLOYMENT ORDER'
-    when 'mention' then 'DIRECT COMM'
-    when 'system_alert' then 'SYSTEM ALERT'
-    else 'NOTIFICATION'
+    when 'test_run_completed' then 'Test Run Complete'
+    when 'test_case_failed' then 'Test Failed'
+    when 'test_run_assigned' then 'Test Run Assigned'
+    when 'mention' then 'Mention'
+    when 'system_alert' then 'System Alert'
+    else 'Notification'
     end
   end
 
   def type_class
     case notification_type
-    when 'test_run_completed' then 'text-terminal-green'
-    when 'test_case_failed' then 'text-terminal-red'
-    when 'test_run_assigned' then 'text-terminal-cyan'
-    when 'mention' then 'text-terminal-amber'
-    when 'system_alert' then 'text-terminal-amber'
-    else 'text-terminal-gray'
+    when 'test_run_completed' then 'text-status-success'
+    when 'test_case_failed' then 'text-status-error'
+    when 'test_run_assigned' then 'text-primary'
+    when 'mention' then 'text-status-warning'
+    when 'system_alert' then 'text-status-warning'
+    else 'text-text-muted'
     end
   end
 end
