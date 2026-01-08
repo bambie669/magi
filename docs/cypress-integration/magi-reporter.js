@@ -18,7 +18,15 @@
  *     env: {
  *       MAGI_API_URL: 'http://localhost:2507',
  *       MAGI_API_TOKEN: 'your_token_here',
- *       MAGI_TEST_RUN_ID: '123'
+ *
+ *       // Option 1: Use existing test run
+ *       MAGI_TEST_RUN_ID: '123',
+ *
+ *       // Option 2: Auto-create test run (use project_id instead of test_run_id)
+ *       MAGI_PROJECT_ID: '15',
+ *       MAGI_RUN_NAME: 'My Custom Run Name',  // Optional, defaults to "Cypress Run - YYYY-MM-DD"
+ *
+ *       MAGI_AUTO_CREATE: true  // Auto-create missing test cases
  *     }
  *   });
  */
@@ -79,6 +87,7 @@ function processResults(runResults) {
 
       const result = {
         cypress_id: cypressId,
+        title: testTitle,
         status: mapStatus(test.state),
         duration_ms: test.duration || 0,
         error_message: null
@@ -102,9 +111,17 @@ async function sendToMagi(results, config) {
   const apiUrl = config.env.MAGI_API_URL || process.env.MAGI_API_URL;
   const apiToken = config.env.MAGI_API_TOKEN || process.env.MAGI_API_TOKEN;
   const testRunId = config.env.MAGI_TEST_RUN_ID || process.env.MAGI_TEST_RUN_ID;
+  const projectId = config.env.MAGI_PROJECT_ID || process.env.MAGI_PROJECT_ID;
+  const runName = config.env.MAGI_RUN_NAME || process.env.MAGI_RUN_NAME;
+  const autoCreate = config.env.MAGI_AUTO_CREATE || process.env.MAGI_AUTO_CREATE;
 
-  if (!apiUrl || !apiToken || !testRunId) {
-    console.error('[Magi] Missing configuration. Required: MAGI_API_URL, MAGI_API_TOKEN, MAGI_TEST_RUN_ID');
+  if (!apiUrl || !apiToken) {
+    console.error('[Magi] Missing configuration. Required: MAGI_API_URL, MAGI_API_TOKEN');
+    return null;
+  }
+
+  if (!testRunId && !projectId) {
+    console.error('[Magi] Missing configuration. Required: MAGI_TEST_RUN_ID or MAGI_PROJECT_ID');
     return null;
   }
 
@@ -113,11 +130,25 @@ async function sendToMagi(results, config) {
     return null;
   }
 
-  const url = new URL(`/api/v1/test_runs/${testRunId}/cypress_results`, apiUrl);
+  // Determine API endpoint based on config
+  let apiPath;
+  if (projectId) {
+    apiPath = `/api/v1/projects/${projectId}/cypress_results`;
+    console.log(`[Magi] Using project mode (Project ID: ${projectId})`);
+  } else {
+    apiPath = `/api/v1/test_runs/${testRunId}/cypress_results`;
+    console.log(`[Magi] Using test run mode (Test Run ID: ${testRunId})`);
+  }
+
+  const url = new URL(apiPath, apiUrl);
   const isHttps = url.protocol === 'https:';
   const httpModule = isHttps ? https : http;
 
-  const requestBody = JSON.stringify({ results });
+  const requestBody = JSON.stringify({
+    results,
+    auto_create: autoCreate === true || autoCreate === 'true',
+    run_name: runName || undefined
+  });
 
   const options = {
     hostname: url.hostname,
@@ -145,7 +176,13 @@ async function sendToMagi(results, config) {
 
           if (res.statusCode === 200) {
             console.log('[Magi] Results sent successfully!');
-            console.log(`[Magi] Summary: ${response.summary.updated} updated, ${response.summary.not_found} not found`);
+
+            if (response.test_run_name) {
+              console.log(`[Magi] Test Run: ${response.test_run_name} (ID: ${response.test_run_id})`);
+            }
+
+            const s = response.summary;
+            console.log(`[Magi] Summary: ${s.updated} updated, ${s.created || 0} created, ${s.not_found} not found`);
 
             if (response.summary.errors && response.summary.errors.length > 0) {
               console.log('[Magi] Errors:');
