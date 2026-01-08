@@ -1011,49 +1011,49 @@ body {
    These override dark-* classes when in light theme
    ===================================================== */
 
-/* Background overrides */
+/* Background overrides - using direct hex values for reliability */
 .theme-light .bg-dark-surface {
-  background-color: var(--color-light-white) !important;
+  background-color: #FFFFFF !important;
 }
 
 .theme-light .bg-dark-base {
-  background-color: var(--color-light-cream) !important;
+  background-color: #F8FAFC !important;
 }
 
 .theme-light .bg-dark-elevated {
-  background-color: var(--color-light-surface) !important;
+  background-color: #F1F5F9 !important;
 }
 
 .theme-light .bg-dark-hover {
-  background-color: var(--color-light-surface) !important;
+  background-color: #F1F5F9 !important;
 }
 
 /* Background with opacity overrides */
 .theme-light .bg-dark-base\/50,
 .theme-light .bg-dark-base\/30,
 .theme-light [class*="bg-dark-base/"] {
-  background-color: var(--color-light-surface) !important;
+  background-color: #F1F5F9 !important;
 }
 
 .theme-light .bg-dark-surface\/50,
 .theme-light .bg-dark-surface\/30,
 .theme-light [class*="bg-dark-surface/"] {
-  background-color: var(--color-light-cream) !important;
+  background-color: #F8FAFC !important;
 }
 
 /* Border overrides */
 .theme-light .border-dark-border {
-  border-color: var(--color-light-border) !important;
+  border-color: #CBD5E1 !important;
 }
 
 .theme-light .border-dark-border-light {
-  border-color: var(--color-light-border-dark) !important;
+  border-color: #94A3B8 !important;
 }
 
 .theme-light [class*="border-dark-border/"],
 .theme-light .border-dark-border\/30,
 .theme-light .border-dark-border\/50 {
-  border-color: var(--color-light-border) !important;
+  border-color: #CBD5E1 !important;
 }
 
 /* Text color overrides - high contrast for accessibility */
@@ -1142,9 +1142,10 @@ body {
   color: #1D4ED8 !important;
 }
 
-/* Fix notification dropdown in light theme */
-.theme-light .bg-dark-surface {
+/* Fix notification dropdown in light theme - add shadow for depth */
+.theme-light [data-notifications-target="dropdown"] {
   background-color: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
