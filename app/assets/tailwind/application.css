@@ -1004,3 +1004,127 @@ body {
     opacity: 0.5;
   }
 }
+
+/* =====================================================
+   LIGHT THEME OVERRIDES FOR INLINE TAILWIND CLASSES
+   These override dark-* classes when in light theme
+   ===================================================== */
+
+/* Background overrides */
+.theme-light .bg-dark-surface {
+  background-color: var(--color-light-white) !important;
+}
+
+.theme-light .bg-dark-base {
+  background-color: var(--color-light-cream) !important;
+}
+
+.theme-light .bg-dark-elevated {
+  background-color: var(--color-light-surface) !important;
+}
+
+.theme-light .bg-dark-hover {
+  background-color: var(--color-light-surface) !important;
+}
+
+/* Background with opacity overrides */
+.theme-light .bg-dark-base\/50,
+.theme-light .bg-dark-base\/30,
+.theme-light [class*="bg-dark-base/"] {
+  background-color: var(--color-light-surface) !important;
+}
+
+.theme-light .bg-dark-surface\/50,
+.theme-light .bg-dark-surface\/30,
+.theme-light [class*="bg-dark-surface/"] {
+  background-color: var(--color-light-cream) !important;
+}
+
+/* Border overrides */
+.theme-light .border-dark-border {
+  border-color: var(--color-light-border) !important;
+}
+
+.theme-light .border-dark-border-light {
+  border-color: var(--color-light-border-dark) !important;
+}
+
+.theme-light [class*="border-dark-border/"],
+.theme-light .border-dark-border\/30,
+.theme-light .border-dark-border\/50 {
+  border-color: var(--color-light-border) !important;
+}
+
+/* Text color overrides */
+.theme-light .text-text-primary {
+  color: var(--color-light-gray-dark) !important;
+}
+
+.theme-light .text-text-secondary {
+  color: var(--color-light-gray) !important;
+}
+
+.theme-light .text-text-muted {
+  color: var(--color-light-gray-light) !important;
+}
+
+.theme-light .text-text-muted\/50 {
+  color: rgba(148, 163, 184, 0.5) !important;
+}
+
+/* Divider overrides */
+.theme-light .bg-dark-border {
+  background-color: var(--color-light-border) !important;
+}
+
+.theme-light [class*="divide-dark-border"] > * + * {
+  border-color: var(--color-light-border) !important;
+}
+
+/* Primary text stays the same but slightly darker in light mode */
+.theme-light .text-primary {
+  color: var(--color-light-primary) !important;
+}
+
+.theme-light .text-primary\/80,
+.theme-light .text-primary\/50,
+.theme-light .text-primary\/30 {
+  color: var(--color-light-primary) !important;
+  opacity: 0.8;
+}
+
+/* Border primary overrides */
+.theme-light .border-primary\/30,
+.theme-light .border-primary\/20 {
+  border-color: rgba(37, 99, 235, 0.3) !important;
+}
+
+/* Hover states for light theme */
+.theme-light .hover\:bg-dark-hover:hover {
+  background-color: var(--color-light-surface) !important;
+}
+
+.theme-light .hover\:border-primary\/30:hover {
+  border-color: var(--color-light-primary) !important;
+}
+
+/* Group hover text */
+.theme-light .group:hover .group-hover\:text-primary {
+  color: var(--color-light-primary) !important;
+}
+
+/* Status error border */
+.theme-light .border-status-error\/20,
+.theme-light .border-status-error\/50 {
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+/* Status warning border */
+.theme-light .border-status-warning\/30 {
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+/* Activity feed items */
+.theme-light [class*="border-l-2"][class*="border-status-"] {
+  background-color: var(--color-light-surface) !important;
+}
