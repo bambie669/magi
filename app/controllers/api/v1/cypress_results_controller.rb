@@ -90,35 +90,45 @@ module Api
       end
 
       # Caută TestCase încercând mai multe formate de cypress_id
-      # Cypress trimite: TC1, TC600, TC285A
-      # DB poate avea: TC001, 600, TC285a
+      # Cypress trimite: TC-0710, TC1, TC600, TC285A
+      # DB poate avea: TC0710, TC001, 600, TC285a
       def find_test_case_by_cypress_id(cypress_id)
         return nil if cypress_id.blank?
 
-        # 1. Încercăm match exact
+        # Normalizează: elimină cratima din TC-XXXX -> TCXXXX
+        normalized_id = cypress_id.to_s.strip.upcase.gsub(/^TC[\s\-]+/i, 'TC')
+
+        # 1. Încercăm match exact cu ID-ul normalizat
+        test_case = TestCase.find_by(cypress_id: normalized_id)
+        return test_case if test_case
+
+        # 2. Încercăm match exact cu ID-ul original
         test_case = TestCase.find_by(cypress_id: cypress_id)
         return test_case if test_case
 
-        # 2. Încercăm fără prefix TC (TC600 -> 600)
-        if cypress_id.match?(/^TC/i)
-          without_prefix = cypress_id.sub(/^TC/i, '')
+        # 3. Încercăm fără prefix TC (TC600 -> 600)
+        if normalized_id.match?(/^TC/i)
+          without_prefix = normalized_id.sub(/^TC/i, '')
           test_case = TestCase.find_by(cypress_id: without_prefix)
           return test_case if test_case
         end
 
-        # 3. Încercăm cu leading zeros (TC1 -> TC001, TC01)
-        if cypress_id.match?(/^TC(\d+)$/i)
-          number = cypress_id.match(/^TC(\d+)$/i)[1]
-          # Încearcă TC001, TC01
-          [3, 2].each do |padding|
-            padded = "TC#{number.rjust(padding, '0')}"
+        # 4. Încercăm cu/fără leading zeros (TC0710 -> TC710, TC1 -> TC001)
+        if normalized_id.match?(/^TC(\d+)$/i)
+          number = normalized_id.match(/^TC(\d+)$/i)[1]
+          # Încearcă fără leading zeros
+          test_case = TestCase.find_by(cypress_id: "TC#{number.to_i}")
+          return test_case if test_case
+          # Încearcă cu diferite padding-uri
+          [4, 3, 2].each do |padding|
+            padded = "TC#{number.to_i.to_s.rjust(padding, '0')}"
             test_case = TestCase.find_by(cypress_id: padded)
             return test_case if test_case
           end
         end
 
-        # 4. Încercăm case insensitive pentru litere (TC285A -> TC285a)
-        test_case = TestCase.where('LOWER(cypress_id) = LOWER(?)', cypress_id).first
+        # 5. Încercăm case insensitive pentru litere (TC285A -> TC285a)
+        test_case = TestCase.where('LOWER(cypress_id) = LOWER(?)', normalized_id).first
         return test_case if test_case
 
         nil
