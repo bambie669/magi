@@ -25,7 +25,7 @@ class TestCasesPdfExporter
 
   def render_header(pdf)
     pdf.font('Helvetica', style: :bold, size: 18) do
-      pdf.text sanitize_text("PROTOCOL BANK: #{@test_suite.name.upcase}"), color: '6B5B95'
+      pdf.text sanitize_text("Test Suite: #{@test_suite.name}"), color: '3B82F6'
     end
 
     pdf.move_down 10

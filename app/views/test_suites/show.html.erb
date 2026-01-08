@@ -1,11 +1,11 @@
 <% project = @test_suite.project %>
 
-<% content_for :page_title, "PROTOCOL BANK: #{@test_suite.name.upcase}" %>
+<% content_for :page_title, "Test Suite: #{@test_suite.name}" %>
 
 <% content_for :breadcrumbs do %>
   <%= link_to project.name, project_path(project), class: "text-primary hover:text-primary/80" %>
   <span class="text-status-error mx-2">/</span>
-  <span class="text-text-muted">Protocol Banks</span>
+  <span class="text-text-muted">Test Suites</span>
 <% end %>
 
 <div class="space-y-6">
@@ -22,7 +22,7 @@
           <% end %>
         <% end %>
         <% if policy(@test_suite).destroy? %>
-          <%= button_to test_suite_path(@test_suite), method: :delete, data: { confirm: 'PURGE ENTIRE PROTOCOL BANK? All protocols will be destroyed.' }, class: "p-1.5 border border-status-error/30 text-status-error hover:bg-status-error/10 transition-colors", title: "Purge Bank" do %>
+          <%= button_to test_suite_path(@test_suite), method: :delete, data: { confirm: 'Delete this test suite? All test cases will be removed.' }, class: "p-1.5 border border-status-error/30 text-status-error hover:bg-status-error/10 transition-colors", title: "Delete Suite" do %>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
             </svg>
@@ -37,10 +37,10 @@
           <div class="grid grid-cols-2 lg:grid-cols-1 gap-4">
             <div class="p-4 bg-dark-base/30 border border-primary/20 text-center">
               <p class="text-3xl font-mono font-bold text-primary text-glow-cyan"><%= @test_cases.size %></p>
-              <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Protocols</p>
+              <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Test Cases</p>
             </div>
             <div class="p-4 bg-dark-base/30 border border-primary/20">
-              <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mb-1">Mission</p>
+              <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mb-1">Project</p>
               <%= link_to project.name, project_path(project), class: "text-sm font-mono text-primary hover:text-primary/80" %>
             </div>
           </div>
@@ -63,13 +63,13 @@
     </div>
   </div>
 
-  <!-- Protocol Database -->
+  <!-- Test Cases -->
   <div class="panel">
     <div class="panel-header flex items-center justify-between">
       <div class="flex items-center space-x-4">
-        <span>PROTOCOL DATABASE</span>
+        <span>Test Cases</span>
         <div class="h-3 w-px bg-status-error/30"></div>
-        <span class="text-[10px] font-mono text-primary"><%= @pagy.count %> Protocols</span>
+        <span class="text-[10px] font-mono text-primary"><%= @pagy.count %> Test Cases</span>
       </div>
       <div class="flex items-center space-x-2">
         <!-- Search & Sort Form -->
@@ -126,13 +126,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
           </svg>
         <% end %>
-        <!-- New Protocol -->
+        <!-- New Test Case -->
         <% if policy(::TestCase.new(test_suite: @test_suite)).new? %>
           <%= link_to new_test_suite_test_case_path(@test_suite), class: "btn-primary flex items-center space-x-2 py-1.5" do %>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
             </svg>
-            <span>New Protocol</span>
+            <span>New Test Case</span>
           <% end %>
         <% end %>
       </div>
@@ -192,7 +192,7 @@
                   <input type="checkbox" value="<%= test_case.id %>" data-bulk-actions-target="checkbox" data-action="change->bulk-actions#toggleItem"
                          class="w-4 h-4 border-primary/30 bg-dark-base text-primary focus:ring-primary/50 rounded">
                 </div>
-                <!-- Protocol Info -->
+                <!-- Test Case Info -->
                 <div class="flex-1 min-w-0">
                   <!-- Title Row -->
                   <div class="flex items-center space-x-3 mb-3">
@@ -245,21 +245,21 @@
 
               <!-- Actions -->
               <div class="flex items-center space-x-2 opacity-50 group-hover:opacity-100 transition-opacity flex-shrink-0">
-                <%= link_to test_case_path(test_case), class: "p-2 border border-primary/30 text-primary hover:bg-primary/10 transition-colors", title: "View Protocol" do %>
+                <%= link_to test_case_path(test_case), class: "p-2 border border-primary/30 text-primary hover:bg-primary/10 transition-colors", title: "View Test Case" do %>
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                   </svg>
                 <% end %>
                 <% if policy(test_case).edit? %>
-                  <%= link_to edit_test_case_path(test_case), class: "p-2 border border-status-warning/30 text-status-warning hover:bg-status-warning/10 transition-colors", title: "Modify Protocol" do %>
+                  <%= link_to edit_test_case_path(test_case), class: "p-2 border border-status-warning/30 text-status-warning hover:bg-status-warning/10 transition-colors", title: "Edit Test Case" do %>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
                   <% end %>
                 <% end %>
                 <% if policy(test_case).destroy? %>
-                  <%= button_to test_case_path(test_case), method: :delete, data: { confirm: 'PURGE PROTOCOL?' }, class: "p-2 border border-status-error/30 text-status-error hover:bg-status-error/10 transition-colors", title: "Purge Protocol" do %>
+                  <%= button_to test_case_path(test_case), method: :delete, data: { confirm: 'Delete this test case?' }, class: "p-2 border border-status-error/30 text-status-error hover:bg-status-error/10 transition-colors", title: "Delete Test Case" do %>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                     </svg>
@@ -279,14 +279,14 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
           </svg>
         </div>
-        <h3 class="text-lg font-mono text-text-primary uppercase tracking-wider mb-2">Protocol Bank Empty</h3>
-        <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mb-6">No protocols have been initialized in this bank</p>
+        <h3 class="text-lg font-mono text-text-primary uppercase tracking-wider mb-2">No Test Cases</h3>
+        <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mb-6">No test cases in this suite yet</p>
         <% if policy(::TestCase.new(test_suite: @test_suite)).new? %>
           <%= link_to new_test_suite_test_case_path(@test_suite), class: "btn-primary inline-flex items-center space-x-2" do %>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
             </svg>
-            <span>Initialize Protocol</span>
+            <span>Add Test Case</span>
           <% end %>
         <% end %>
       </div>
@@ -299,7 +299,7 @@
       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
       </svg>
-      Back to Mission Overview
+      Back to Project
     <% end %>
   </div>
 </div>

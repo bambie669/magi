@@ -1,4 +1,5 @@
 require 'roo'
+require 'cgi'
 
 class TestCasesExcelImporter
   attr_reader :errors, :imported_count, :skipped_count, :duplicate_count
@@ -185,7 +186,26 @@ class TestCasesExcelImporter
     value = row[index]
     return nil if value.nil?
 
-    value.to_s.strip
+    sanitize_cell_value(value.to_s)
+  end
+
+  def sanitize_cell_value(value)
+    return nil if value.nil?
+
+    text = value.to_s
+
+    # Remove HTML tags if present
+    if text.include?('<') && text.include?('>')
+      # Strip all HTML tags
+      text = text.gsub(/<[^>]*>/, ' ')
+      # Clean up extra whitespace
+      text = text.gsub(/\s+/, ' ')
+    end
+
+    # Decode HTML entities
+    text = CGI.unescapeHTML(text) rescue text
+
+    text.strip
   end
 
   def is_section_row?(row, first_cell, second_cell, column_map)

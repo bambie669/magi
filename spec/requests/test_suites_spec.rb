@@ -110,7 +110,7 @@ RSpec.describe "TestSuites", type: :request do
 
     it "displays delete button for admin" do
       get test_suite_path(test_suite)
-      expect(response.body).to include("Purge Bank")
+      expect(response.body).to include("Delete Suite")
     end
   end
 
