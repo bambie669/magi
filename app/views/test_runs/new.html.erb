@@ -1,26 +1,26 @@
 <% content_for :page_title, "INITIALIZE OPERATION" %>
 
 <% content_for :breadcrumbs do %>
-  <%= link_to @project.name, project_path(@project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
-  <span class="text-terminal-red mx-2">/</span>
-  <%= link_to "Operations", project_test_runs_path(@project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
-  <span class="text-terminal-red mx-2">/</span>
-  <span class="text-terminal-gray">Initialize</span>
+  <%= link_to @project.name, project_path(@project), class: "text-primary hover:text-primary/80" %>
+  <span class="text-status-error mx-2">/</span>
+  <%= link_to "Operations", project_test_runs_path(@project), class: "text-primary hover:text-primary/80" %>
+  <span class="text-status-error mx-2">/</span>
+  <span class="text-text-muted">Initialize</span>
 <% end %>
 
 <div class="max-w-4xl mx-auto">
-  <div class="nerv-panel">
-    <div class="nerv-panel-header flex items-center justify-between">
+  <div class="panel">
+    <div class="panel-header flex items-center justify-between">
       <span>INITIALIZE OPERATION</span>
-      <span class="text-[10px] font-mono text-terminal-cyan">Mission: <%= @project.name %></span>
+      <span class="text-[10px] font-mono text-primary">Mission: <%= @project.name %></span>
     </div>
 
     <div class="p-6">
       <%= form_with(model: [@project, @test_run], class: "space-y-6") do |form| %>
         <% if @test_run.errors.any? %>
-          <div class="p-4 bg-terminal-red/10 border border-terminal-red/50 text-terminal-red font-mono text-sm animate-pulse" role="alert">
+          <div class="p-4 bg-status-error/10 border border-status-error/50 text-status-error font-mono text-sm animate-pulse" role="alert">
             <div class="flex items-center space-x-2 mb-2">
-              <span class="w-2 h-2 bg-terminal-red rounded-full"></span>
+              <span class="w-2 h-2 bg-status-error rounded-full"></span>
               <span class="uppercase tracking-wider text-xs">System Error:</span>
             </div>
             <strong class="font-bold"><%= pluralize(@test_run.errors.count, "error") %> prohibited this operation from being initialized:</strong>
@@ -33,39 +33,39 @@
         <% end %>
 
         <div>
-          <%= form.label :name, "Operation Designation", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
-          <%= form.text_field :name, class: "input-nerv w-full px-4 py-3 text-sm", placeholder: "Enter operation designation..." %>
+          <%= form.label :name, "Operation Designation", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
+          <%= form.text_field :name, class: "input-field w-full px-4 py-3 text-sm", placeholder: "Enter operation designation..." %>
         </div>
 
         <div>
           <div class="flex items-center justify-between mb-3">
-            <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-wider">Select Protocols to Execute:</p>
+            <p class="text-[10px] font-mono text-status-warning uppercase tracking-wider">Select Protocols to Execute:</p>
             <% if @available_test_cases.any? %>
-              <button type="button" id="select-all-btn" onclick="toggleSelectAll()" class="px-3 py-1 text-[10px] font-mono uppercase tracking-wider border border-terminal-cyan/50 text-terminal-cyan hover:bg-terminal-cyan/10 transition-colors">
+              <button type="button" id="select-all-btn" onclick="toggleSelectAll()" class="px-3 py-1 text-[10px] font-mono uppercase tracking-wider border border-primary/50 text-primary hover:bg-primary/10 transition-colors">
                 Select All
               </button>
             <% end %>
           </div>
-          <div class="max-h-80 overflow-y-auto border border-terminal-cyan/30 bg-nerv-black/50 p-4 space-y-2">
+          <div class="max-h-80 overflow-y-auto border border-primary/30 bg-dark-base/50 p-4 space-y-2">
             <% if @available_test_cases.any? %>
               <% @available_test_cases.each do |test_case| %>
-                <label class="flex items-center p-3 bg-nerv-purple-mid border border-terminal-gray-dark/30 hover:border-terminal-cyan/50 cursor-pointer transition-colors group">
-                  <%= check_box_tag "test_run[test_case_ids][]", test_case.id, false, class: "w-4 h-4 bg-nerv-black border-terminal-cyan/50 text-terminal-cyan focus:ring-terminal-cyan/50" %>
-                  <span class="ml-3 text-sm font-mono text-terminal-white group-hover:text-terminal-cyan transition-colors"><%= test_case.title %></span>
+                <label class="flex items-center p-3 bg-dark-surface-mid border border-text-muted-dark/30 hover:border-primary/50 cursor-pointer transition-colors group">
+                  <%= check_box_tag "test_run[test_case_ids][]", test_case.id, false, class: "w-4 h-4 bg-dark-base border-primary/50 text-primary focus:ring-primary/50" %>
+                  <span class="ml-3 text-sm font-mono text-text-primary group-hover:text-primary transition-colors"><%= test_case.title %></span>
                 </label>
               <% end %>
             <% else %>
               <div class="text-center py-8">
-                <p class="text-sm font-mono text-terminal-gray uppercase tracking-wider">No protocols available in this mission</p>
+                <p class="text-sm font-mono text-text-muted uppercase tracking-wider">No protocols available in this mission</p>
               </div>
             <% end %>
           </div>
-          <p class="mt-2 text-[10px] font-mono text-terminal-gray">Select protocols to include in this operation</p>
+          <p class="mt-2 text-[10px] font-mono text-text-muted">Select protocols to include in this operation</p>
         </div>
 
-        <div class="flex justify-end space-x-3 pt-6 border-t border-terminal-red/20">
-          <%= link_to 'Abort', project_path(@project), class: "px-4 py-2 bg-nerv-purple-mid border border-terminal-gray-dark text-terminal-gray text-xs font-mono uppercase tracking-wider hover:text-terminal-white transition-colors" %>
-          <%= form.submit "Initialize Operation", class: "btn-nerv-primary cursor-pointer" %>
+        <div class="flex justify-end space-x-3 pt-6 border-t border-status-error/20">
+          <%= link_to 'Abort', project_path(@project), class: "px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors" %>
+          <%= form.submit "Initialize Operation", class: "btn-primary cursor-pointer" %>
         </div>
       <% end %>
     </div>

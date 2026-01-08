@@ -1,19 +1,19 @@
 <% content_for :page_title, "MISSION REGISTRY" %>
 
 <!-- Control Bar -->
-<div class="mb-6 flex items-center justify-between px-4 py-3 bg-nerv-purple border border-terminal-red/30">
+<div class="mb-6 flex items-center justify-between px-4 py-3 bg-dark-surface border border-status-error/30">
   <div class="flex items-center space-x-6">
     <!-- Search -->
     <div class="relative">
-      <input type="text" placeholder="SCAN MISSIONS..." class="input-nerv w-64 pl-10 pr-4 py-2 text-sm rounded">
-      <svg class="w-4 h-4 text-terminal-gray absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <input type="text" placeholder="SCAN MISSIONS..." class="input-field w-64 pl-10 pr-4 py-2 text-sm rounded">
+      <svg class="w-4 h-4 text-text-muted absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
       </svg>
     </div>
   </div>
 
   <% if policy(Project).new? %>
-    <%= link_to new_project_path, class: "btn-nerv-primary flex items-center space-x-2" do %>
+    <%= link_to new_project_path, class: "btn-primary flex items-center space-x-2" do %>
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
       </svg>
@@ -26,57 +26,57 @@
   <!-- Mission Cards Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <% @projects.each do |project| %>
-      <div class="nerv-panel group hover:border-terminal-cyan/50 transition-colors">
+      <div class="panel group hover:border-primary/50 transition-colors">
         <div class="p-6">
           <!-- Header -->
           <div class="flex items-start justify-between mb-4">
             <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 border border-terminal-cyan/30 bg-terminal-cyan/10 flex items-center justify-center">
-                <svg class="w-5 h-5 text-terminal-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-10 h-10 border border-primary/30 bg-primary/10 flex items-center justify-center">
+                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
                 </svg>
               </div>
               <div>
-                <%= link_to project.name, project_path(project), class: "text-lg font-mono text-terminal-white hover:text-terminal-cyan transition-colors" %>
-                <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider"><%= time_ago_in_words(project.created_at) %> ago</p>
+                <%= link_to project.name, project_path(project), class: "text-lg font-mono text-text-primary hover:text-primary transition-colors" %>
+                <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider"><%= time_ago_in_words(project.created_at) %> ago</p>
               </div>
             </div>
             <div class="flex items-center space-x-1">
-              <span class="w-2 h-2 bg-terminal-green rounded-full animate-pulse"></span>
-              <span class="text-[10px] font-mono text-terminal-green uppercase">Active</span>
+              <span class="w-2 h-2 bg-status-success rounded-full animate-pulse"></span>
+              <span class="text-[10px] font-mono text-status-success uppercase">Active</span>
             </div>
           </div>
 
           <!-- Description -->
-          <p class="text-sm font-mono text-terminal-gray mb-4 line-clamp-2"><%= project.description.presence || "No mission brief available" %></p>
+          <p class="text-sm font-mono text-text-muted mb-4 line-clamp-2"><%= project.description.presence || "No mission brief available" %></p>
 
           <!-- Stats -->
           <div class="grid grid-cols-2 gap-3 mb-4">
-            <div class="p-3 bg-nerv-black/30 border border-terminal-cyan/20 text-center">
-              <p class="text-lg font-mono font-bold text-terminal-cyan"><%= project.test_suites.count %></p>
-              <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Protocol Banks</p>
+            <div class="p-3 bg-dark-base/30 border border-primary/20 text-center">
+              <p class="text-lg font-mono font-bold text-primary"><%= project.test_suites.count %></p>
+              <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Protocol Banks</p>
             </div>
-            <div class="p-3 bg-nerv-black/30 border border-terminal-cyan/20 text-center">
-              <p class="text-lg font-mono font-bold text-terminal-cyan"><%= project.test_runs.count %></p>
-              <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Operations</p>
+            <div class="p-3 bg-dark-base/30 border border-primary/20 text-center">
+              <p class="text-lg font-mono font-bold text-primary"><%= project.test_runs.count %></p>
+              <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Operations</p>
             </div>
           </div>
 
           <!-- Actions -->
-          <div class="flex items-center justify-between pt-4 border-t border-terminal-red/20">
-            <%= link_to project_path(project), class: "text-[10px] font-mono text-terminal-cyan uppercase tracking-wider hover:text-terminal-cyan/80 transition-colors" do %>
+          <div class="flex items-center justify-between pt-4 border-t border-status-error/20">
+            <%= link_to project_path(project), class: "text-[10px] font-mono text-primary uppercase tracking-wider hover:text-primary/80 transition-colors" do %>
               Access Mission &rarr;
             <% end %>
             <div class="flex items-center space-x-2">
               <% if policy(project).edit? %>
-                <%= link_to edit_project_path(project), class: "p-2 border border-terminal-amber/30 text-terminal-amber hover:bg-terminal-amber/10 transition-colors", title: "Modify" do %>
+                <%= link_to edit_project_path(project), class: "p-2 border border-status-warning/30 text-status-warning hover:bg-status-warning/10 transition-colors", title: "Modify" do %>
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                   </svg>
                 <% end %>
               <% end %>
               <% if policy(project).destroy? %>
-                <%= button_to project_path(project), method: :delete, data: { confirm: 'TERMINATE MISSION? All associated data will be purged.' }, class: "p-2 border border-terminal-red/30 text-terminal-red hover:bg-terminal-red/10 transition-colors", title: "Terminate" do %>
+                <%= button_to project_path(project), method: :delete, data: { confirm: 'TERMINATE MISSION? All associated data will be purged.' }, class: "p-2 border border-status-error/30 text-status-error hover:bg-status-error/10 transition-colors", title: "Terminate" do %>
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                   </svg>
@@ -91,16 +91,16 @@
   <%= render 'shared/pagination', pagy: @pagy %>
 <% else %>
   <!-- Empty State -->
-  <div class="nerv-panel p-12 text-center">
-    <div class="w-20 h-20 mx-auto mb-6 border border-terminal-cyan/30 flex items-center justify-center">
-      <svg class="w-10 h-10 text-terminal-cyan/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <div class="panel p-12 text-center">
+    <div class="w-20 h-20 mx-auto mb-6 border border-primary/30 flex items-center justify-center">
+      <svg class="w-10 h-10 text-primary/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
       </svg>
     </div>
-    <h3 class="text-lg font-mono text-terminal-white uppercase tracking-wider mb-2">No Missions Registered</h3>
-    <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mb-6">Initialize a new mission to begin operations</p>
+    <h3 class="text-lg font-mono text-text-primary uppercase tracking-wider mb-2">No Missions Registered</h3>
+    <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mb-6">Initialize a new mission to begin operations</p>
     <% if policy(Project).new? %>
-      <%= link_to new_project_path, class: "btn-nerv-primary inline-flex items-center space-x-2" do %>
+      <%= link_to new_project_path, class: "btn-primary inline-flex items-center space-x-2" do %>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
         </svg>

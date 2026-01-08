@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>NERV - MAGI QA System</title>
+    <title>MAGI QA - Test Management</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -10,22 +10,22 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="font-mono <%= light_theme? ? 'theme-light' : 'theme-nerv' %>">
+  <body class="font-mono <%= light_theme? ? 'theme-light' : 'theme-dark' %>">
     <% if user_signed_in? %>
-      <!-- COMMAND CORE Sidebar -->
+      <!-- Sidebar -->
       <%= render 'shared/sidebar' %>
 
-      <!-- Main Control Interface -->
+      <!-- Main Content Area -->
       <div class="ml-64 min-h-screen">
-        <!-- Primary Header Bar -->
+        <!-- Header Bar -->
         <header class="header-dark">
           <div class="flex items-center justify-between px-6 py-3">
             <div class="flex items-center space-x-6">
               <!-- Page Title -->
               <div class="flex items-center space-x-3">
-                <span class="text-[10px] font-mono text-theme-muted uppercase tracking-widest">Interface:</span>
+                <span class="text-[10px] font-mono text-theme-muted uppercase tracking-widest">Page:</span>
                 <h1 class="text-sm font-mono uppercase tracking-wider text-theme-primary">
-                  <%= content_for?(:page_title) ? yield(:page_title) : 'COMMAND OVERVIEW' %>
+                  <%= content_for?(:page_title) ? yield(:page_title) : 'Dashboard' %>
                 </h1>
               </div>
 
@@ -38,27 +38,27 @@
             </div>
 
             <div class="flex items-center space-x-4">
-              <!-- MAGI Status -->
-              <div class="magi-status">
-                <span class="magi-status-dot"></span>
-                <span class="magi-status-text">MAGI System Online</span>
+              <!-- System Status -->
+              <div class="system-status">
+                <span class="system-status-dot"></span>
+                <span class="system-status-text">System Online</span>
               </div>
 
               <!-- Theme Toggle -->
               <div data-controller="theme-toggle">
                 <button data-action="click->theme-toggle#toggle"
-                        class="flex items-center space-x-2 px-3 py-1.5 border border-theme rounded text-xs font-mono text-theme-secondary hover:text-theme-primary hover:border-eva-purple transition-colors"
+                        class="flex items-center space-x-2 px-3 py-1.5 border border-theme rounded text-xs font-mono text-theme-secondary hover:text-theme-primary hover:border-primary transition-colors"
                         title="Toggle Theme">
                   <svg data-theme-toggle-target="icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
                   </svg>
-                  <span data-theme-toggle-target="label" class="hidden sm:inline">EVA-00</span>
+                  <span data-theme-toggle-target="label" class="hidden sm:inline">Light</span>
                 </button>
               </div>
 
-              <!-- Search Terminal -->
+              <!-- Search -->
               <%= form_with url: search_path, method: :get, local: true, class: "relative" do %>
-                <input type="text" name="q" placeholder="SCAN DATABASE..." class="input-dark w-48 pl-8 pr-4 py-1.5 text-xs">
+                <input type="text" name="q" placeholder="Search..." class="input-dark w-48 pl-8 pr-4 py-1.5 text-xs">
                 <svg class="w-4 h-4 text-theme-muted absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
@@ -82,16 +82,16 @@
 
                 <!-- Dropdown -->
                 <div data-notifications-target="dropdown"
-                     class="hidden absolute right-0 mt-2 w-80 bg-nerv-purple border border-terminal-red/20 rounded shadow-lg z-50">
-                  <div class="flex items-center justify-between px-4 py-2 border-b border-terminal-red/20">
-                    <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Transmissions</span>
-                    <%= link_to notifications_path, class: "text-[10px] font-mono text-terminal-cyan uppercase tracking-wider hover:text-terminal-cyan/80" do %>
+                     class="hidden absolute right-0 mt-2 w-80 bg-dark-surface border border-dark-border rounded shadow-lg z-50">
+                  <div class="flex items-center justify-between px-4 py-2 border-b border-dark-border">
+                    <span class="text-[10px] font-mono text-text-secondary uppercase tracking-wider">Notifications</span>
+                    <%= link_to notifications_path, class: "text-[10px] font-mono text-primary uppercase tracking-wider hover:text-primary-light" do %>
                       View All
                     <% end %>
                   </div>
 
                   <div data-notifications-target="emptyState" class="hidden p-4 text-center">
-                    <p class="text-terminal-gray font-mono text-xs uppercase">No notifications</p>
+                    <p class="text-text-muted font-mono text-xs uppercase">No notifications</p>
                   </div>
 
                   <div data-notifications-target="list" class="max-h-80 overflow-y-auto">
@@ -100,7 +100,7 @@
                 </div>
               </div>
 
-              <!-- Operator Avatar -->
+              <!-- User Avatar -->
               <div class="avatar avatar-sm avatar-dark">
                 <%= current_user.display_name.first.upcase %>
               </div>
@@ -144,11 +144,11 @@
           <%= yield %>
         </main>
 
-        <!-- System Footer -->
+        <!-- Footer -->
         <footer class="footer-dark">
           <div class="flex items-center justify-between footer-text">
-            <span>NERV HEADQUARTERS - MAGI QA INTERFACE v1.0</span>
-            <span data-controller="system-clock" data-system-clock-target="display">SYSTEM TIME: <%= Time.now.strftime('%Y.%m.%d %H:%M:%S') %></span>
+            <span>MAGI QA v1.0</span>
+            <span data-controller="system-clock" data-system-clock-target="display"><%= Time.now.strftime('%Y-%m-%d %H:%M:%S') %></span>
           </div>
         </footer>
       </div>
@@ -157,22 +157,16 @@
       <div class="min-h-screen flex items-center justify-center bg-dark-base">
         <div class="max-w-md w-full mx-4">
           <div class="text-center mb-8">
-            <!-- NERV Logo -->
-            <div class="w-32 h-32 mx-auto mb-6 relative">
-              <svg viewBox="0 0 100 100" class="w-full h-full animate-pulse-slow">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="#6B5B95" stroke-width="2" opacity="0.8"/>
-                <path d="M50 10 L50 90 M30 30 Q50 50 30 70 M70 30 Q50 50 70 70"
-                      fill="none" stroke="#4ADE80" stroke-width="3" stroke-linecap="round"/>
-                <circle cx="50" cy="50" r="5" fill="#4ADE80"/>
-                <circle cx="50" cy="50" r="35" fill="none" stroke="#6B5B95" stroke-width="1" opacity="0.4"/>
-              </svg>
+            <!-- Logo -->
+            <div class="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-primary-muted rounded-lg border border-primary">
+              <span class="text-4xl font-mono font-bold text-primary-light">MQ</span>
             </div>
-            <h1 class="text-3xl font-mono font-bold text-eva-purple-light tracking-widest">NERV</h1>
-            <p class="text-text-muted font-mono text-sm tracking-wider mt-2">MAGI QA SYSTEM</p>
-            <p class="text-eva-green/50 font-mono text-[10px] tracking-wider mt-4">AUTHENTICATION REQUIRED</p>
+            <h1 class="text-3xl font-mono font-bold text-primary-light tracking-widest">MAGI QA</h1>
+            <p class="text-text-muted font-mono text-sm tracking-wider mt-2">Test Management System</p>
+            <p class="text-primary/50 font-mono text-[10px] tracking-wider mt-4">SIGN IN TO CONTINUE</p>
           </div>
 
-          <div class="nerv-panel p-8">
+          <div class="panel p-8">
             <% if notice %>
               <div class="alert alert-success mb-6" role="alert">
                 <%= notice %>
@@ -189,7 +183,7 @@
 
           <div class="text-center mt-8">
             <p class="text-[9px] font-mono text-text-muted/40 tracking-wide">
-              "GOD'S IN HIS HEAVEN. ALL'S RIGHT WITH THE WORLD."
+              Quality Assurance Made Simple
             </p>
           </div>
         </div>

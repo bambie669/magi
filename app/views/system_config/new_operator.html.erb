@@ -1,24 +1,24 @@
-<% content_for :page_title, "INITIALIZE OPERATOR" %>
+<% content_for :page_title, "Add User" %>
 
 <% content_for :breadcrumbs do %>
-  <%= link_to "System Config", system_config_path, class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
-  <span class="text-terminal-red mx-2">/</span>
-  <%= link_to "Operators", system_config_path(section: 'operators'), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
-  <span class="text-terminal-red mx-2">/</span>
-  <span class="text-terminal-gray">Initialize</span>
+  <%= link_to "Settings", system_config_path, class: "text-primary hover:text-primary/80" %>
+  <span class="text-text-muted mx-2">/</span>
+  <%= link_to "Users", system_config_path(section: 'operators'), class: "text-primary hover:text-primary/80" %>
+  <span class="text-text-muted mx-2">/</span>
+  <span class="text-text-muted">Add</span>
 <% end %>
 
 <div class="max-w-2xl mx-auto">
-  <div class="nerv-panel">
-    <div class="nerv-panel-header">
-      <span>INITIALIZE NEW OPERATOR</span>
+  <div class="panel">
+    <div class="panel-header">
+      <span>Add New User</span>
     </div>
     <div class="p-6">
       <%= form_with model: @user, url: create_operator_path, local: true do |f| %>
         <% if @user.errors.any? %>
-          <div class="mb-6 p-4 border border-terminal-red/50 bg-terminal-red/10">
-            <p class="text-sm font-mono text-terminal-red uppercase mb-2">Initialization Failed:</p>
-            <ul class="list-disc list-inside text-xs font-mono text-terminal-red">
+          <div class="mb-6 p-4 border border-status-error/50 bg-status-error/10 rounded">
+            <p class="text-sm font-mono text-status-error uppercase mb-2">Error:</p>
+            <ul class="list-disc list-inside text-xs font-mono text-status-error">
               <% @user.errors.full_messages.each do |message| %>
                 <li><%= message %></li>
               <% end %>
@@ -28,38 +28,38 @@
 
         <div class="space-y-6">
           <div>
-            <label class="block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2">
-              Operator ID (Email)
+            <label class="block text-[10px] font-mono text-text-muted uppercase tracking-wider mb-2">
+              Email
             </label>
-            <%= f.email_field :email, class: "input-nerv w-full", placeholder: "operator@nerv.org", autofocus: true %>
+            <%= f.email_field :email, class: "input-field w-full", placeholder: "user@company.com", autofocus: true %>
           </div>
 
           <div>
-            <label class="block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2">
-              Clearance Level
+            <label class="block text-[10px] font-mono text-text-muted uppercase tracking-wider mb-2">
+              Role
             </label>
-            <%= f.select :role, User.roles.keys.map { |r| [r.titleize, r] }, {}, class: "input-nerv w-full" %>
+            <%= f.select :role, User.roles.keys.map { |r| [r.titleize, r] }, {}, class: "input-field w-full" %>
           </div>
 
           <div>
-            <label class="block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2">
-              Access Code (Password)
+            <label class="block text-[10px] font-mono text-text-muted uppercase tracking-wider mb-2">
+              Password
             </label>
-            <%= f.password_field :password, class: "input-nerv w-full", placeholder: "Minimum 6 characters" %>
+            <%= f.password_field :password, class: "input-field w-full", placeholder: "Minimum 6 characters" %>
           </div>
 
           <div>
-            <label class="block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2">
-              Confirm Access Code
+            <label class="block text-[10px] font-mono text-text-muted uppercase tracking-wider mb-2">
+              Confirm Password
             </label>
-            <%= f.password_field :password_confirmation, class: "input-nerv w-full" %>
+            <%= f.password_field :password_confirmation, class: "input-field w-full" %>
           </div>
 
-          <div class="flex items-center justify-between pt-4 border-t border-terminal-red/20">
-            <%= link_to system_config_path(section: 'operators'), class: "text-terminal-gray hover:text-terminal-cyan font-mono text-sm uppercase" do %>
+          <div class="flex items-center justify-between pt-4 border-t border-dark-border">
+            <%= link_to system_config_path(section: 'operators'), class: "text-text-muted hover:text-primary font-mono text-sm uppercase" do %>
               Cancel
             <% end %>
-            <%= f.submit "Initialize Operator", class: "btn-nerv-primary cursor-pointer" %>
+            <%= f.submit "Add User", class: "btn-primary cursor-pointer" %>
           </div>
         </div>
       <% end %>

@@ -1,30 +1,30 @@
-<% content_for :page_title, "COMMAND OVERVIEW" %>
+<% content_for :page_title, "Dashboard" %>
 
-<!-- Primary Status Bar -->
-<div class="mb-6 flex items-center justify-between px-4 py-2 bg-nerv-purple border border-terminal-red/30">
+<!-- Status Bar -->
+<div class="mb-6 flex items-center justify-between px-4 py-2 bg-dark-surface border border-dark-border">
   <div class="flex items-center space-x-6">
-    <span class="text-[10px] font-mono text-terminal-amber uppercase tracking-widest">Primary Control Interface</span>
-    <div class="h-3 w-px bg-terminal-red/30"></div>
-    <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Status: <span class="text-terminal-green">Operational</span></span>
+    <span class="text-[10px] font-mono text-text-secondary uppercase tracking-widest">System Status</span>
+    <div class="h-3 w-px bg-dark-border"></div>
+    <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Status: <span class="text-status-success">Operational</span></span>
   </div>
   <div class="flex items-center space-x-2">
-    <span class="w-2 h-2 bg-terminal-green rounded-full animate-pulse"></span>
-    <span class="text-[10px] font-mono text-terminal-green uppercase tracking-wider">All Systems Nominal</span>
+    <span class="w-2 h-2 bg-status-success rounded-full animate-pulse"></span>
+    <span class="text-[10px] font-mono text-status-success uppercase tracking-wider">All Systems Online</span>
   </div>
 </div>
 
 <!-- Stats Cards Row -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-  <!-- Active Operations -->
-  <div class="nerv-panel p-5">
+  <!-- Active Runs -->
+  <div class="panel p-5">
     <div class="flex items-start justify-between">
       <div>
-        <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-widest mb-2">ACTIVE OPS</p>
-        <p class="text-4xl font-mono font-bold text-terminal-cyan text-glow-cyan"><%= @active_test_runs %></p>
-        <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">In Progress</p>
+        <p class="text-[10px] font-mono text-text-secondary uppercase tracking-widest mb-2">Active Runs</p>
+        <p class="text-4xl font-mono font-bold text-primary"><%= @active_test_runs %></p>
+        <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">In Progress</p>
       </div>
-      <div class="w-12 h-12 border border-terminal-cyan/30 rounded flex items-center justify-center">
-        <svg class="w-6 h-6 text-terminal-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="w-12 h-12 border border-primary/30 rounded flex items-center justify-center">
+        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
@@ -32,39 +32,39 @@
     </div>
   </div>
 
-  <!-- Queue Depth -->
-  <div class="nerv-panel p-5">
+  <!-- Pending Tests -->
+  <div class="panel p-5">
     <div class="flex items-start justify-between">
       <div>
-        <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-widest mb-2">Protocol Queue</p>
-        <p class="text-4xl font-mono font-bold text-terminal-amber text-glow-amber"><%= @tests_in_progress %></p>
-        <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Awaiting Execution</p>
+        <p class="text-[10px] font-mono text-text-secondary uppercase tracking-widest mb-2">Pending Tests</p>
+        <p class="text-4xl font-mono font-bold text-status-warning"><%= @tests_in_progress %></p>
+        <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Awaiting Execution</p>
       </div>
-      <div class="w-12 h-12 border border-terminal-amber/30 rounded flex items-center justify-center">
-        <svg class="w-6 h-6 text-terminal-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="w-12 h-12 border border-status-warning/30 rounded flex items-center justify-center">
+        <svg class="w-6 h-6 text-status-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
     </div>
   </div>
 
-  <!-- System Integrity -->
-  <div class="nerv-panel p-5">
+  <!-- Test Results -->
+  <div class="panel p-5">
     <div class="flex items-start justify-between">
       <div>
-        <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-widest mb-2">System Integrity</p>
+        <p class="text-[10px] font-mono text-text-secondary uppercase tracking-widest mb-2">Test Results</p>
         <div class="flex items-baseline space-x-3">
-          <span class="text-2xl font-mono font-bold text-terminal-green text-glow-green"><%= @passed_count %></span>
-          <span class="text-[10px] font-mono text-terminal-gray">NOMINAL</span>
-          <span class="text-2xl font-mono font-bold text-terminal-red text-glow-red"><%= @failed_count %></span>
-          <span class="text-[10px] font-mono text-terminal-gray">BREACH</span>
+          <span class="text-2xl font-mono font-bold text-status-success"><%= @passed_count %></span>
+          <span class="text-[10px] font-mono text-text-muted">Passed</span>
+          <span class="text-2xl font-mono font-bold text-status-error"><%= @failed_count %></span>
+          <span class="text-[10px] font-mono text-text-muted">Failed</span>
         </div>
         <% integrity = @passed_count + @failed_count > 0 ? ((@passed_count.to_f / (@passed_count + @failed_count)) * 100).round : 100 %>
         <div class="mt-3">
-          <div class="progress-nerv">
-            <div class="progress-nerv-fill <%= integrity < 80 ? 'critical' : '' %>" style="width: <%= integrity %>%"></div>
+          <div class="progress-bar">
+            <div class="progress-bar-fill <%= integrity < 80 ? 'bg-status-error' : '' %>" style="width: <%= integrity %>%"></div>
           </div>
-          <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1"><%= integrity %>% Operational</p>
+          <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1"><%= integrity %>% Pass Rate</p>
         </div>
       </div>
     </div>
@@ -75,19 +75,19 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
   <!-- Left Column: Telemetry & Milestones -->
   <div class="lg:col-span-2 space-y-6">
-    <!-- Operation Telemetry -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header flex items-center justify-between">
-        <span>Operation Telemetry</span>
+    <!-- Test Activity -->
+    <div class="panel">
+      <div class="panel-header flex items-center justify-between">
+        <span>Test Activity</span>
         <div class="flex items-center space-x-4">
-          <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Last 14 Days</span>
+          <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Last 14 Days</span>
           <div class="flex items-center space-x-1">
-            <span class="w-2 h-2 bg-terminal-green rounded-sm"></span>
-            <span class="text-[9px] font-mono text-terminal-gray">NOMINAL</span>
-            <span class="w-2 h-2 bg-terminal-red rounded-sm ml-2"></span>
-            <span class="text-[9px] font-mono text-terminal-gray">BREACH</span>
-            <span class="w-2 h-2 bg-terminal-amber rounded-sm ml-2"></span>
-            <span class="text-[9px] font-mono text-terminal-gray">BLOCKED</span>
+            <span class="w-2 h-2 bg-status-success rounded-sm"></span>
+            <span class="text-[9px] font-mono text-text-muted">Passed</span>
+            <span class="w-2 h-2 bg-status-error rounded-sm ml-2"></span>
+            <span class="text-[9px] font-mono text-text-muted">Failed</span>
+            <span class="w-2 h-2 bg-status-warning rounded-sm ml-2"></span>
+            <span class="text-[9px] font-mono text-text-muted">Blocked</span>
           </div>
         </div>
       </div>
@@ -104,19 +104,19 @@
           </div>
           <div class="mt-3 flex items-center justify-between text-[10px] font-mono">
             <div class="flex items-center space-x-4">
-              <span class="text-terminal-gray">TOTAL EXECUTED: <span class="text-terminal-cyan"><%= total_activity %></span></span>
-              <span class="text-terminal-gray">PASS RATE: <span class="text-terminal-green"><%= @telemetry_data[:passed].sum > 0 ? ((@telemetry_data[:passed].sum.to_f / total_activity) * 100).round(1) : 0 %>%</span></span>
+              <span class="text-text-muted">TOTAL EXECUTED: <span class="text-primary"><%= total_activity %></span></span>
+              <span class="text-text-muted">PASS RATE: <span class="text-status-success"><%= @telemetry_data[:passed].sum > 0 ? ((@telemetry_data[:passed].sum.to_f / total_activity) * 100).round(1) : 0 %>%</span></span>
             </div>
-            <span class="text-terminal-gray uppercase tracking-wider">Protocol Execution Log</span>
+            <span class="text-text-muted uppercase tracking-wider">Test Execution Log</span>
           </div>
         <% else %>
-          <div class="h-48 flex items-center justify-center border border-terminal-cyan/20 bg-nerv-black/50 relative overflow-hidden">
+          <div class="h-48 flex items-center justify-center border border-primary/20 bg-dark-base/50 relative overflow-hidden">
             <div class="text-center">
-              <svg class="w-12 h-12 mx-auto text-terminal-cyan/30 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-12 h-12 mx-auto text-primary/30 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
               </svg>
-              <p class="text-[10px] font-mono text-terminal-cyan/50 uppercase tracking-widest">No Telemetry Data</p>
-              <p class="text-[10px] font-mono text-terminal-gray/50 mt-1">Execute protocols to generate activity</p>
+              <p class="text-[10px] font-mono text-primary/50 uppercase tracking-widest">No Activity Data</p>
+              <p class="text-[10px] font-mono text-text-muted/50 mt-1">Run tests to generate activity</p>
             </div>
           </div>
         <% end %>
@@ -124,10 +124,10 @@
     </div>
 
     <!-- Pass Rate Trend -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header flex items-center justify-between">
+    <div class="panel">
+      <div class="panel-header flex items-center justify-between">
         <span>Pass Rate Trend</span>
-        <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Last 30 Days</span>
+        <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Last 30 Days</span>
       </div>
       <div class="p-4">
         <% has_trend_data = @pass_rate_trend[:rates].compact.any? %>
@@ -141,162 +141,134 @@
           <% avg_rate = @pass_rate_trend[:rates].compact %>
           <% if avg_rate.any? %>
             <div class="mt-2 flex items-center justify-between text-[10px] font-mono">
-              <span class="text-terminal-gray">AVG: <span class="text-terminal-green"><%= (avg_rate.sum / avg_rate.size).round(1) %>%</span></span>
-              <span class="text-terminal-gray">MIN: <span class="text-terminal-amber"><%= avg_rate.min %>%</span></span>
-              <span class="text-terminal-gray">MAX: <span class="text-terminal-cyan"><%= avg_rate.max %>%</span></span>
+              <span class="text-text-muted">AVG: <span class="text-status-success"><%= (avg_rate.sum / avg_rate.size).round(1) %>%</span></span>
+              <span class="text-text-muted">MIN: <span class="text-status-warning"><%= avg_rate.min %>%</span></span>
+              <span class="text-text-muted">MAX: <span class="text-primary"><%= avg_rate.max %>%</span></span>
             </div>
           <% end %>
         <% else %>
-          <div class="h-32 flex items-center justify-center border border-terminal-cyan/20 bg-nerv-black/50">
-            <p class="text-[10px] font-mono text-terminal-gray/50 uppercase">No trend data available</p>
+          <div class="h-32 flex items-center justify-center border border-primary/20 bg-dark-base/50">
+            <p class="text-[10px] font-mono text-text-muted/50 uppercase">No trend data available</p>
           </div>
         <% end %>
       </div>
     </div>
 
-    <!-- Mission Deadlines -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header flex items-center justify-between">
-        <span>Mission Deadlines</span>
-        <%= link_to "View All", projects_path, class: "text-[10px] font-mono text-terminal-cyan hover:text-terminal-cyan/80 uppercase tracking-wider" %>
+    <!-- Upcoming Milestones -->
+    <div class="panel">
+      <div class="panel-header flex items-center justify-between">
+        <span>Upcoming Milestones</span>
+        <%= link_to "View All", projects_path, class: "text-[10px] font-mono text-primary hover:text-primary/80 uppercase tracking-wider" %>
       </div>
       <div class="p-4">
         <% if @upcoming_milestones.any? %>
           <div class="space-y-4">
             <% @upcoming_milestones.each do |milestone| %>
               <div class="flex items-center space-x-4">
-                <span class="w-2 h-2 rounded-full <%= milestone.due_date < 7.days.from_now ? 'bg-terminal-red animate-pulse' : 'bg-terminal-amber' %>"></span>
+                <span class="w-2 h-2 rounded-full <%= milestone.due_date < 7.days.from_now ? 'bg-status-error animate-pulse' : 'bg-status-warning' %>"></span>
                 <div class="flex-1">
                   <div class="flex items-center justify-between mb-1">
-                    <span class="text-sm font-mono text-terminal-white"><%= milestone.name %></span>
-                    <span class="text-[10px] font-mono text-terminal-gray uppercase"><%= milestone.project.name %></span>
+                    <span class="text-sm font-mono text-text-primary"><%= milestone.name %></span>
+                    <span class="text-[10px] font-mono text-text-muted uppercase"><%= milestone.project.name %></span>
                   </div>
-                  <div class="progress-nerv">
-                    <div class="progress-nerv-fill" style="width: 65%"></div>
+                  <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: 65%"></div>
                   </div>
-                  <p class="text-[10px] font-mono text-terminal-gray mt-1">Due: <%= milestone.due_date.strftime('%Y.%m.%d') %></p>
+                  <p class="text-[10px] font-mono text-text-muted mt-1">Due: <%= milestone.due_date.strftime('%Y.%m.%d') %></p>
                 </div>
               </div>
             <% end %>
           </div>
         <% else %>
           <div class="text-center py-8">
-            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">No Active Mission Deadlines</p>
+            <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider">No Active Upcoming Milestones</p>
           </div>
         <% end %>
       </div>
     </div>
   </div>
 
-  <!-- Right Column: Stats & Recent Operations -->
+  <!-- Right Column: Stats & Recent Test Runs -->
   <div class="space-y-6">
-    <!-- MAGI System Status -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header">MAGI Subsystem Status</div>
-      <div class="p-4 space-y-3">
-        <div class="flex items-center justify-between p-3 magi-casper rounded">
-          <div class="flex items-center space-x-3">
-            <span class="w-2 h-2 bg-magi-casper rounded-full animate-pulse"></span>
-            <span class="text-xs font-mono uppercase tracking-wider">CASPER</span>
-          </div>
-          <span class="text-[10px] font-mono uppercase">Online</span>
-        </div>
-        <div class="flex items-center justify-between p-3 magi-balthasar rounded">
-          <div class="flex items-center space-x-3">
-            <span class="w-2 h-2 bg-magi-balthasar rounded-full animate-pulse"></span>
-            <span class="text-xs font-mono uppercase tracking-wider">BALTHASAR</span>
-          </div>
-          <span class="text-[10px] font-mono uppercase">Online</span>
-        </div>
-        <div class="flex items-center justify-between p-3 magi-melchior rounded">
-          <div class="flex items-center space-x-3">
-            <span class="w-2 h-2 bg-magi-melchior rounded-full animate-pulse"></span>
-            <span class="text-xs font-mono uppercase tracking-wider">MELCHIOR</span>
-          </div>
-          <span class="text-[10px] font-mono uppercase">Online</span>
-        </div>
-      </div>
-    </div>
-
     <!-- System Overview -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header">System Overview</div>
+    <div class="panel">
+      <div class="panel-header">System Overview</div>
       <div class="p-4 grid grid-cols-2 gap-3">
-        <div class="text-center p-3 bg-nerv-black/50 border border-terminal-cyan/20">
-          <p class="text-2xl font-mono font-bold text-terminal-cyan"><%= @total_projects %></p>
-          <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Missions</p>
+        <div class="text-center p-3 bg-dark-base/50 border border-primary/20">
+          <p class="text-2xl font-mono font-bold text-primary"><%= @total_projects %></p>
+          <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Projects</p>
         </div>
-        <div class="text-center p-3 bg-nerv-black/50 border border-terminal-cyan/20">
-          <p class="text-2xl font-mono font-bold text-terminal-cyan"><%= @total_test_suites %></p>
-          <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Protocol Banks</p>
+        <div class="text-center p-3 bg-dark-base/50 border border-primary/20">
+          <p class="text-2xl font-mono font-bold text-primary"><%= @total_test_suites %></p>
+          <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Test Suites</p>
         </div>
-        <div class="text-center p-3 bg-nerv-black/50 border border-terminal-cyan/20">
-          <p class="text-2xl font-mono font-bold text-terminal-cyan"><%= @total_test_cases %></p>
-          <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Protocols</p>
+        <div class="text-center p-3 bg-dark-base/50 border border-primary/20">
+          <p class="text-2xl font-mono font-bold text-primary"><%= @total_test_cases %></p>
+          <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Test Cases</p>
         </div>
-        <div class="text-center p-3 bg-nerv-black/50 border border-terminal-cyan/20">
-          <p class="text-2xl font-mono font-bold text-terminal-cyan"><%= @total_test_runs %></p>
-          <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">Operations</p>
+        <div class="text-center p-3 bg-dark-base/50 border border-primary/20">
+          <p class="text-2xl font-mono font-bold text-primary"><%= @total_test_runs %></p>
+          <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Test Runs</p>
         </div>
       </div>
     </div>
 
-    <!-- Recent Operations -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header flex items-center justify-between">
-        <span>RECENT OPERATIONS</span>
-        <%= link_to "View All", test_runs_path, class: "text-[10px] font-mono text-terminal-cyan hover:text-terminal-cyan/80 uppercase tracking-wider" %>
+    <!-- Recent Test Runs -->
+    <div class="panel">
+      <div class="panel-header flex items-center justify-between">
+        <span>Recent Test Runs</span>
+        <%= link_to "View All", test_runs_path, class: "text-[10px] font-mono text-primary hover:text-primary/80 uppercase tracking-wider" %>
       </div>
       <div class="p-4">
         <% if @recent_test_runs.any? %>
           <div class="space-y-3">
             <% @recent_test_runs.each do |run| %>
-              <%= link_to test_run_path(run), class: "block p-3 bg-nerv-black/30 border border-terminal-gray-dark/30 hover:border-terminal-cyan/30 transition-colors group" do %>
+              <%= link_to test_run_path(run), class: "block p-3 bg-dark-base/30 border border-text-muted-dark/30 hover:border-primary/30 transition-colors group" do %>
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-sm font-mono text-terminal-white group-hover:text-terminal-cyan truncate"><%= run.name %></span>
-                  <span class="text-[10px] font-mono text-terminal-gray"><%= time_ago_in_words(run.created_at) %></span>
+                  <span class="text-sm font-mono text-text-primary group-hover:text-primary truncate"><%= run.name %></span>
+                  <span class="text-[10px] font-mono text-text-muted"><%= time_ago_in_words(run.created_at) %></span>
                 </div>
                 <div class="flex items-center space-x-2 mb-2">
-                  <div class="flex-1 progress-nerv h-1">
-                    <div class="progress-nerv-fill h-1 <%= run.failed_cases > 0 ? 'critical' : '' %>" style="width: <%= run.completion_percentage %>%"></div>
+                  <div class="flex-1 progress-bar h-1">
+                    <div class="progress-bar-fill h-1 <%= run.failed_cases > 0 ? 'critical' : '' %>" style="width: <%= run.completion_percentage %>%"></div>
                   </div>
-                  <span class="text-[10px] font-mono text-terminal-gray"><%= run.completion_percentage %>%</span>
+                  <span class="text-[10px] font-mono text-text-muted"><%= run.completion_percentage %>%</span>
                 </div>
                 <div class="flex items-center space-x-4 text-[10px] font-mono">
-                  <span class="text-terminal-green"><%= run.passed_cases %> NOMINAL</span>
-                  <span class="text-terminal-red"><%= run.failed_cases %> BREACH</span>
+                  <span class="text-status-success"><%= run.passed_cases %> Passed</span>
+                  <span class="text-status-error"><%= run.failed_cases %> Failed</span>
                 </div>
               <% end %>
             <% end %>
           </div>
         <% else %>
           <div class="text-center py-8">
-            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">No Operations Logged</p>
-            <p class="text-[10px] font-mono text-terminal-gray/50 mt-1">Initialize a new operation to begin</p>
+            <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider">No Test Runs</p>
+            <p class="text-[10px] font-mono text-text-muted/50 mt-1">Create a test run to get started</p>
           </div>
         <% end %>
       </div>
     </div>
 
     <!-- Top Failed Tests -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header flex items-center justify-between">
+    <div class="panel">
+      <div class="panel-header flex items-center justify-between">
         <span>Critical Failure Points</span>
-        <span class="text-[10px] font-mono text-terminal-red uppercase tracking-wider">Last 30 Days</span>
+        <span class="text-[10px] font-mono text-status-error uppercase tracking-wider">Last 30 Days</span>
       </div>
       <div class="p-4">
         <% if @top_failed_tests.any? %>
           <div class="space-y-2">
             <% @top_failed_tests.each_with_index do |test, index| %>
-              <%= link_to test_case_path(test[:id]), class: "block p-2 bg-nerv-black/30 border border-terminal-red/20 hover:border-terminal-red/50 transition-colors group" do %>
+              <%= link_to test_case_path(test[:id]), class: "block p-2 bg-dark-base/30 border border-status-error/20 hover:border-status-error/50 transition-colors group" do %>
                 <div class="flex items-center justify-between">
                   <div class="flex items-center space-x-2 flex-1 min-w-0">
-                    <span class="text-[10px] font-mono text-terminal-red">#<%= index + 1 %></span>
-                    <span class="text-xs font-mono text-terminal-white group-hover:text-terminal-red truncate"><%= test[:title] %></span>
+                    <span class="text-[10px] font-mono text-status-error">#<%= index + 1 %></span>
+                    <span class="text-xs font-mono text-text-primary group-hover:text-status-error truncate"><%= test[:title] %></span>
                   </div>
                   <div class="flex items-center space-x-1 ml-2">
-                    <span class="text-sm font-mono font-bold text-terminal-red"><%= test[:fail_count] %></span>
-                    <span class="text-[9px] font-mono text-terminal-gray">FAILS</span>
+                    <span class="text-sm font-mono font-bold text-status-error"><%= test[:fail_count] %></span>
+                    <span class="text-[9px] font-mono text-text-muted">FAILS</span>
                   </div>
                 </div>
               <% end %>
@@ -304,7 +276,7 @@
           </div>
         <% else %>
           <div class="text-center py-6">
-            <span class="text-[10px] font-mono text-terminal-green uppercase tracking-wider">No Failures Detected</span>
+            <span class="text-[10px] font-mono text-status-success uppercase tracking-wider">No Failures Detected</span>
           </div>
         <% end %>
       </div>
@@ -315,43 +287,43 @@
 <!-- Secondary Row: Activity Feed & Heatmap -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
   <!-- Team Activity Feed -->
-  <div class="nerv-panel">
-    <div class="nerv-panel-header flex items-center justify-between">
-      <span>Operator Activity Log</span>
-      <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Last 7 Days</span>
+  <div class="panel">
+    <div class="panel-header flex items-center justify-between">
+      <span>Team Activity</span>
+      <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Last 7 Days</span>
     </div>
     <div class="p-4">
       <% if @team_activity.any? %>
         <div class="space-y-2 max-h-64 overflow-y-auto">
           <% @team_activity.each do |activity| %>
-            <div class="flex items-start space-x-3 p-2 bg-nerv-black/30 border-l-2 <%= activity.status == 'passed' ? 'border-terminal-green' : activity.status == 'failed' ? 'border-terminal-red' : 'border-terminal-amber' %>">
+            <div class="flex items-start space-x-3 p-2 bg-dark-base/30 border-l-2 <%= activity.status == 'passed' ? 'border-status-success' : activity.status == 'failed' ? 'border-status-error' : 'border-status-warning' %>">
               <div class="flex-1 min-w-0">
                 <div class="flex items-center space-x-2">
-                  <span class="w-2 h-2 rounded-full <%= activity.status == 'passed' ? 'bg-terminal-green' : activity.status == 'failed' ? 'bg-terminal-red' : 'bg-terminal-amber' %>"></span>
-                  <span class="text-xs font-mono text-terminal-white truncate"><%= activity.test_title %></span>
+                  <span class="w-2 h-2 rounded-full <%= activity.status == 'passed' ? 'bg-status-success' : activity.status == 'failed' ? 'bg-status-error' : 'bg-status-warning' %>"></span>
+                  <span class="text-xs font-mono text-text-primary truncate"><%= activity.test_title %></span>
                 </div>
                 <div class="flex items-center space-x-2 mt-1">
-                  <span class="text-[9px] font-mono text-terminal-cyan"><%= activity.user_email&.split('@')&.first || 'System' %></span>
-                  <span class="text-[9px] font-mono text-terminal-gray">in <%= activity.run_name %></span>
+                  <span class="text-[9px] font-mono text-primary"><%= activity.user_email&.split('@')&.first || 'System' %></span>
+                  <span class="text-[9px] font-mono text-text-muted">in <%= activity.run_name %></span>
                 </div>
               </div>
-              <span class="text-[9px] font-mono text-terminal-gray whitespace-nowrap"><%= time_ago_in_words(activity.updated_at) %></span>
+              <span class="text-[9px] font-mono text-text-muted whitespace-nowrap"><%= time_ago_in_words(activity.updated_at) %></span>
             </div>
           <% end %>
         </div>
       <% else %>
         <div class="text-center py-8">
-          <p class="text-[10px] font-mono text-terminal-gray/50 uppercase">No recent activity</p>
+          <p class="text-[10px] font-mono text-text-muted/50 uppercase">No recent activity</p>
         </div>
       <% end %>
     </div>
   </div>
 
   <!-- Activity Heatmap -->
-  <div class="nerv-panel">
-    <div class="nerv-panel-header flex items-center justify-between">
-      <span>Annual Activity Matrix</span>
-      <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">365 Days</span>
+  <div class="panel">
+    <div class="panel-header flex items-center justify-between">
+      <span>Activity Heatmap</span>
+      <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">365 Days</span>
     </div>
     <div class="p-4">
       <div class="overflow-x-auto"
@@ -359,9 +331,9 @@
            data-activity-heatmap-data-value="<%= @activity_heatmap.to_json %>">
         <div data-activity-heatmap-target="container" class="min-w-[650px]"></div>
       </div>
-      <div class="mt-3 flex items-center justify-between text-[10px] font-mono text-terminal-gray">
-        <span>Total Executions: <span class="text-terminal-cyan"><%= @activity_heatmap.values.sum %></span></span>
-        <span>Active Days: <span class="text-terminal-green"><%= @activity_heatmap.keys.count %></span></span>
+      <div class="mt-3 flex items-center justify-between text-[10px] font-mono text-text-muted">
+        <span>Total Executions: <span class="text-primary"><%= @activity_heatmap.values.sum %></span></span>
+        <span>Active Days: <span class="text-status-success"><%= @activity_heatmap.keys.count %></span></span>
       </div>
     </div>
   </div>

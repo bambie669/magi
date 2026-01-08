@@ -21,12 +21,12 @@ RSpec.describe "Analysis", type: :request do
 
       it "displays page title" do
         get analysis_path
-        expect(response.body).to include("SYSTEM ANALYSIS")
+        expect(response.body).to include("Analysis")
       end
 
-      it "displays MAGI Analysis Module" do
+      it "displays Analysis Dashboard" do
         get analysis_path
-        expect(response.body).to include("MAGI Analysis Module")
+        expect(response.body).to include("Analysis Dashboard")
       end
 
       context "with no data" do
@@ -35,11 +35,9 @@ RSpec.describe "Analysis", type: :request do
           expect(response.body).to include("0")
         end
 
-        it "shows MAGI consensus" do
+        it "shows Quality Summary" do
           get analysis_path
-          expect(response.body).to include("CASPER")
-          expect(response.body).to include("BALTHASAR")
-          expect(response.body).to include("MELCHIOR")
+          expect(response.body).to include("Quality Summary")
         end
       end
 
@@ -53,36 +51,36 @@ RSpec.describe "Analysis", type: :request do
 
         it "displays project count" do
           get analysis_path
-          expect(response.body).to include("MISSIONS")
+          expect(response.body).to include("Projects")
           expect(response.body).to include("1")
         end
 
         it "displays test suite count" do
           get analysis_path
-          expect(response.body).to include("PROTOCOL BANKS")
+          expect(response.body).to include("Test Suites")
         end
 
         it "displays test case count" do
           get analysis_path
-          expect(response.body).to include("PROTOCOLS")
+          expect(response.body).to include("Test Cases")
         end
 
         it "displays test run count" do
           get analysis_path
-          expect(response.body).to include("OPERATIONS")
+          expect(response.body).to include("Test Runs")
         end
 
-        it "displays system integrity report" do
+        it "displays test results summary" do
           get analysis_path
-          expect(response.body).to include("SYSTEM INTEGRITY REPORT")
+          expect(response.body).to include("Test Results Summary")
         end
 
         it "displays status counts" do
           get analysis_path
-          expect(response.body).to include("NOMINAL")
-          expect(response.body).to include("BREACH")
-          expect(response.body).to include("PATTERN BLUE")
-          expect(response.body).to include("STANDBY")
+          expect(response.body).to include("Passed")
+          expect(response.body).to include("Failed")
+          expect(response.body).to include("Blocked")
+          expect(response.body).to include("Not Run")
         end
 
         it "displays pass rate" do
@@ -90,24 +88,24 @@ RSpec.describe "Analysis", type: :request do
           expect(response.body).to include("Overall Pass Rate")
         end
 
-        it "displays operations by mission" do
+        it "displays test runs by project" do
           get analysis_path
-          expect(response.body).to include("OPERATIONS BY MISSION")
+          expect(response.body).to include("Test Runs by Project")
         end
 
-        it "displays execution telemetry" do
+        it "displays test executions chart" do
           get analysis_path
-          expect(response.body).to include("EXECUTION TELEMETRY")
+          expect(response.body).to include("Test Executions")
         end
 
-        it "displays top missions" do
+        it "displays top projects" do
           get analysis_path
-          expect(response.body).to include("TOP MISSIONS BY PROTOCOLS")
+          expect(response.body).to include("Top Projects by Test Cases")
         end
 
-        it "displays recent operations" do
+        it "displays recent test runs" do
           get analysis_path
-          expect(response.body).to include("RECENT OPERATIONS")
+          expect(response.body).to include("Recent Test Runs")
         end
       end
 
@@ -129,9 +127,9 @@ RSpec.describe "Analysis", type: :request do
             end
           end
 
-          it "shows SYSTEM NOMINAL verdict" do
+          it "shows Healthy status" do
             get analysis_path
-            expect(response.body).to include("SYSTEM NOMINAL")
+            expect(response.body).to include("Healthy")
           end
         end
 
@@ -147,9 +145,9 @@ RSpec.describe "Analysis", type: :request do
             end
           end
 
-          it "shows CAUTION ADVISED verdict" do
+          it "shows Needs Improvement status" do
             get analysis_path
-            expect(response.body).to include("CAUTION ADVISED")
+            expect(response.body).to include("Needs Improvement")
           end
         end
 
@@ -165,9 +163,9 @@ RSpec.describe "Analysis", type: :request do
             end
           end
 
-          it "shows CRITICAL REVIEW REQUIRED verdict" do
+          it "shows Critical status" do
             get analysis_path
-            expect(response.body).to include("CRITICAL REVIEW REQUIRED")
+            expect(response.body).to include("Critical")
           end
         end
       end
@@ -182,14 +180,14 @@ RSpec.describe "Analysis", type: :request do
         it "tester sees all project stats" do
           get analysis_path
           # Tester should see 2 projects (all of them per policy)
-          expect(response.body).to match(/MISSIONS.*?2/m)
+          expect(response.body).to match(/Projects.*?2/m)
         end
 
         it "admin sees all project stats" do
           sign_in admin
           get analysis_path
           # Admin should see 2 projects
-          expect(response.body).to match(/MISSIONS.*?2/m)
+          expect(response.body).to match(/Projects.*?2/m)
         end
       end
     end

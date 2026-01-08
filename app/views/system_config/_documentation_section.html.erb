@@ -1,55 +1,55 @@
 <div class="space-y-6">
   <!-- Overview -->
-  <div class="nerv-panel">
-    <div class="nerv-panel-header">
-      <span>MAGI SYSTEM OVERVIEW</span>
+  <div class="panel">
+    <div class="panel-header">
+      <span>System Overview</span>
     </div>
     <div class="p-6">
       <div class="prose prose-invert max-w-none">
-        <p class="text-terminal-gray font-mono text-sm leading-relaxed mb-4">
-          The <span class="text-terminal-cyan">MAGI Quality Assurance System</span> is a comprehensive test management platform designed for organizing, executing, and tracking software testing operations. The interface is inspired by the NERV command center aesthetic from Neon Genesis Evangelion.
+        <p class="text-text-muted font-mono text-sm leading-relaxed mb-4">
+          <span class="text-primary">MAGI QA</span> is a comprehensive test management platform designed for organizing, executing, and tracking software testing activities.
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          <div class="p-4 border border-terminal-cyan/30 bg-terminal-cyan/5">
-            <h4 class="text-terminal-cyan font-mono uppercase tracking-wider mb-2">Core Capabilities</h4>
-            <ul class="text-sm font-mono text-terminal-gray space-y-2">
+          <div class="p-4 border border-primary/30 bg-primary/5 rounded">
+            <h4 class="text-primary font-mono uppercase tracking-wider mb-2">Core Capabilities</h4>
+            <ul class="text-sm font-mono text-text-muted space-y-2">
               <li class="flex items-start space-x-2">
-                <span class="text-terminal-cyan">›</span>
-                <span>Organize tests into Protocol Banks (Test Suites)</span>
+                <span class="text-primary">-</span>
+                <span>Organize tests into Test Suites</span>
               </li>
               <li class="flex items-start space-x-2">
-                <span class="text-terminal-cyan">›</span>
-                <span>Define detailed test Protocols with steps and expected outcomes</span>
+                <span class="text-primary">-</span>
+                <span>Define detailed Test Cases with steps and expected outcomes</span>
               </li>
               <li class="flex items-start space-x-2">
-                <span class="text-terminal-cyan">›</span>
-                <span>Execute Operations (Test Runs) and track results</span>
+                <span class="text-primary">-</span>
+                <span>Execute Test Runs and track results</span>
               </li>
               <li class="flex items-start space-x-2">
-                <span class="text-terminal-cyan">›</span>
-                <span>Monitor project progress via the Command Overview dashboard</span>
+                <span class="text-primary">-</span>
+                <span>Monitor project progress via the Dashboard</span>
               </li>
             </ul>
           </div>
 
-          <div class="p-4 border border-terminal-amber/30 bg-terminal-amber/5">
-            <h4 class="text-terminal-amber font-mono uppercase tracking-wider mb-2">Integration Features</h4>
-            <ul class="text-sm font-mono text-terminal-gray space-y-2">
+          <div class="p-4 border border-accent/30 bg-accent/5 rounded">
+            <h4 class="text-accent font-mono uppercase tracking-wider mb-2">Integration Features</h4>
+            <ul class="text-sm font-mono text-text-muted space-y-2">
               <li class="flex items-start space-x-2">
-                <span class="text-terminal-amber">›</span>
-                <span>CSV import/export for test cases</span>
+                <span class="text-accent">-</span>
+                <span>CSV and Excel import/export for test cases</span>
               </li>
               <li class="flex items-start space-x-2">
-                <span class="text-terminal-amber">›</span>
+                <span class="text-accent">-</span>
                 <span>API endpoints for Cypress test automation</span>
               </li>
               <li class="flex items-start space-x-2">
-                <span class="text-terminal-amber">›</span>
+                <span class="text-accent">-</span>
                 <span>Attachment support for test evidence</span>
               </li>
               <li class="flex items-start space-x-2">
-                <span class="text-terminal-amber">›</span>
+                <span class="text-accent">-</span>
                 <span>Role-based access control</span>
               </li>
             </ul>
@@ -60,53 +60,48 @@
   </div>
 
   <!-- Hierarchy -->
-  <div class="nerv-panel">
-    <div class="nerv-panel-header">
-      <span>SYSTEM HIERARCHY</span>
+  <div class="panel">
+    <div class="panel-header">
+      <span>Data Hierarchy</span>
     </div>
     <div class="p-6">
       <div class="font-mono text-sm">
-        <div class="border-l-2 border-terminal-cyan/50 pl-4 space-y-4">
+        <div class="border-l-2 border-primary/50 pl-4 space-y-4">
           <div>
             <div class="flex items-center space-x-2">
-              <span class="px-2 py-1 bg-terminal-cyan/20 text-terminal-cyan text-xs uppercase border border-terminal-cyan/30">Mission</span>
-              <span class="text-terminal-gray">(Project)</span>
+              <span class="px-2 py-1 bg-primary/20 text-primary text-xs uppercase border border-primary/30 rounded">Project</span>
             </div>
-            <p class="text-xs text-terminal-gray mt-1 ml-4">Top-level container for all testing activities. Each mission has its own protocol banks and operations.</p>
+            <p class="text-xs text-text-muted mt-1 ml-4">Top-level container for all testing activities. Each project has its own test suites and test runs.</p>
           </div>
 
-          <div class="ml-6 border-l-2 border-terminal-amber/50 pl-4 space-y-4">
+          <div class="ml-6 border-l-2 border-status-warning/50 pl-4 space-y-4">
             <div>
               <div class="flex items-center space-x-2">
-                <span class="px-2 py-1 bg-terminal-amber/20 text-terminal-amber text-xs uppercase border border-terminal-amber/30">Protocol Bank</span>
-                <span class="text-terminal-gray">(Test Suite)</span>
+                <span class="px-2 py-1 bg-status-warning/20 text-status-warning text-xs uppercase border border-status-warning/30 rounded">Test Suite</span>
               </div>
-              <p class="text-xs text-terminal-gray mt-1 ml-4">Collection of related test protocols. Group tests by feature, module, or test type.</p>
+              <p class="text-xs text-text-muted mt-1 ml-4">Collection of related test cases. Group tests by feature, module, or test type.</p>
             </div>
 
-            <div class="ml-6 border-l-2 border-terminal-green/50 pl-4">
+            <div class="ml-6 border-l-2 border-status-success/50 pl-4">
               <div class="flex items-center space-x-2">
-                <span class="px-2 py-1 bg-terminal-green/20 text-terminal-green text-xs uppercase border border-terminal-green/30">Protocol</span>
-                <span class="text-terminal-gray">(Test Case)</span>
+                <span class="px-2 py-1 bg-status-success/20 text-status-success text-xs uppercase border border-status-success/30 rounded">Test Case</span>
               </div>
-              <p class="text-xs text-terminal-gray mt-1 ml-4">Individual test with preconditions, execution steps, and expected outcomes.</p>
+              <p class="text-xs text-text-muted mt-1 ml-4">Individual test with preconditions, execution steps, and expected outcomes.</p>
             </div>
           </div>
 
-          <div class="ml-6 border-l-2 border-terminal-red/50 pl-4">
+          <div class="ml-6 border-l-2 border-status-error/50 pl-4">
             <div class="flex items-center space-x-2">
-              <span class="px-2 py-1 bg-terminal-red/20 text-terminal-red text-xs uppercase border border-terminal-red/30">Operation</span>
-              <span class="text-terminal-gray">(Test Run)</span>
+              <span class="px-2 py-1 bg-status-error/20 text-status-error text-xs uppercase border border-status-error/30 rounded">Test Run</span>
             </div>
-            <p class="text-xs text-terminal-gray mt-1 ml-4">Execution instance of selected protocols. Track pass/fail status and comments for each test.</p>
+            <p class="text-xs text-text-muted mt-1 ml-4">Execution instance of selected test cases. Track pass/fail status and comments for each test.</p>
           </div>
 
-          <div class="ml-6 border-l-2 border-magi-casper/50 pl-4">
+          <div class="ml-6 border-l-2 border-accent/50 pl-4">
             <div class="flex items-center space-x-2">
-              <span class="px-2 py-1 bg-magi-casper/20 text-magi-casper text-xs uppercase border border-magi-casper/30">Deadline</span>
-              <span class="text-terminal-gray">(Milestone)</span>
+              <span class="px-2 py-1 bg-accent/20 text-accent text-xs uppercase border border-accent/30 rounded">Milestone</span>
             </div>
-            <p class="text-xs text-terminal-gray mt-1 ml-4">Target dates for mission objectives. Track testing progress against release schedules.</p>
+            <p class="text-xs text-text-muted mt-1 ml-4">Target dates for project objectives. Track testing progress against release schedules.</p>
           </div>
         </div>
       </div>
@@ -114,51 +109,51 @@
   </div>
 
   <!-- User Roles -->
-  <div class="nerv-panel">
-    <div class="nerv-panel-header">
-      <span>OPERATOR CLEARANCE LEVELS</span>
+  <div class="panel">
+    <div class="panel-header">
+      <span>User Roles</span>
     </div>
     <div class="p-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="p-4 border border-terminal-red/30">
+        <div class="p-4 border border-status-error/30 rounded">
           <div class="flex items-center space-x-2 mb-3">
-            <span class="px-2 py-1 bg-terminal-red/20 text-terminal-red text-xs font-mono uppercase border border-terminal-red/30">
-              ADMIN
+            <span class="px-2 py-1 bg-status-error/20 text-status-error text-xs font-mono uppercase border border-status-error/30 rounded">
+              Admin
             </span>
           </div>
-          <ul class="text-xs font-mono text-terminal-gray space-y-1">
-            <li>• Full system access</li>
-            <li>• Manage operators</li>
-            <li>• Create/delete missions</li>
-            <li>• System configuration</li>
+          <ul class="text-xs font-mono text-text-muted space-y-1">
+            <li>- Full system access</li>
+            <li>- Manage users</li>
+            <li>- Create/delete projects</li>
+            <li>- System configuration</li>
           </ul>
         </div>
 
-        <div class="p-4 border border-terminal-amber/30">
+        <div class="p-4 border border-status-warning/30 rounded">
           <div class="flex items-center space-x-2 mb-3">
-            <span class="px-2 py-1 bg-terminal-amber/20 text-terminal-amber text-xs font-mono uppercase border border-terminal-amber/30">
-              MANAGER
+            <span class="px-2 py-1 bg-status-warning/20 text-status-warning text-xs font-mono uppercase border border-status-warning/30 rounded">
+              Manager
             </span>
           </div>
-          <ul class="text-xs font-mono text-terminal-gray space-y-1">
-            <li>• View all missions</li>
-            <li>• Create protocol banks</li>
-            <li>• Initialize operations</li>
-            <li>• Manage test protocols</li>
+          <ul class="text-xs font-mono text-text-muted space-y-1">
+            <li>- View all projects</li>
+            <li>- Create test suites</li>
+            <li>- Start test runs</li>
+            <li>- Manage test cases</li>
           </ul>
         </div>
 
-        <div class="p-4 border border-terminal-cyan/30">
+        <div class="p-4 border border-primary/30 rounded">
           <div class="flex items-center space-x-2 mb-3">
-            <span class="px-2 py-1 bg-terminal-cyan/20 text-terminal-cyan text-xs font-mono uppercase border border-terminal-cyan/30">
-              TESTER
+            <span class="px-2 py-1 bg-primary/20 text-primary text-xs font-mono uppercase border border-primary/30 rounded">
+              Tester
             </span>
           </div>
-          <ul class="text-xs font-mono text-terminal-gray space-y-1">
-            <li>• Execute operations</li>
-            <li>• Update test results</li>
-            <li>• Add comments/attachments</li>
-            <li>• View assigned missions</li>
+          <ul class="text-xs font-mono text-text-muted space-y-1">
+            <li>- Execute test runs</li>
+            <li>- Update test results</li>
+            <li>- Add comments/attachments</li>
+            <li>- View assigned projects</li>
           </ul>
         </div>
       </div>
@@ -166,59 +161,59 @@
   </div>
 
   <!-- Quick Actions -->
-  <div class="nerv-panel">
-    <div class="nerv-panel-header">
-      <span>QUICK ACTION GUIDE</span>
+  <div class="panel">
+    <div class="panel-header">
+      <span>Getting Started</span>
     </div>
     <div class="p-6">
       <div class="space-y-4">
         <div class="flex items-start space-x-4">
-          <div class="w-8 h-8 border border-terminal-cyan/30 bg-terminal-cyan/10 flex items-center justify-center flex-shrink-0">
-            <span class="text-terminal-cyan font-mono font-bold">1</span>
+          <div class="w-8 h-8 border border-primary/30 bg-primary/10 flex items-center justify-center flex-shrink-0 rounded">
+            <span class="text-primary font-mono font-bold">1</span>
           </div>
           <div>
-            <h4 class="text-sm font-mono text-terminal-white uppercase">Create a Mission</h4>
-            <p class="text-xs font-mono text-terminal-gray mt-1">Navigate to Mission Registry and click "Initialize Mission" to start a new project.</p>
+            <h4 class="text-sm font-mono text-text-primary uppercase">Create a Project</h4>
+            <p class="text-xs font-mono text-text-muted mt-1">Navigate to Projects and click "New Project" to start a new testing project.</p>
           </div>
         </div>
 
         <div class="flex items-start space-x-4">
-          <div class="w-8 h-8 border border-terminal-cyan/30 bg-terminal-cyan/10 flex items-center justify-center flex-shrink-0">
-            <span class="text-terminal-cyan font-mono font-bold">2</span>
+          <div class="w-8 h-8 border border-primary/30 bg-primary/10 flex items-center justify-center flex-shrink-0 rounded">
+            <span class="text-primary font-mono font-bold">2</span>
           </div>
           <div>
-            <h4 class="text-sm font-mono text-terminal-white uppercase">Add Protocol Banks</h4>
-            <p class="text-xs font-mono text-terminal-gray mt-1">Within your mission, create protocol banks to organize related test cases.</p>
+            <h4 class="text-sm font-mono text-text-primary uppercase">Add Test Suites</h4>
+            <p class="text-xs font-mono text-text-muted mt-1">Within your project, create test suites to organize related test cases.</p>
           </div>
         </div>
 
         <div class="flex items-start space-x-4">
-          <div class="w-8 h-8 border border-terminal-cyan/30 bg-terminal-cyan/10 flex items-center justify-center flex-shrink-0">
-            <span class="text-terminal-cyan font-mono font-bold">3</span>
+          <div class="w-8 h-8 border border-primary/30 bg-primary/10 flex items-center justify-center flex-shrink-0 rounded">
+            <span class="text-primary font-mono font-bold">3</span>
           </div>
           <div>
-            <h4 class="text-sm font-mono text-terminal-white uppercase">Define Protocols</h4>
-            <p class="text-xs font-mono text-terminal-gray mt-1">Add test protocols with preconditions, steps, and expected outcomes. Use CSV import for bulk operations.</p>
+            <h4 class="text-sm font-mono text-text-primary uppercase">Define Test Cases</h4>
+            <p class="text-xs font-mono text-text-muted mt-1">Add test cases with preconditions, steps, and expected outcomes. Use CSV or Excel import for bulk operations.</p>
           </div>
         </div>
 
         <div class="flex items-start space-x-4">
-          <div class="w-8 h-8 border border-terminal-cyan/30 bg-terminal-cyan/10 flex items-center justify-center flex-shrink-0">
-            <span class="text-terminal-cyan font-mono font-bold">4</span>
+          <div class="w-8 h-8 border border-primary/30 bg-primary/10 flex items-center justify-center flex-shrink-0 rounded">
+            <span class="text-primary font-mono font-bold">4</span>
           </div>
           <div>
-            <h4 class="text-sm font-mono text-terminal-white uppercase">Execute Operations</h4>
-            <p class="text-xs font-mono text-terminal-gray mt-1">Start a test run by selecting protocols to execute. Update status as you complete each test.</p>
+            <h4 class="text-sm font-mono text-text-primary uppercase">Execute Test Runs</h4>
+            <p class="text-xs font-mono text-text-muted mt-1">Start a test run by selecting test cases to execute. Update status as you complete each test.</p>
           </div>
         </div>
 
         <div class="flex items-start space-x-4">
-          <div class="w-8 h-8 border border-terminal-cyan/30 bg-terminal-cyan/10 flex items-center justify-center flex-shrink-0">
-            <span class="text-terminal-cyan font-mono font-bold">5</span>
+          <div class="w-8 h-8 border border-primary/30 bg-primary/10 flex items-center justify-center flex-shrink-0 rounded">
+            <span class="text-primary font-mono font-bold">5</span>
           </div>
           <div>
-            <h4 class="text-sm font-mono text-terminal-white uppercase">Monitor Progress</h4>
-            <p class="text-xs font-mono text-terminal-gray mt-1">Track testing progress on the Command Overview dashboard. View pass/fail metrics and completion percentages.</p>
+            <h4 class="text-sm font-mono text-text-primary uppercase">Monitor Progress</h4>
+            <p class="text-xs font-mono text-text-muted mt-1">Track testing progress on the Dashboard. View pass/fail metrics and completion percentages.</p>
           </div>
         </div>
       </div>

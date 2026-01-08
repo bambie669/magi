@@ -1,31 +1,31 @@
 <% content_for :page_title, "COMMUNICATIONS LOG" %>
 
-<div class="nerv-panel">
-  <div class="nerv-panel-header flex items-center justify-between">
+<div class="panel">
+  <div class="panel-header flex items-center justify-between">
     <div class="flex items-center space-x-4">
       <span>INCOMING TRANSMISSIONS</span>
       <% if @unread_count > 0 %>
-        <span class="px-2 py-0.5 bg-terminal-red/20 border border-terminal-red/50 text-terminal-red text-[10px] font-mono uppercase">
+        <span class="px-2 py-0.5 bg-status-error/20 border border-status-error/50 text-status-error text-[10px] font-mono uppercase">
           <%= @unread_count %> UNREAD
         </span>
       <% end %>
     </div>
     <% if @unread_count > 0 %>
-      <%= button_to mark_all_as_read_notifications_path, method: :post, class: "text-[10px] font-mono text-terminal-cyan uppercase tracking-wider hover:text-terminal-cyan/80 transition-colors" do %>
+      <%= button_to mark_all_as_read_notifications_path, method: :post, class: "text-[10px] font-mono text-primary uppercase tracking-wider hover:text-primary/80 transition-colors" do %>
         MARK ALL AS READ
       <% end %>
     <% end %>
   </div>
 
-  <div class="divide-y divide-terminal-red/10">
+  <div class="divide-y divide-status-error/10">
     <% if @notifications.any? %>
       <% @notifications.each do |notification| %>
-        <div class="p-4 hover:bg-nerv-purple-mid/50 transition-colors <%= notification.read? ? 'opacity-60' : '' %>"
+        <div class="p-4 hover:bg-dark-surface-mid/50 transition-colors <%= notification.read? ? 'opacity-60' : '' %>"
              id="notification_<%= notification.id %>">
           <div class="flex items-start space-x-4">
             <!-- Status Indicator -->
             <div class="flex-shrink-0 mt-1">
-              <span class="block w-2 h-2 rounded-full <%= notification.read? ? 'bg-terminal-gray' : 'bg-terminal-cyan animate-pulse' %>"></span>
+              <span class="block w-2 h-2 rounded-full <%= notification.read? ? 'bg-text-muted' : 'bg-primary animate-pulse' %>"></span>
             </div>
 
             <!-- Content -->
@@ -34,11 +34,11 @@
                 <span class="text-[10px] font-mono uppercase tracking-wider <%= notification.type_class %>">
                   <%= notification.type_label %>
                 </span>
-                <span class="text-[10px] font-mono text-terminal-gray">
+                <span class="text-[10px] font-mono text-text-muted">
                   <%= time_ago_in_words(notification.created_at) %> ago
                 </span>
               </div>
-              <p class="text-sm font-mono text-terminal-white/90 mb-2">
+              <p class="text-sm font-mono text-text-primary/90 mb-2">
                 <%= notification.message %>
               </p>
 
@@ -47,22 +47,22 @@
                 <% if notification.notifiable.present? %>
                   <% case notification.notifiable_type %>
                   <% when 'TestRun' %>
-                    <%= link_to test_run_path(notification.notifiable), class: "text-[10px] font-mono text-terminal-cyan uppercase tracking-wider hover:text-terminal-cyan/80" do %>
+                    <%= link_to test_run_path(notification.notifiable), class: "text-[10px] font-mono text-primary uppercase tracking-wider hover:text-primary/80" do %>
                       VIEW OPERATION
                     <% end %>
                   <% when 'TestCase' %>
-                    <%= link_to test_case_path(notification.notifiable), class: "text-[10px] font-mono text-terminal-cyan uppercase tracking-wider hover:text-terminal-cyan/80" do %>
+                    <%= link_to test_case_path(notification.notifiable), class: "text-[10px] font-mono text-primary uppercase tracking-wider hover:text-primary/80" do %>
                       VIEW PROTOCOL
                     <% end %>
                   <% when 'Project' %>
-                    <%= link_to project_path(notification.notifiable), class: "text-[10px] font-mono text-terminal-cyan uppercase tracking-wider hover:text-terminal-cyan/80" do %>
+                    <%= link_to project_path(notification.notifiable), class: "text-[10px] font-mono text-primary uppercase tracking-wider hover:text-primary/80" do %>
                       VIEW MISSION
                     <% end %>
                   <% end %>
                 <% end %>
 
                 <% unless notification.read? %>
-                  <%= button_to mark_as_read_notification_path(notification), method: :post, class: "text-[10px] font-mono text-terminal-gray uppercase tracking-wider hover:text-terminal-white transition-colors" do %>
+                  <%= button_to mark_as_read_notification_path(notification), method: :post, class: "text-[10px] font-mono text-text-muted uppercase tracking-wider hover:text-text-primary transition-colors" do %>
                     MARK READ
                   <% end %>
                 <% end %>
@@ -71,10 +71,10 @@
 
             <!-- Timestamp -->
             <div class="flex-shrink-0 text-right">
-              <p class="text-[10px] font-mono text-terminal-gray">
+              <p class="text-[10px] font-mono text-text-muted">
                 <%= notification.created_at.strftime('%Y.%m.%d') %>
               </p>
-              <p class="text-[10px] font-mono text-terminal-gray">
+              <p class="text-[10px] font-mono text-text-muted">
                 <%= notification.created_at.strftime('%H:%M:%S') %>
               </p>
             </div>
@@ -83,11 +83,11 @@
       <% end %>
     <% else %>
       <div class="p-8 text-center">
-        <svg class="w-12 h-12 mx-auto text-terminal-gray/50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-12 h-12 mx-auto text-text-muted/50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
         </svg>
-        <p class="text-terminal-gray font-mono text-sm uppercase tracking-wider">No transmissions received</p>
-        <p class="text-terminal-gray/60 font-mono text-xs mt-1">All systems nominal</p>
+        <p class="text-text-muted font-mono text-sm uppercase tracking-wider">No transmissions received</p>
+        <p class="text-text-muted/60 font-mono text-xs mt-1">All systems nominal</p>
       </div>
     <% end %>
   </div>

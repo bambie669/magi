@@ -16,17 +16,17 @@ RSpec.describe "SystemConfig", type: :request do
 
       it "displays theme section by default" do
         get system_config_path
-        expect(response.body).to include("VISUAL INTERFACE CONFIGURATION")
+        expect(response.body).to include("Theme Settings")
       end
 
       it "displays documentation section when requested" do
         get system_config_path(section: 'documentation')
-        expect(response.body).to include("MAGI SYSTEM OVERVIEW")
+        expect(response.body).to include("System Overview")
       end
 
       it "displays glossary section when requested" do
         get system_config_path(section: 'glossary')
-        expect(response.body).to include("NERV TERMINOLOGY GLOSSARY")
+        expect(response.body).to include("Terminology Reference")
       end
     end
 
@@ -41,9 +41,9 @@ RSpec.describe "SystemConfig", type: :request do
   describe "PATCH /system_config/update_theme" do
     before { sign_in admin }
 
-    it "updates user theme to nerv" do
-      patch update_theme_path, params: { theme: 'nerv' }
-      expect(admin.reload.theme).to eq('nerv')
+    it "updates user theme to dark" do
+      patch update_theme_path, params: { theme: 'dark' }
+      expect(admin.reload.theme).to eq('dark')
       expect(response).to redirect_to(system_config_path(section: 'theme'))
     end
 
@@ -68,13 +68,13 @@ RSpec.describe "SystemConfig", type: :request do
         expect(response).to have_http_status(:success)
       end
 
-      it "displays operator registry" do
+      it "displays user management" do
         get system_config_path(section: 'operators')
-        expect(response.body).to include("OPERATOR REGISTRY")
+        expect(response.body).to include("User Management")
       end
 
       it "lists all users" do
-        other_user = create(:user, email: 'other@nerv.org')
+        other_user = create(:user, email: 'other@company.com')
         get system_config_path(section: 'operators')
         expect(response.body).to include(admin.email)
         expect(response.body).to include(other_user.email)
@@ -84,9 +84,9 @@ RSpec.describe "SystemConfig", type: :request do
     context "as non-admin" do
       before { sign_in tester }
 
-      it "does not show operators section content" do
+      it "does not show users section content" do
         get system_config_path(section: 'operators')
-        expect(response.body).not_to include("OPERATOR REGISTRY")
+        expect(response.body).not_to include("User Management")
       end
     end
   end
@@ -100,9 +100,9 @@ RSpec.describe "SystemConfig", type: :request do
         expect(response).to have_http_status(:success)
       end
 
-      it "displays new operator form" do
+      it "displays new user form" do
         get new_operator_path
-        expect(response.body).to include("INITIALIZE NEW OPERATOR")
+        expect(response.body).to include("Add New User")
       end
     end
 
@@ -120,7 +120,7 @@ RSpec.describe "SystemConfig", type: :request do
     let(:valid_params) do
       {
         user: {
-          email: 'newoperator@nerv.org',
+          email: 'newuser@company.com',
           password: 'password123',
           password_confirmation: 'password123',
           role: 'tester'
@@ -137,14 +137,14 @@ RSpec.describe "SystemConfig", type: :request do
         }.to change(User, :count).by(1)
       end
 
-      it "redirects to operators section" do
+      it "redirects to users section" do
         post create_operator_path, params: valid_params
         expect(response).to redirect_to(system_config_path(section: 'operators'))
       end
 
       it "sets success flash" do
         post create_operator_path, params: valid_params
-        expect(flash[:notice]).to include('Operator initialized')
+        expect(flash[:notice]).to include('User created')
       end
 
       it "fails with invalid params" do
@@ -166,7 +166,7 @@ RSpec.describe "SystemConfig", type: :request do
   end
 
   describe "GET /system_config/operators/:id/edit" do
-    let(:target_user) { create(:user, email: 'target@nerv.org') }
+    let(:target_user) { create(:user, email: 'target@company.com') }
 
     context "as admin" do
       before { sign_in admin }
@@ -178,7 +178,7 @@ RSpec.describe "SystemConfig", type: :request do
 
       it "displays edit form" do
         get edit_operator_path(target_user)
-        expect(response.body).to include("MODIFY OPERATOR")
+        expect(response.body).to include("Edit User")
         expect(response.body).to include(target_user.email)
       end
     end
@@ -194,14 +194,14 @@ RSpec.describe "SystemConfig", type: :request do
   end
 
   describe "PATCH /system_config/operators/:id" do
-    let(:target_user) { create(:user, email: 'target@nerv.org', role: :tester) }
+    let(:target_user) { create(:user, email: 'target@company.com', role: :tester) }
 
     context "as admin" do
       before { sign_in admin }
 
       it "updates user email" do
-        patch update_operator_path(target_user), params: { user: { email: 'updated@nerv.org' } }
-        expect(target_user.reload.email).to eq('updated@nerv.org')
+        patch update_operator_path(target_user), params: { user: { email: 'updated@company.com' } }
+        expect(target_user.reload.email).to eq('updated@company.com')
       end
 
       it "updates user role" do
@@ -220,12 +220,12 @@ RSpec.describe "SystemConfig", type: :request do
       it "does not update password when blank" do
         old_password = target_user.encrypted_password
         patch update_operator_path(target_user), params: {
-          user: { email: 'same@nerv.org', password: '', password_confirmation: '' }
+          user: { email: 'same@company.com', password: '', password_confirmation: '' }
         }
         expect(target_user.reload.encrypted_password).to eq(old_password)
       end
 
-      it "redirects to operators section" do
+      it "redirects to users section" do
         patch update_operator_path(target_user), params: { user: { role: 'manager' } }
         expect(response).to redirect_to(system_config_path(section: 'operators'))
       end
@@ -243,7 +243,7 @@ RSpec.describe "SystemConfig", type: :request do
   end
 
   describe "DELETE /system_config/operators/:id" do
-    let!(:target_user) { create(:user, email: 'target@nerv.org') }
+    let!(:target_user) { create(:user, email: 'target@company.com') }
 
     context "as admin" do
       before { sign_in admin }
@@ -254,7 +254,7 @@ RSpec.describe "SystemConfig", type: :request do
         }.to change(User, :count).by(-1)
       end
 
-      it "redirects to operators section" do
+      it "redirects to users section" do
         delete destroy_operator_path(target_user)
         expect(response).to redirect_to(system_config_path(section: 'operators'))
       end
@@ -263,7 +263,7 @@ RSpec.describe "SystemConfig", type: :request do
         expect {
           delete destroy_operator_path(admin)
         }.not_to change(User, :count)
-        expect(flash[:alert]).to include('Cannot terminate your own account')
+        expect(flash[:alert]).to include('Cannot delete your own account')
       end
     end
 
@@ -291,7 +291,7 @@ RSpec.describe "SystemConfig", type: :request do
 
       it "displays API tokens section" do
         get system_config_path(section: 'api_tokens')
-        expect(response.body).to include("INITIALIZE NEW API TOKEN")
+        expect(response.body).to include("Create New API Token")
       end
 
       it "displays user's existing tokens" do
@@ -408,7 +408,7 @@ RSpec.describe "SystemConfig", type: :request do
       it "sets success flash" do
         token = create(:api_token, user: tester)
         delete destroy_api_token_path(token)
-        expect(flash[:notice]).to include('terminated')
+        expect(flash[:notice]).to include('revoked')
       end
     end
 
@@ -448,7 +448,7 @@ RSpec.describe "SystemConfig", type: :request do
           it "can access theme section" do
             get system_config_path(section: 'theme')
             expect(response).to have_http_status(:success)
-            expect(response.body).to include("VISUAL INTERFACE CONFIGURATION")
+            expect(response.body).to include("Theme Settings")
           end
 
           it "can update theme preference" do
@@ -468,7 +468,7 @@ RSpec.describe "SystemConfig", type: :request do
           it "can access documentation" do
             get system_config_path(section: 'documentation')
             expect(response).to have_http_status(:success)
-            expect(response.body).to include("MAGI SYSTEM OVERVIEW")
+            expect(response.body).to include("System Overview")
           end
         end
       end
@@ -482,19 +482,19 @@ RSpec.describe "SystemConfig", type: :request do
           it "can access glossary" do
             get system_config_path(section: 'glossary')
             expect(response).to have_http_status(:success)
-            expect(response.body).to include("NERV TERMINOLOGY GLOSSARY")
+            expect(response.body).to include("Terminology Reference")
           end
         end
       end
     end
 
-    describe "operators section" do
+    describe "users section" do
       context "as admin" do
         before { sign_in admin }
 
-        it "can access operators section" do
+        it "can access users section" do
           get system_config_path(section: 'operators')
-          expect(response.body).to include("OPERATOR REGISTRY")
+          expect(response.body).to include("User Management")
         end
       end
 
@@ -502,9 +502,9 @@ RSpec.describe "SystemConfig", type: :request do
         context "as #{role}" do
           before { sign_in create(:user, role: role) }
 
-          it "cannot see operators content" do
+          it "cannot see users content" do
             get system_config_path(section: 'operators')
-            expect(response.body).not_to include("OPERATOR REGISTRY")
+            expect(response.body).not_to include("User Management")
           end
         end
       end

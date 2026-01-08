@@ -1,165 +1,87 @@
-<div class="nerv-panel">
-  <div class="nerv-panel-header">
-    <span>NERV TERMINOLOGY GLOSSARY</span>
+<div class="panel">
+  <div class="panel-header">
+    <span>Terminology Reference</span>
   </div>
   <div class="p-6">
-    <p class="text-sm font-mono text-terminal-gray mb-6">
-      Reference guide for NERV interface terminology and their standard QA equivalents.
+    <p class="text-sm font-mono text-text-muted mb-6">
+      Reference guide for common terms used in the MAGI QA application.
     </p>
 
     <div class="overflow-x-auto">
       <table class="w-full font-mono text-sm">
         <thead>
-          <tr class="border-b border-terminal-red/30">
-            <th class="text-left py-3 px-4 text-terminal-amber uppercase tracking-wider text-xs">NERV Term</th>
-            <th class="text-left py-3 px-4 text-terminal-cyan uppercase tracking-wider text-xs">Standard Term</th>
-            <th class="text-left py-3 px-4 text-terminal-gray uppercase tracking-wider text-xs">Description</th>
+          <tr class="border-b border-dark-border">
+            <th class="text-left py-3 px-4 text-primary uppercase tracking-wider text-xs">Term</th>
+            <th class="text-left py-3 px-4 text-text-muted uppercase tracking-wider text-xs">Description</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-terminal-red/10">
-          <!-- Navigation Terms -->
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Command Overview</td>
-            <td class="py-3 px-4 text-terminal-cyan">Dashboard</td>
-            <td class="py-3 px-4 text-terminal-gray">Main system status display with metrics and recent activity</td>
+        <tbody class="divide-y divide-dark-border/50">
+          <!-- Core Concepts -->
+          <tr class="hover:bg-dark-hover/30">
+            <td class="py-3 px-4 text-text-primary">Project</td>
+            <td class="py-3 px-4 text-text-muted">Top-level container for organizing testing activities</td>
           </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Mission</td>
-            <td class="py-3 px-4 text-terminal-cyan">Project</td>
-            <td class="py-3 px-4 text-terminal-gray">Top-level container for testing activities</td>
+          <tr class="hover:bg-dark-hover/30">
+            <td class="py-3 px-4 text-text-primary">Test Suite</td>
+            <td class="py-3 px-4 text-text-muted">Collection of related test cases grouped together</td>
           </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Mission Registry</td>
-            <td class="py-3 px-4 text-terminal-cyan">Projects List</td>
-            <td class="py-3 px-4 text-terminal-gray">Overview of all available projects</td>
+          <tr class="hover:bg-dark-hover/30">
+            <td class="py-3 px-4 text-text-primary">Test Case</td>
+            <td class="py-3 px-4 text-text-muted">Individual test with steps and expected results</td>
           </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Protocol</td>
-            <td class="py-3 px-4 text-terminal-cyan">Test Case</td>
-            <td class="py-3 px-4 text-terminal-gray">Individual test with steps and expected results</td>
+          <tr class="hover:bg-dark-hover/30">
+            <td class="py-3 px-4 text-text-primary">Test Run</td>
+            <td class="py-3 px-4 text-text-muted">Execution instance of selected test cases</td>
           </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Protocol Bank</td>
-            <td class="py-3 px-4 text-terminal-cyan">Test Suite</td>
-            <td class="py-3 px-4 text-terminal-gray">Collection of related test protocols</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Operation</td>
-            <td class="py-3 px-4 text-terminal-cyan">Test Run</td>
-            <td class="py-3 px-4 text-terminal-gray">Execution instance of selected protocols</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Deadline</td>
-            <td class="py-3 px-4 text-terminal-cyan">Milestone</td>
-            <td class="py-3 px-4 text-terminal-gray">Target date for project objectives</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Operator</td>
-            <td class="py-3 px-4 text-terminal-cyan">User</td>
-            <td class="py-3 px-4 text-terminal-gray">System user with assigned clearance level</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Clearance Level</td>
-            <td class="py-3 px-4 text-terminal-cyan">User Role</td>
-            <td class="py-3 px-4 text-terminal-gray">Permission level (Admin, Manager, Tester)</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">System Config</td>
-            <td class="py-3 px-4 text-terminal-cyan">Settings</td>
-            <td class="py-3 px-4 text-terminal-gray">Application configuration and preferences</td>
+          <tr class="hover:bg-dark-hover/30">
+            <td class="py-3 px-4 text-text-primary">Milestone</td>
+            <td class="py-3 px-4 text-text-muted">Target date for project objectives</td>
           </tr>
 
-          <!-- Status Terms -->
-          <tr class="border-t-2 border-terminal-red/30">
-            <td colspan="3" class="py-3 px-4 text-terminal-amber uppercase tracking-wider text-xs bg-terminal-amber/5">Status Indicators</td>
+          <!-- Status Indicators -->
+          <tr class="border-t-2 border-dark-border">
+            <td colspan="2" class="py-3 px-4 text-primary uppercase tracking-wider text-xs bg-dark-surface/50">Status Indicators</td>
           </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
+          <tr class="hover:bg-dark-hover/30">
             <td class="py-3 px-4">
-              <span class="status-nominal px-2 py-1 text-xs uppercase">Nominal</span>
+              <span class="inline-flex items-center px-2 py-1 text-xs uppercase bg-status-success/20 text-status-success border border-status-success/30 rounded">Passed</span>
             </td>
-            <td class="py-3 px-4 text-terminal-cyan">Passed</td>
-            <td class="py-3 px-4 text-terminal-gray">Test executed successfully with expected results</td>
+            <td class="py-3 px-4 text-text-muted">Test executed successfully with expected results</td>
           </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
+          <tr class="hover:bg-dark-hover/30">
             <td class="py-3 px-4">
-              <span class="status-breach px-2 py-1 text-xs uppercase">Breach</span>
+              <span class="inline-flex items-center px-2 py-1 text-xs uppercase bg-status-error/20 text-status-error border border-status-error/30 rounded">Failed</span>
             </td>
-            <td class="py-3 px-4 text-terminal-cyan">Failed</td>
-            <td class="py-3 px-4 text-terminal-gray">Test failed - actual results differ from expected</td>
+            <td class="py-3 px-4 text-text-muted">Test failed - actual results differ from expected</td>
           </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
+          <tr class="hover:bg-dark-hover/30">
             <td class="py-3 px-4">
-              <span class="status-caution px-2 py-1 text-xs uppercase">Pattern Blue</span>
+              <span class="inline-flex items-center px-2 py-1 text-xs uppercase bg-status-warning/20 text-status-warning border border-status-warning/30 rounded">Blocked</span>
             </td>
-            <td class="py-3 px-4 text-terminal-cyan">Blocked</td>
-            <td class="py-3 px-4 text-terminal-gray">Test cannot be executed due to dependencies or blockers</td>
+            <td class="py-3 px-4 text-text-muted">Test cannot be executed due to dependencies or blockers</td>
           </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
+          <tr class="hover:bg-dark-hover/30">
             <td class="py-3 px-4">
-              <span class="status-standby px-2 py-1 text-xs uppercase">Standby</span>
+              <span class="inline-flex items-center px-2 py-1 text-xs uppercase bg-dark-hover text-text-muted border border-dark-border rounded">Not Run</span>
             </td>
-            <td class="py-3 px-4 text-terminal-cyan">Untested</td>
-            <td class="py-3 px-4 text-terminal-gray">Test has not yet been executed</td>
+            <td class="py-3 px-4 text-text-muted">Test has not yet been executed</td>
           </tr>
 
-          <!-- Action Terms -->
-          <tr class="border-t-2 border-terminal-red/30">
-            <td colspan="3" class="py-3 px-4 text-terminal-amber uppercase tracking-wider text-xs bg-terminal-amber/5">Action Verbs</td>
+          <!-- User Roles -->
+          <tr class="border-t-2 border-dark-border">
+            <td colspan="2" class="py-3 px-4 text-primary uppercase tracking-wider text-xs bg-dark-surface/50">User Roles</td>
           </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Initialize</td>
-            <td class="py-3 px-4 text-terminal-cyan">Create</td>
-            <td class="py-3 px-4 text-terminal-gray">Create a new entity in the system</td>
+          <tr class="hover:bg-dark-hover/30">
+            <td class="py-3 px-4 text-text-primary">Admin</td>
+            <td class="py-3 px-4 text-text-muted">Full system access including user management and settings</td>
           </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Modify</td>
-            <td class="py-3 px-4 text-terminal-cyan">Edit</td>
-            <td class="py-3 px-4 text-terminal-gray">Update an existing entity</td>
+          <tr class="hover:bg-dark-hover/30">
+            <td class="py-3 px-4 text-text-primary">Manager</td>
+            <td class="py-3 px-4 text-text-muted">Can manage projects, test suites, and test runs</td>
           </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Terminate / Purge</td>
-            <td class="py-3 px-4 text-terminal-cyan">Delete</td>
-            <td class="py-3 px-4 text-terminal-gray">Permanently remove an entity</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Scan</td>
-            <td class="py-3 px-4 text-terminal-cyan">Search</td>
-            <td class="py-3 px-4 text-terminal-gray">Find entities matching criteria</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Access</td>
-            <td class="py-3 px-4 text-terminal-cyan">View</td>
-            <td class="py-3 px-4 text-terminal-gray">Open and view entity details</td>
-          </tr>
-
-          <!-- Interface Terms -->
-          <tr class="border-t-2 border-terminal-red/30">
-            <td colspan="3" class="py-3 px-4 text-terminal-amber uppercase tracking-wider text-xs bg-terminal-amber/5">Interface Elements</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Command Core</td>
-            <td class="py-3 px-4 text-terminal-cyan">Sidebar Navigation</td>
-            <td class="py-3 px-4 text-terminal-gray">Main navigation menu on the left side</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">MAGI System</td>
-            <td class="py-3 px-4 text-terminal-cyan">Application Status</td>
-            <td class="py-3 px-4 text-terminal-gray">System health and connection status indicator</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Bank Overview</td>
-            <td class="py-3 px-4 text-terminal-cyan">Suite Summary</td>
-            <td class="py-3 px-4 text-terminal-gray">Statistics and metadata for a test suite</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Protocol Database</td>
-            <td class="py-3 px-4 text-terminal-cyan">Test Case List</td>
-            <td class="py-3 px-4 text-terminal-gray">Table of all test cases in a suite</td>
-          </tr>
-          <tr class="hover:bg-nerv-purple-mid/30">
-            <td class="py-3 px-4 text-terminal-white">Execution Console</td>
-            <td class="py-3 px-4 text-terminal-cyan">Test Run Details</td>
-            <td class="py-3 px-4 text-terminal-gray">Interface for executing and recording test results</td>
+          <tr class="hover:bg-dark-hover/30">
+            <td class="py-3 px-4 text-text-primary">Tester</td>
+            <td class="py-3 px-4 text-text-muted">Can execute tests and record results</td>
           </tr>
         </tbody>
       </table>

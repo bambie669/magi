@@ -62,7 +62,7 @@ class SystemConfigController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      redirect_to system_config_path(section: 'operators'), notice: 'Operator initialized successfully.'
+      redirect_to system_config_path(section: 'operators'), notice: 'User created successfully.'
     else
       @section = 'operators'
       render :new_operator, status: :unprocessable_entity
@@ -86,7 +86,7 @@ class SystemConfigController < ApplicationController
     end
 
     if @user.update(update_params)
-      redirect_to system_config_path(section: 'operators'), notice: 'Operator updated successfully.'
+      redirect_to system_config_path(section: 'operators'), notice: 'User updated successfully.'
     else
       @section = 'operators'
       render :edit_user, status: :unprocessable_entity
@@ -98,10 +98,10 @@ class SystemConfigController < ApplicationController
     authorize :system_config, :manage_operators?
 
     if @user == current_user
-      redirect_to system_config_path(section: 'operators'), alert: 'Cannot terminate your own account.'
+      redirect_to system_config_path(section: 'operators'), alert: 'Cannot delete your own account.'
     else
       @user.destroy
-      redirect_to system_config_path(section: 'operators'), notice: 'Operator terminated successfully.'
+      redirect_to system_config_path(section: 'operators'), notice: 'User deleted successfully.'
     end
   end
 
@@ -122,7 +122,7 @@ class SystemConfigController < ApplicationController
     if @api_token.save
       # Store the token in flash so it can be displayed once
       flash[:new_token] = @api_token.token
-      redirect_to system_config_path(section: 'api_tokens'), notice: 'API Token initialized successfully. Copy your token now - it will not be shown again.'
+      redirect_to system_config_path(section: 'api_tokens'), notice: 'API Token created successfully. Copy your token now - it will not be shown again.'
     else
       @section = 'api_tokens'
       @api_tokens = current_user.api_tokens.order(created_at: :desc)
@@ -134,7 +134,7 @@ class SystemConfigController < ApplicationController
   # DELETE /system_config/api_tokens/:id
   def destroy_api_token
     @api_token.destroy
-    redirect_to system_config_path(section: 'api_tokens'), notice: 'API Token terminated successfully.'
+    redirect_to system_config_path(section: 'api_tokens'), notice: 'API Token revoked successfully.'
   end
 
   private

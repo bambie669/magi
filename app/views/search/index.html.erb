@@ -1,10 +1,10 @@
-<% content_for :page_title, "DATABASE SCAN" %>
+<% content_for :page_title, "Search" %>
 
 <div class="mb-6">
   <!-- Search Form -->
-  <div class="nerv-panel">
-    <div class="nerv-panel-header">
-      <span>MAGI DATABASE SCANNER</span>
+  <div class="panel">
+    <div class="panel-header">
+      <span>Search</span>
     </div>
     <div class="p-6">
       <%= form_with url: search_path, method: :get, local: true, class: "flex items-center space-x-4" do %>
@@ -12,18 +12,18 @@
           <input type="text"
                  name="q"
                  value="<%= @query %>"
-                 placeholder="Enter search query..."
-                 class="input-nerv w-full pl-10 py-3 text-sm"
+                 placeholder="Enter a search query..."
+                 class="input-field w-full pl-10 py-3 text-sm"
                  autofocus>
           <svg class="w-5 h-5 text-theme-muted absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
         </div>
-        <button type="submit" class="btn-nerv-primary px-6 py-3">
+        <button type="submit" class="btn-primary px-6 py-3">
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
-          SCAN
+          Search
         </button>
       <% end %>
     </div>
@@ -35,9 +35,9 @@
   <div class="mb-6 px-4 py-3 bg-dark-elevated border border-dark-border rounded">
     <div class="flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <span class="text-eva-green font-mono text-sm"><%= @total_results %></span>
+        <span class="text-accent font-mono text-sm"><%= @total_results %></span>
         <span class="text-theme-secondary text-sm font-mono uppercase">Results found for "</span>
-        <span class="text-eva-purple-light font-mono text-sm"><%= @query %></span>
+        <span class="text-primary-light font-mono text-sm"><%= @query %></span>
         <span class="text-theme-secondary text-sm font-mono uppercase">"</span>
       </div>
     </div>
@@ -46,17 +46,17 @@
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Projects -->
     <% if @projects.any? %>
-      <div class="nerv-panel">
-        <div class="nerv-panel-header flex items-center justify-between">
-          <span>MISSIONS</span>
+      <div class="panel">
+        <div class="panel-header flex items-center justify-between">
+          <span>Projects</span>
           <span class="badge badge-info"><%= @projects.size %></span>
         </div>
         <div class="divide-y divide-dark-border">
           <% @projects.each do |project| %>
             <%= link_to project_path(project), class: "block p-4 hover:bg-dark-hover transition-colors" do %>
               <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 rounded bg-eva-purple-muted flex items-center justify-center">
-                  <svg class="w-4 h-4 text-eva-purple-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-8 h-8 rounded bg-primary-muted flex items-center justify-center">
+                  <svg class="w-4 h-4 text-primary-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                   </svg>
                 </div>
@@ -71,19 +71,19 @@
       </div>
     <% end %>
 
-    <!-- Test Suites (Protocol Banks) -->
+    <!-- Test Suites -->
     <% if @test_suites.any? %>
-      <div class="nerv-panel">
-        <div class="nerv-panel-header flex items-center justify-between">
-          <span>PROTOCOL BANKS</span>
+      <div class="panel">
+        <div class="panel-header flex items-center justify-between">
+          <span>Test Suites</span>
           <span class="badge badge-info"><%= @test_suites.size %></span>
         </div>
         <div class="divide-y divide-dark-border">
           <% @test_suites.each do |suite| %>
             <%= link_to test_suite_path(suite), class: "block p-4 hover:bg-dark-hover transition-colors" do %>
               <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 rounded bg-terminal-cyan/20 flex items-center justify-center">
-                  <svg class="w-4 h-4 text-terminal-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-8 h-8 rounded bg-primary/20 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                   </svg>
                 </div>
@@ -98,11 +98,11 @@
       </div>
     <% end %>
 
-    <!-- Test Runs (Operations) -->
+    <!-- Test Runs -->
     <% if @test_runs.any? %>
-      <div class="nerv-panel">
-        <div class="nerv-panel-header flex items-center justify-between">
-          <span>OPERATIONS</span>
+      <div class="panel">
+        <div class="panel-header flex items-center justify-between">
+          <span>Test Runs</span>
           <span class="badge badge-info"><%= @test_runs.size %></span>
         </div>
         <div class="divide-y divide-dark-border">
@@ -119,8 +119,8 @@
                   <p class="text-sm font-mono text-theme-primary"><%= run.name %></p>
                   <div class="flex items-center space-x-3 mt-1">
                     <span class="text-xs font-mono text-theme-muted"><%= run.project.name %></span>
-                    <span class="text-terminal-green text-xs font-mono"><%= run.passed_cases %> PASS</span>
-                    <span class="text-terminal-red text-xs font-mono"><%= run.failed_cases %> FAIL</span>
+                    <span class="text-status-success text-xs font-mono"><%= run.passed_cases %> Passed</span>
+                    <span class="text-status-error text-xs font-mono"><%= run.failed_cases %> Failed</span>
                   </div>
                 </div>
               </div>
@@ -131,19 +131,19 @@
     <% end %>
   </div>
 
-  <!-- Test Cases (Protocols) - Full Width -->
+  <!-- Test Cases - Full Width -->
   <% if @test_cases.any? %>
-    <div class="nerv-panel mt-6">
-      <div class="nerv-panel-header flex items-center justify-between">
-        <span>PROTOCOLS</span>
+    <div class="panel mt-6">
+      <div class="panel-header flex items-center justify-between">
+        <span>Test Cases</span>
         <span class="badge badge-info"><%= @test_cases.size %></span>
       </div>
       <div class="divide-y divide-dark-border">
         <% @test_cases.each do |tc| %>
           <%= link_to test_case_path(tc), class: "block p-4 hover:bg-dark-hover transition-colors" do %>
             <div class="flex items-start space-x-3">
-              <div class="w-8 h-8 rounded bg-eva-green/20 flex items-center justify-center flex-shrink-0">
-                <svg class="w-4 h-4 text-eva-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-8 h-8 rounded bg-accent/20 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
               </div>
@@ -151,8 +151,8 @@
                 <p class="text-sm font-mono text-theme-primary"><%= tc.title %></p>
                 <p class="text-xs font-mono text-theme-muted mt-1 truncate"><%= tc.steps.to_s.truncate(100) %></p>
                 <div class="flex items-center space-x-2 mt-2">
-                  <span class="text-[10px] font-mono text-eva-purple-light bg-eva-purple-muted/30 px-2 py-0.5 rounded"><%= tc.test_scope.test_suite.project.name %></span>
-                  <span class="text-[10px] font-mono text-terminal-cyan"><%= tc.test_scope.test_suite.name %></span>
+                  <span class="text-[10px] font-mono text-primary-light bg-primary-muted/30 px-2 py-0.5 rounded"><%= tc.test_scope.test_suite.project.name %></span>
+                  <span class="text-[10px] font-mono text-primary"><%= tc.test_scope.test_suite.name %></span>
                 </div>
               </div>
             </div>
@@ -163,7 +163,7 @@
   <% end %>
 
   <% if @total_results == 0 %>
-    <div class="nerv-panel">
+    <div class="panel">
       <div class="p-12 text-center">
         <svg class="w-16 h-16 mx-auto text-theme-muted mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -176,13 +176,13 @@
 
 <% else %>
   <!-- Empty State -->
-  <div class="nerv-panel">
+  <div class="panel">
     <div class="p-12 text-center">
-      <svg class="w-16 h-16 mx-auto text-eva-purple mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-16 h-16 mx-auto text-primary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
       </svg>
-      <p class="text-theme-secondary font-mono uppercase tracking-wider">MAGI Database Scanner Ready</p>
-      <p class="text-theme-muted font-mono text-sm mt-2">Enter a query to search across all missions, protocols, and operations</p>
+      <p class="text-theme-secondary font-mono uppercase tracking-wider">Enter a search query</p>
+      <p class="text-theme-muted font-mono text-sm mt-2">Search across all projects, test suites, test cases, and test runs</p>
     </div>
   </div>
 <% end %>

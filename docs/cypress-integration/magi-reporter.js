@@ -1,26 +1,26 @@
 /**
  * Magi QA Reporter for Cypress
  *
- * Acest plugin trimite rezultatele testelor Cypress către API-ul Magi QA.
+ * Trimite rezultatele testelor Cypress către API-ul Magi QA.
+ * Format test ID: TC-XXXX (ex: "TC-0001: Login test", "[TC-0042] Verify button")
  *
  * Configurare în cypress.config.js:
  *
- * const { defineConfig } = require('cypress');
- * const magiReporter = require('./magi-reporter');
+ *   const magiReporter = require('./magi-reporter');
  *
- * module.exports = defineConfig({
- *   e2e: {
- *     setupNodeEvents(on, config) {
- *       magiReporter(on, config);
- *       return config;
+ *   module.exports = defineConfig({
+ *     e2e: {
+ *       setupNodeEvents(on, config) {
+ *         magiReporter(on, config);
+ *         return config;
+ *       }
+ *     },
+ *     env: {
+ *       MAGI_API_URL: 'http://localhost:2507',
+ *       MAGI_API_TOKEN: 'your_token_here',
+ *       MAGI_TEST_RUN_ID: '123'
  *     }
- *   },
- *   env: {
- *     MAGI_API_URL: 'http://localhost:2507',
- *     MAGI_API_TOKEN: 'your_token_here',
- *     MAGI_TEST_RUN_ID: '123'
- *   }
- * });
+ *   });
  */
 
 const https = require('https');
@@ -28,25 +28,13 @@ const http = require('http');
 
 /**
  * Extrage cypress_id din titlul testului
- * Convenție: "TC-001: Test description" sau "[TC-001] Test description"
+ * Format standard: "TC-0001: Test description" sau "[TC-0001] Test description"
  */
 function extractCypressId(title) {
-  // Match patterns like "TC-001:", "TC-001 -", "[TC-001]", "MAGI-123:", "ID: 123", "TC123"
-  const patterns = [
-    /^(TC-?\d+)[\s:|-]/i,      // TC-001 or TC001 followed by separator
-    /^\[(TC-?\d+)\]/i,          // [TC-001] or [TC001]
-    /^(MAGI-\d+)[\s:|-]/i,      // MAGI-001 followed by separator
-    /^\[(MAGI-\d+)\]/i,         // [MAGI-001]
-    /^ID:\s*(\d+)[\s-]/i,       // ID: 123 or ID:123 followed by space or hyphen
-  ];
-
-  for (const pattern of patterns) {
-    const match = title.match(pattern);
-    if (match) {
-      return match[1].toUpperCase();
-    }
+  const match = title.match(/^(?:\[)?(TC-\d{4})(?:\])?[\s\-:]/i);
+  if (match) {
+    return match[1].toUpperCase();
   }
-
   return null;
 }
 
@@ -81,10 +69,7 @@ function processResults(runResults) {
     if (!run.tests) continue;
 
     for (const test of run.tests) {
-      // Construiește titlul complet din titlurile părinților
-      const fullTitle = test.title.join(' > ');
       const testTitle = test.title[test.title.length - 1];
-
       const cypressId = extractCypressId(testTitle);
 
       if (!cypressId) {
@@ -99,7 +84,6 @@ function processResults(runResults) {
         error_message: null
       };
 
-      // Adaugă mesajul de eroare dacă testul a eșuat
       if (test.state === 'failed' && test.displayError) {
         result.error_message = test.displayError;
       }

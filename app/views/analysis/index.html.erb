@@ -1,46 +1,46 @@
-<% content_for :page_title, "SYSTEM ANALYSIS" %>
+<% content_for :page_title, "Analysis" %>
 
 <!-- Status Bar -->
 <div class="mb-6 flex items-center justify-between px-4 py-2 bg-dark-elevated border border-dark-border rounded">
   <div class="flex items-center space-x-6">
-    <span class="text-[10px] font-mono text-terminal-amber uppercase tracking-widest">MAGI Analysis Module</span>
+    <span class="text-[10px] font-mono text-text-secondary uppercase tracking-widest">Analysis Dashboard</span>
     <div class="h-3 w-px bg-dark-border"></div>
-    <span class="text-[10px] font-mono text-theme-muted uppercase tracking-wider">Data Range: <span class="text-terminal-cyan">All Time</span></span>
+    <span class="text-[10px] font-mono text-theme-muted uppercase tracking-wider">Data Range: <span class="text-primary">All Time</span></span>
   </div>
   <div class="flex items-center space-x-2">
-    <span class="w-2 h-2 bg-terminal-green rounded-full animate-pulse"></span>
-    <span class="text-[10px] font-mono text-terminal-green uppercase tracking-wider">Analysis Complete</span>
+    <span class="w-2 h-2 bg-status-success rounded-full animate-pulse"></span>
+    <span class="text-[10px] font-mono text-status-success uppercase tracking-wider">Analysis Complete</span>
   </div>
 </div>
 
 <!-- Key Metrics Row -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-  <!-- Total Missions -->
-  <div class="nerv-panel p-5">
-    <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-widest mb-2">MISSIONS</p>
-    <p class="text-3xl font-mono font-bold text-terminal-cyan"><%= @total_projects %></p>
-    <p class="text-[10px] font-mono text-theme-muted uppercase mt-1">Active Projects</p>
+  <!-- Total Projects -->
+  <div class="panel p-5">
+    <p class="text-[10px] font-mono text-text-secondary uppercase tracking-widest mb-2">Projects</p>
+    <p class="text-3xl font-mono font-bold text-primary"><%= @total_projects %></p>
+    <p class="text-[10px] font-mono text-theme-muted uppercase mt-1">Active</p>
   </div>
 
-  <!-- Total Protocol Banks -->
-  <div class="nerv-panel p-5">
-    <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-widest mb-2">PROTOCOL BANKS</p>
-    <p class="text-3xl font-mono font-bold text-terminal-cyan"><%= @total_test_suites %></p>
-    <p class="text-[10px] font-mono text-theme-muted uppercase mt-1">Test Suites</p>
+  <!-- Total Test Suites -->
+  <div class="panel p-5">
+    <p class="text-[10px] font-mono text-text-secondary uppercase tracking-widest mb-2">Test Suites</p>
+    <p class="text-3xl font-mono font-bold text-primary"><%= @total_test_suites %></p>
+    <p class="text-[10px] font-mono text-theme-muted uppercase mt-1">Total</p>
   </div>
 
-  <!-- Total Protocols -->
-  <div class="nerv-panel p-5">
-    <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-widest mb-2">PROTOCOLS</p>
-    <p class="text-3xl font-mono font-bold text-terminal-cyan"><%= @total_test_cases %></p>
-    <p class="text-[10px] font-mono text-theme-muted uppercase mt-1">Test Cases</p>
+  <!-- Total Test Cases -->
+  <div class="panel p-5">
+    <p class="text-[10px] font-mono text-text-secondary uppercase tracking-widest mb-2">Test Cases</p>
+    <p class="text-3xl font-mono font-bold text-primary"><%= @total_test_cases %></p>
+    <p class="text-[10px] font-mono text-theme-muted uppercase mt-1">Total</p>
   </div>
 
-  <!-- Total Operations -->
-  <div class="nerv-panel p-5">
-    <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-widest mb-2">OPERATIONS</p>
-    <p class="text-3xl font-mono font-bold text-terminal-cyan"><%= @total_test_runs %></p>
-    <p class="text-[10px] font-mono text-theme-muted uppercase mt-1">Test Runs</p>
+  <!-- Total Test Runs -->
+  <div class="panel p-5">
+    <p class="text-[10px] font-mono text-text-secondary uppercase tracking-widest mb-2">Test Runs</p>
+    <p class="text-3xl font-mono font-bold text-primary"><%= @total_test_runs %></p>
+    <p class="text-[10px] font-mono text-theme-muted uppercase mt-1">Total</p>
   </div>
 </div>
 
@@ -49,29 +49,29 @@
   <!-- Left Column -->
   <div class="lg:col-span-2 space-y-6">
     <!-- System Integrity Panel -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header">SYSTEM INTEGRITY REPORT</div>
+    <div class="panel">
+      <div class="panel-header">Test Results Summary</div>
       <div class="p-6">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <!-- Passed -->
           <div class="text-center p-4 bg-dark-hover rounded border border-status-success/30">
             <p class="text-3xl font-mono font-bold text-status-success"><%= @passed_count %></p>
-            <p class="text-[10px] font-mono text-status-success uppercase tracking-wider mt-1">NOMINAL</p>
+            <p class="text-[10px] font-mono text-status-success uppercase tracking-wider mt-1">Passed</p>
           </div>
           <!-- Failed -->
           <div class="text-center p-4 bg-dark-hover rounded border border-status-error/30">
             <p class="text-3xl font-mono font-bold text-status-error"><%= @failed_count %></p>
-            <p class="text-[10px] font-mono text-status-error uppercase tracking-wider mt-1">BREACH</p>
+            <p class="text-[10px] font-mono text-status-error uppercase tracking-wider mt-1">Failed</p>
           </div>
           <!-- Blocked -->
           <div class="text-center p-4 bg-dark-hover rounded border border-status-warning/30">
             <p class="text-3xl font-mono font-bold text-status-warning"><%= @blocked_count %></p>
-            <p class="text-[10px] font-mono text-status-warning uppercase tracking-wider mt-1">PATTERN BLUE</p>
+            <p class="text-[10px] font-mono text-status-warning uppercase tracking-wider mt-1">Blocked</p>
           </div>
           <!-- Untested -->
           <div class="text-center p-4 bg-dark-hover rounded border border-dark-border">
             <p class="text-3xl font-mono font-bold text-theme-muted"><%= @untested_count %></p>
-            <p class="text-[10px] font-mono text-theme-muted uppercase tracking-wider mt-1">STANDBY</p>
+            <p class="text-[10px] font-mono text-theme-muted uppercase tracking-wider mt-1">Not Run</p>
           </div>
         </div>
 
@@ -81,16 +81,16 @@
             <span class="text-xs font-mono text-theme-secondary uppercase">Overall Pass Rate</span>
             <span class="text-lg font-mono font-bold <%= @pass_rate >= 80 ? 'text-status-success' : @pass_rate >= 50 ? 'text-status-warning' : 'text-status-error' %>"><%= @pass_rate %>%</span>
           </div>
-          <div class="progress-nerv h-3">
-            <div class="progress-nerv-fill h-3 <%= @pass_rate < 50 ? 'critical' : '' %>" style="width: <%= @pass_rate %>%"></div>
+          <div class="progress-bar h-3">
+            <div class="progress-bar-fill h-3 <%= @pass_rate < 50 ? 'critical' : '' %>" style="width: <%= @pass_rate %>%"></div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Operations by Mission -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header">OPERATIONS BY MISSION</div>
+    <div class="panel">
+      <div class="panel-header">Test Runs by Project</div>
       <div class="p-6">
         <% if @runs_by_project.any? %>
           <div class="space-y-4">
@@ -99,25 +99,25 @@
               <div>
                 <div class="flex items-center justify-between mb-1">
                   <span class="text-sm font-mono text-theme-primary truncate"><%= name %></span>
-                  <span class="text-sm font-mono text-terminal-cyan"><%= count %></span>
+                  <span class="text-sm font-mono text-primary"><%= count %></span>
                 </div>
-                <div class="progress-nerv h-2">
-                  <div class="progress-nerv-fill h-2" style="width: <%= (count.to_f / max_runs * 100).round %>%"></div>
+                <div class="progress-bar h-2">
+                  <div class="progress-bar-fill h-2" style="width: <%= (count.to_f / max_runs * 100).round %>%"></div>
                 </div>
               </div>
             <% end %>
           </div>
         <% else %>
           <div class="text-center py-8">
-            <p class="text-theme-muted font-mono uppercase text-sm">No operation data available</p>
+            <p class="text-theme-muted font-mono uppercase text-sm">No test run data available</p>
           </div>
         <% end %>
       </div>
     </div>
 
     <!-- Daily Execution Chart -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header">EXECUTION TELEMETRY (14 DAYS)</div>
+    <div class="panel">
+      <div class="panel-header">Test Executions (14 Days)</div>
       <div class="p-6">
         <% if @daily_executions.any? %>
           <div class="h-48 flex items-end justify-between space-x-1">
@@ -127,7 +127,7 @@
               <% count = @daily_executions[date] || 0 %>
               <% height = max_exec > 0 ? (count.to_f / max_exec * 100).round : 0 %>
               <div class="flex-1 flex flex-col items-center">
-                <div class="w-full bg-terminal-cyan/60 rounded-t transition-all hover:bg-terminal-cyan"
+                <div class="w-full bg-primary/60 rounded-t transition-all hover:bg-primary"
                      style="height: <%= [height, 5].max %>%"
                      title="<%= date %>: <%= count %> executions"></div>
                 <span class="text-[8px] font-mono text-theme-muted mt-1 <%= days_ago % 2 == 0 ? '' : 'opacity-0' %>"><%= date.split('/').last %></span>
@@ -145,72 +145,67 @@
 
   <!-- Right Column -->
   <div class="space-y-6">
-    <!-- MAGI Consensus -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header">MAGI CONSENSUS</div>
-      <div class="p-4 space-y-3">
-        <div class="p-3 magi-casper rounded">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-              <span class="w-2 h-2 bg-magi-casper rounded-full animate-pulse"></span>
-              <span class="text-xs font-mono uppercase tracking-wider">CASPER</span>
-            </div>
-            <span class="text-[10px] font-mono uppercase"><%= @pass_rate >= 70 ? 'APPROVE' : 'REJECT' %></span>
+    <!-- Quality Summary -->
+    <div class="panel">
+      <div class="panel-header">Quality Summary</div>
+      <div class="p-4">
+        <div class="text-center mb-6">
+          <p class="text-5xl font-mono font-bold <%= @pass_rate >= 80 ? 'text-status-success' : @pass_rate >= 50 ? 'text-status-warning' : 'text-status-error' %>">
+            <%= @pass_rate %>%
+          </p>
+          <p class="text-[10px] font-mono text-theme-muted uppercase mt-2">Overall Pass Rate</p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 rounded border <%= @pass_rate >= 80 ? 'border-status-success/30 bg-status-success/10' : 'border-dark-border' %>">
+            <span class="text-xs font-mono uppercase">Excellent (80%+)</span>
+            <span class="w-2 h-2 rounded-full <%= @pass_rate >= 80 ? 'bg-status-success' : 'bg-dark-border' %>"></span>
+          </div>
+          <div class="flex items-center justify-between p-3 rounded border <%= @pass_rate >= 50 && @pass_rate < 80 ? 'border-status-warning/30 bg-status-warning/10' : 'border-dark-border' %>">
+            <span class="text-xs font-mono uppercase">Needs Attention (50-79%)</span>
+            <span class="w-2 h-2 rounded-full <%= @pass_rate >= 50 && @pass_rate < 80 ? 'bg-status-warning' : 'bg-dark-border' %>"></span>
+          </div>
+          <div class="flex items-center justify-between p-3 rounded border <%= @pass_rate < 50 ? 'border-status-error/30 bg-status-error/10' : 'border-dark-border' %>">
+            <span class="text-xs font-mono uppercase">Critical (&lt;50%)</span>
+            <span class="w-2 h-2 rounded-full <%= @pass_rate < 50 ? 'bg-status-error animate-pulse' : 'bg-dark-border' %>"></span>
           </div>
         </div>
-        <div class="p-3 magi-balthasar rounded">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-              <span class="w-2 h-2 bg-magi-balthasar rounded-full animate-pulse"></span>
-              <span class="text-xs font-mono uppercase tracking-wider">BALTHASAR</span>
-            </div>
-            <span class="text-[10px] font-mono uppercase"><%= @pass_rate >= 50 ? 'APPROVE' : 'REJECT' %></span>
-          </div>
-        </div>
-        <div class="p-3 magi-melchior rounded">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-              <span class="w-2 h-2 bg-magi-melchior rounded-full animate-pulse"></span>
-              <span class="text-xs font-mono uppercase tracking-wider">MELCHIOR</span>
-            </div>
-            <span class="text-[10px] font-mono uppercase"><%= @pass_rate >= 80 ? 'APPROVE' : 'CONDITIONAL' %></span>
-          </div>
-        </div>
+
         <div class="mt-4 pt-4 border-t border-dark-border text-center">
-          <p class="text-[10px] font-mono text-theme-muted uppercase">Verdict</p>
-          <p class="text-lg font-mono font-bold <%= @pass_rate >= 70 ? 'text-status-success' : @pass_rate >= 50 ? 'text-status-warning' : 'text-status-error' %> uppercase">
-            <%= @pass_rate >= 70 ? 'SYSTEM NOMINAL' : @pass_rate >= 50 ? 'CAUTION ADVISED' : 'CRITICAL REVIEW REQUIRED' %>
+          <p class="text-[10px] font-mono text-theme-muted uppercase">Status</p>
+          <p class="text-lg font-mono font-bold <%= @pass_rate >= 80 ? 'text-status-success' : @pass_rate >= 50 ? 'text-status-warning' : 'text-status-error' %> uppercase">
+            <%= @pass_rate >= 80 ? 'Healthy' : @pass_rate >= 50 ? 'Needs Improvement' : 'Critical' %>
           </p>
         </div>
       </div>
     </div>
 
-    <!-- Top Missions -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header">TOP MISSIONS BY PROTOCOLS</div>
+    <!-- Top Projects -->
+    <div class="panel">
+      <div class="panel-header">Top Projects by Test Cases</div>
       <div class="divide-y divide-dark-border">
         <% @top_projects.each_with_index do |project, index| %>
           <%= link_to project_path(project), class: "block p-4 hover:bg-dark-hover transition-colors" do %>
             <div class="flex items-center space-x-3">
-              <span class="w-6 h-6 rounded bg-eva-purple-muted flex items-center justify-center text-xs font-mono text-eva-purple-light"><%= index + 1 %></span>
+              <span class="w-6 h-6 rounded bg-primary-muted flex items-center justify-center text-xs font-mono text-primary-light"><%= index + 1 %></span>
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-mono text-theme-primary truncate"><%= project.name %></p>
               </div>
-              <span class="text-sm font-mono text-terminal-cyan"><%= project.test_count %></span>
+              <span class="text-sm font-mono text-primary"><%= project.test_count %></span>
             </div>
           <% end %>
         <% end %>
         <% if @top_projects.empty? %>
           <div class="p-4 text-center">
-            <p class="text-theme-muted font-mono text-sm">No mission data</p>
+            <p class="text-theme-muted font-mono text-sm">No project data</p>
           </div>
         <% end %>
       </div>
     </div>
 
     <!-- Recent Operations -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header">RECENT OPERATIONS</div>
+    <div class="panel">
+      <div class="panel-header">Recent Test Runs</div>
       <div class="divide-y divide-dark-border max-h-80 overflow-y-auto">
         <% @recent_runs.each do |run| %>
           <%= link_to test_run_path(run), class: "block p-3 hover:bg-dark-hover transition-colors" do %>
@@ -220,16 +215,16 @@
                 <p class="text-[10px] font-mono text-theme-muted"><%= time_ago_in_words(run.created_at) %> ago</p>
               </div>
               <div class="flex items-center space-x-2 ml-2">
-                <span class="text-[10px] font-mono text-terminal-green"><%= run.passed_cases %></span>
+                <span class="text-[10px] font-mono text-status-success"><%= run.passed_cases %></span>
                 <span class="text-[10px] font-mono text-theme-muted">/</span>
-                <span class="text-[10px] font-mono text-terminal-red"><%= run.failed_cases %></span>
+                <span class="text-[10px] font-mono text-status-error"><%= run.failed_cases %></span>
               </div>
             </div>
           <% end %>
         <% end %>
         <% if @recent_runs.empty? %>
           <div class="p-4 text-center">
-            <p class="text-theme-muted font-mono text-sm">No recent operations</p>
+            <p class="text-theme-muted font-mono text-sm">No recent test runs</p>
           </div>
         <% end %>
       </div>

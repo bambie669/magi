@@ -4,28 +4,28 @@
 <% project = the_test_suite.project %>
 <% templates = project.test_case_templates.ordered %>
 
-<div class="nerv-panel"
+<div class="panel"
      data-controller="template-selector"
      data-template-selector-apply-url-value="<%= apply_project_test_case_template_path(project, ':id') %>">
-  <div class="nerv-panel-header flex items-center justify-between">
+  <div class="panel-header flex items-center justify-between">
     <span><%= test_case.persisted? ? 'MODIFY PROTOCOL' : 'INITIALIZE PROTOCOL' %></span>
-    <span class="text-[10px] font-mono text-terminal-cyan">Bank: <%= the_test_suite.name %></span>
+    <span class="text-[10px] font-mono text-primary">Bank: <%= the_test_suite.name %></span>
   </div>
 
   <div class="p-6">
     <% unless test_case.persisted? %>
       <% if templates.any? %>
         <!-- Template Selector -->
-        <div class="mb-6 p-4 bg-nerv-black/50 border border-terminal-cyan/20 rounded">
+        <div class="mb-6 p-4 bg-dark-base/50 border border-primary/20 rounded">
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-3">
-              <svg class="w-4 h-4 text-terminal-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
               </svg>
-              <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Apply Template</span>
+              <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Apply Template</span>
             </div>
             <div class="flex items-center space-x-2">
-              <select data-template-selector-target="select" class="input-nerv px-3 py-1.5 text-xs">
+              <select data-template-selector-target="select" class="input-field px-3 py-1.5 text-xs">
                 <option value="">Select a template...</option>
                 <% templates.each do |template| %>
                   <option value="<%= template.id %>"><%= template.name %></option>
@@ -33,7 +33,7 @@
               </select>
               <button type="button"
                       data-action="click->template-selector#apply"
-                      class="px-3 py-1.5 bg-terminal-cyan/10 border border-terminal-cyan/30 text-terminal-cyan text-xs font-mono uppercase hover:bg-terminal-cyan/20 transition-colors">
+                      class="px-3 py-1.5 bg-primary/10 border border-primary/30 text-primary text-xs font-mono uppercase hover:bg-primary/20 transition-colors">
                 Apply
               </button>
             </div>
@@ -44,9 +44,9 @@
 
     <%= form_with(model: test_case, url: url, class: "space-y-6") do |form| %>
       <% if test_case.errors.any? %>
-        <div class="p-4 bg-terminal-red/10 border border-terminal-red/50 text-terminal-red font-mono text-sm animate-pulse" role="alert">
+        <div class="p-4 bg-status-error/10 border border-status-error/50 text-status-error font-mono text-sm animate-pulse" role="alert">
           <div class="flex items-center space-x-2 mb-2">
-            <span class="w-2 h-2 bg-terminal-red rounded-full"></span>
+            <span class="w-2 h-2 bg-status-error rounded-full"></span>
             <span class="uppercase tracking-wider text-xs">System Error:</span>
           </div>
           <strong class="font-bold"><%= pluralize(test_case.errors.count, "error") %> prohibited this protocol from being saved:</strong>
@@ -60,7 +60,7 @@
 
       <% unless test_case.persisted? %>
         <div data-controller="scope-selector">
-          <%= form.label :test_scope_id, "Test Scope", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
+          <%= form.label :test_scope_id, "Test Scope", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
           <% scope_options = @available_test_scopes.present? ? @available_test_scopes.map { |s|
               depth = 0
               parent = s.parent
@@ -72,7 +72,7 @@
             } : []
           %>
           <select name="test_case[test_scope_id]" id="test_case_test_scope_id"
-                  class="input-nerv w-full px-4 py-3 text-sm"
+                  class="input-field w-full px-4 py-3 text-sm"
                   data-scope-selector-target="select"
                   data-action="change->scope-selector#toggle">
             <option value="">Select a scope...</option>
@@ -84,46 +84,46 @@
 
           <div class="mt-2 hidden" data-scope-selector-target="newScopeInput">
             <input type="text" name="test_case[new_scope_name]" placeholder="Enter new scope name..."
-                   class="input-nerv w-full px-4 py-3 text-sm"
+                   class="input-field w-full px-4 py-3 text-sm"
                    data-scope-selector-target="scopeName">
-            <p class="mt-1 text-[10px] font-mono text-terminal-gray">New scope will be created at root level</p>
+            <p class="mt-1 text-[10px] font-mono text-text-muted">New scope will be created at root level</p>
           </div>
-          <p class="mt-1 text-[10px] font-mono text-terminal-gray" data-scope-selector-target="hint">Select or create a folder/scope for this test case</p>
+          <p class="mt-1 text-[10px] font-mono text-text-muted" data-scope-selector-target="hint">Select or create a folder/scope for this test case</p>
         </div>
       <% end %>
 
       <div>
-        <%= form.label :title, "Protocol Designation", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
-        <%= form.text_field :title, class: "input-nerv w-full px-4 py-3 text-sm", placeholder: "Enter protocol designation...", data: { template_selector_target: "title" } %>
+        <%= form.label :title, "Protocol Designation", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
+        <%= form.text_field :title, class: "input-field w-full px-4 py-3 text-sm", placeholder: "Enter protocol designation...", data: { template_selector_target: "title" } %>
       </div>
 
       <div>
-        <%= form.label :preconditions, "Preconditions", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
-        <%= form.text_area :preconditions, rows: 3, class: "input-nerv w-full px-4 py-3 text-sm resize-none", placeholder: "Define required system state before execution...", data: { template_selector_target: "preconditions" } %>
-        <p class="mt-1 text-[10px] font-mono text-terminal-gray">Prerequisites that must be met before protocol execution</p>
+        <%= form.label :preconditions, "Preconditions", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
+        <%= form.text_area :preconditions, rows: 3, class: "input-field w-full px-4 py-3 text-sm resize-none", placeholder: "Define required system state before execution...", data: { template_selector_target: "preconditions" } %>
+        <p class="mt-1 text-[10px] font-mono text-text-muted">Prerequisites that must be met before protocol execution</p>
       </div>
 
       <div>
-        <%= form.label :steps, "Execution Steps", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
-        <%= form.text_area :steps, rows: 6, class: "input-nerv w-full px-4 py-3 text-sm resize-none", placeholder: "Step 1: Navigate to...\nStep 2: Click on...\nStep 3: Verify...", data: { template_selector_target: "steps" } %>
-        <p class="mt-1 text-[10px] font-mono text-terminal-gray">Enter each step on a new line</p>
+        <%= form.label :steps, "Execution Steps", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
+        <%= form.text_area :steps, rows: 6, class: "input-field w-full px-4 py-3 text-sm resize-none", placeholder: "Step 1: Navigate to...\nStep 2: Click on...\nStep 3: Verify...", data: { template_selector_target: "steps" } %>
+        <p class="mt-1 text-[10px] font-mono text-text-muted">Enter each step on a new line</p>
       </div>
 
       <div>
-        <%= form.label :expected_result, "Expected Outcome", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
-        <%= form.text_area :expected_result, rows: 3, class: "input-nerv w-full px-4 py-3 text-sm resize-none", placeholder: "Define expected outcome for NOMINAL status...", data: { template_selector_target: "expectedResult" } %>
-        <p class="mt-1 text-[10px] font-mono text-terminal-gray">Conditions that determine successful protocol execution</p>
+        <%= form.label :expected_result, "Expected Outcome", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
+        <%= form.text_area :expected_result, rows: 3, class: "input-field w-full px-4 py-3 text-sm resize-none", placeholder: "Define expected outcome for Passed status...", data: { template_selector_target: "expectedResult" } %>
+        <p class="mt-1 text-[10px] font-mono text-text-muted">Conditions that determine successful protocol execution</p>
       </div>
 
       <div>
-        <%= form.label :cypress_id, "Automation ID", class: "block text-[10px] font-mono text-terminal-amber uppercase tracking-wider mb-2" %>
-        <%= form.text_field :cypress_id, placeholder: "ex: TC-001", class: "input-nerv w-full px-4 py-3 text-sm" %>
-        <p class="mt-1 text-[10px] font-mono text-terminal-gray">Unique identifier for MAGI automation integration (optional)</p>
+        <%= form.label :cypress_id, "Automation ID", class: "block text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2" %>
+        <%= form.text_field :cypress_id, placeholder: "ex: TC-001", class: "input-field w-full px-4 py-3 text-sm" %>
+        <p class="mt-1 text-[10px] font-mono text-text-muted">Unique identifier for MAGI automation integration (optional)</p>
       </div>
 
-      <div class="flex justify-end space-x-3 pt-6 border-t border-terminal-red/20">
-        <%= link_to 'Abort', test_suite_path(the_test_suite), class: "px-4 py-2 bg-nerv-purple-mid border border-terminal-gray-dark text-terminal-gray text-xs font-mono uppercase tracking-wider hover:text-terminal-white transition-colors" %>
-        <%= form.submit test_case.persisted? ? 'Update Protocol' : 'Initialize Protocol', class: "btn-nerv-primary cursor-pointer" %>
+      <div class="flex justify-end space-x-3 pt-6 border-t border-status-error/20">
+        <%= link_to 'Abort', test_suite_path(the_test_suite), class: "px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors" %>
+        <%= form.submit test_case.persisted? ? 'Update Protocol' : 'Initialize Protocol', class: "btn-primary cursor-pointer" %>
       </div>
     <% end %>
   </div>

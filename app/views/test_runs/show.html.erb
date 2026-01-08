@@ -1,11 +1,11 @@
 <% content_for :page_title, "OPERATION: #{@test_run.name.upcase}" %>
 
 <% content_for :breadcrumbs do %>
-  <%= link_to @test_run.project.name, project_path(@test_run.project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
-  <span class="text-terminal-red mx-2">/</span>
-  <%= link_to "Operations", project_test_runs_path(@test_run.project), class: "text-terminal-cyan hover:text-terminal-cyan/80" %>
-  <span class="text-terminal-red mx-2">/</span>
-  <span class="text-terminal-gray"><%= @test_run.name %></span>
+  <%= link_to @test_run.project.name, project_path(@test_run.project), class: "text-primary hover:text-primary/80" %>
+  <span class="text-status-error mx-2">/</span>
+  <%= link_to "Operations", project_test_runs_path(@test_run.project), class: "text-primary hover:text-primary/80" %>
+  <span class="text-status-error mx-2">/</span>
+  <span class="text-text-muted"><%= @test_run.name %></span>
 <% end %>
 
 <% has_failures = @test_run.failed_cases > 0 %>
@@ -17,78 +17,78 @@
   <!-- Main Content -->
   <div class="lg:col-span-2 space-y-6">
     <!-- Operation Status Panel -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header flex items-center justify-between">
+    <div class="panel">
+      <div class="panel-header flex items-center justify-between">
         <span>Operation Status</span>
         <% if has_failures %>
-          <span class="text-[10px] font-mono text-terminal-red uppercase tracking-wider animate-pulse">Critical Breach Detected</span>
+          <span class="text-[10px] font-mono text-status-error uppercase tracking-wider animate-pulse">Critical Breach Detected</span>
         <% else %>
-          <span class="text-[10px] font-mono text-terminal-green uppercase tracking-wider">Systems Nominal</span>
+          <span class="text-[10px] font-mono text-status-success uppercase tracking-wider">Systems Nominal</span>
         <% end %>
       </div>
       <div class="p-6">
         <!-- Progress Display -->
         <div class="flex items-center justify-between mb-4">
-          <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-widest">Execution Progress</span>
-          <span class="text-3xl font-mono font-bold <%= integrity == 100 ? 'text-terminal-green text-glow-green' : 'text-terminal-cyan text-glow-cyan' %>"
+          <span class="text-[10px] font-mono text-text-muted uppercase tracking-widest">Execution Progress</span>
+          <span class="text-3xl font-mono font-bold <%= integrity == 100 ? 'text-status-success text-glow-green' : 'text-primary text-glow-cyan' %>"
                   data-test-run-updates-target="progressText"><%= integrity %>%</span>
         </div>
-        <div class="progress-nerv h-3 mb-6">
-          <div class="progress-nerv-fill h-3 <%= has_failures ? 'critical' : '' %>"
+        <div class="progress-bar h-3 mb-6">
+          <div class="progress-bar-fill h-3 <%= has_failures ? 'critical' : '' %>"
                style="width: <%= integrity %>%"
                data-test-run-updates-target="progressBar"></div>
         </div>
 
         <!-- Status Grid -->
         <div class="grid grid-cols-4 gap-4">
-          <div class="text-center p-4 bg-terminal-green/10 border border-terminal-green/30">
-            <p class="text-2xl font-mono font-bold text-terminal-green text-glow-green"
+          <div class="text-center p-4 bg-status-success/10 border border-status-success/30">
+            <p class="text-2xl font-mono font-bold text-status-success text-glow-green"
                data-test-run-updates-target="passedCount"><%= @test_run.passed_cases %></p>
-            <p class="text-[10px] font-mono text-terminal-green uppercase tracking-wider mt-1">NOMINAL</p>
+            <p class="text-[10px] font-mono text-status-success uppercase tracking-wider mt-1">Passed</p>
           </div>
-          <div class="text-center p-4 bg-terminal-red/10 border border-terminal-red/30 <%= has_failures ? 'animate-pulse' : '' %>">
-            <p class="text-2xl font-mono font-bold text-terminal-red text-glow-red"
+          <div class="text-center p-4 bg-status-error/10 border border-status-error/30 <%= has_failures ? 'animate-pulse' : '' %>">
+            <p class="text-2xl font-mono font-bold text-status-error text-glow-red"
                data-test-run-updates-target="failedCount"><%= @test_run.failed_cases %></p>
-            <p class="text-[10px] font-mono text-terminal-red uppercase tracking-wider mt-1">BREACH</p>
+            <p class="text-[10px] font-mono text-status-error uppercase tracking-wider mt-1">Failed</p>
           </div>
-          <div class="text-center p-4 bg-terminal-amber/10 border border-terminal-amber/30">
-            <p class="text-2xl font-mono font-bold text-terminal-amber text-glow-amber"
+          <div class="text-center p-4 bg-status-warning/10 border border-status-warning/30">
+            <p class="text-2xl font-mono font-bold text-status-warning text-glow-amber"
                data-test-run-updates-target="blockedCount"><%= @test_run.blocked_cases %></p>
-            <p class="text-[10px] font-mono text-terminal-amber uppercase tracking-wider mt-1">PATTERN BLUE</p>
+            <p class="text-[10px] font-mono text-status-warning uppercase tracking-wider mt-1">Blocked</p>
           </div>
-          <div class="text-center p-4 bg-nerv-purple-mid border border-terminal-gray-dark/50">
-            <p class="text-2xl font-mono font-bold text-terminal-gray"
+          <div class="text-center p-4 bg-dark-surface-mid border border-text-muted-dark/50">
+            <p class="text-2xl font-mono font-bold text-text-muted"
                data-test-run-updates-target="untestedCount"><%= @test_run.untested_cases %></p>
-            <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider mt-1">STANDBY</p>
+            <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mt-1">Not Run</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Protocol Execution Console -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header flex items-center justify-between">
+    <div class="panel">
+      <div class="panel-header flex items-center justify-between">
         <div class="flex items-center space-x-4">
           <span>PROTOCOL EXECUTION</span>
-          <div class="h-3 w-px bg-terminal-red/30"></div>
-          <span class="text-[10px] font-mono text-terminal-cyan"><%= @test_run_cases.count %> Protocols</span>
+          <div class="h-3 w-px bg-status-error/30"></div>
+          <span class="text-[10px] font-mono text-primary"><%= @test_run_cases.count %> Protocols</span>
         </div>
         <div class="flex items-center space-x-2">
-          <button class="px-2 py-1 text-[10px] font-mono text-terminal-cyan border border-terminal-cyan/30 hover:bg-terminal-cyan/10 transition-colors">All</button>
-          <button class="px-2 py-1 text-[10px] font-mono text-terminal-gray hover:text-terminal-white transition-colors">Breach</button>
-          <button class="px-2 py-1 text-[10px] font-mono text-terminal-gray hover:text-terminal-white transition-colors">Standby</button>
+          <button class="px-2 py-1 text-[10px] font-mono text-primary border border-primary/30 hover:bg-primary/10 transition-colors">All</button>
+          <button class="px-2 py-1 text-[10px] font-mono text-text-muted hover:text-text-primary transition-colors">Breach</button>
+          <button class="px-2 py-1 text-[10px] font-mono text-text-muted hover:text-text-primary transition-colors">Standby</button>
         </div>
       </div>
 
       <!-- Filter Bar -->
-      <div class="px-4 py-3 border-b border-terminal-red/20 bg-nerv-black/50 flex items-center justify-between">
+      <div class="px-4 py-3 border-b border-status-error/20 bg-dark-base/50 flex items-center justify-between">
         <form action="<%= test_run_path(@test_run) %>" method="get" class="flex items-center space-x-3">
           <!-- Search -->
-          <input type="text" name="q" value="<%= params[:q] %>" placeholder="Search title or ID..." class="input-nerv px-3 py-1 text-xs rounded w-40" oninput="if(this.value === '' && '<%= params[:q] %>' !== '') this.form.submit()">
+          <input type="text" name="q" value="<%= params[:q] %>" placeholder="Search title or ID..." class="input-field px-3 py-1 text-xs rounded w-40" oninput="if(this.value === '' && '<%= params[:q] %>' !== '') this.form.submit()">
 
           <!-- Status Filter -->
-          <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Filter:</span>
-          <select name="status" class="input-nerv px-3 py-1 text-xs rounded" onchange="this.form.submit()">
+          <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Filter:</span>
+          <select name="status" class="input-field px-3 py-1 text-xs rounded" onchange="this.form.submit()">
             <option value="">All Status</option>
             <option value="passed" <%= 'selected' if params[:status] == 'passed' %>>Nominal</option>
             <option value="failed" <%= 'selected' if params[:status] == 'failed' %>>Breach</option>
@@ -97,26 +97,26 @@
           </select>
 
           <!-- Sort -->
-          <span class="text-[10px] font-mono text-terminal-gray uppercase tracking-wider">Sort:</span>
-          <select name="sort" class="input-nerv px-3 py-1 text-xs rounded" onchange="this.form.submit()">
+          <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Sort:</span>
+          <select name="sort" class="input-field px-3 py-1 text-xs rounded" onchange="this.form.submit()">
             <option value="title" <%= 'selected' if params[:sort] == 'title' || params[:sort].blank? %>>Title</option>
             <option value="status" <%= 'selected' if params[:sort] == 'status' %>>Status</option>
             <option value="cypress_id" <%= 'selected' if params[:sort] == 'cypress_id' %>>ID</option>
           </select>
 
-          <button type="submit" class="btn-nerv px-2 py-1 text-xs">Go</button>
+          <button type="submit" class="btn-secondary px-2 py-1 text-xs">Go</button>
           <% if params[:q].present? || params[:status].present? || params[:sort].present? %>
-            <%= link_to "Clear", test_run_path(@test_run), class: "text-xs text-terminal-gray hover:text-terminal-cyan" %>
+            <%= link_to "Clear", test_run_path(@test_run), class: "text-xs text-text-muted hover:text-primary" %>
           <% end %>
         </form>
-        <span class="text-[10px] font-mono text-terminal-gray">
-          <span class="text-terminal-cyan"><%= @test_run_cases.count %></span> protocols loaded
+        <span class="text-[10px] font-mono text-text-muted">
+          <span class="text-primary"><%= @test_run_cases.count %></span> protocols loaded
         </span>
       </div>
 
       <!-- Protocol Table -->
       <div class="overflow-x-auto">
-        <table class="table-nerv">
+        <table class="table-dark">
           <thead>
             <tr>
               <th class="w-8"></th>
@@ -139,8 +139,8 @@
   <!-- Sidebar -->
   <div class="space-y-6">
     <!-- MAGI Consensus Panel -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header">MAGI CONSENSUS</div>
+    <div class="panel">
+      <div class="panel-header">MAGI CONSENSUS</div>
       <div class="p-4 space-y-3">
         <%
           # Simulate MAGI consensus based on pass rate
@@ -154,7 +154,7 @@
             <span class="w-2 h-2 bg-magi-casper rounded-full <%= casper_pass ? 'animate-pulse' : '' %>"></span>
             <span class="text-xs font-mono uppercase tracking-wider">CASPER</span>
           </div>
-          <span class="text-[10px] font-mono uppercase <%= casper_pass ? 'text-terminal-green' : 'text-terminal-red' %>">
+          <span class="text-[10px] font-mono uppercase <%= casper_pass ? 'text-status-success' : 'text-status-error' %>">
             <%= casper_pass ? 'Approve' : 'Reject' %>
           </span>
         </div>
@@ -163,7 +163,7 @@
             <span class="w-2 h-2 bg-magi-balthasar rounded-full <%= balthasar_pass ? 'animate-pulse' : '' %>"></span>
             <span class="text-xs font-mono uppercase tracking-wider">BALTHASAR</span>
           </div>
-          <span class="text-[10px] font-mono uppercase <%= balthasar_pass ? 'text-terminal-green' : 'text-terminal-red' %>">
+          <span class="text-[10px] font-mono uppercase <%= balthasar_pass ? 'text-status-success' : 'text-status-error' %>">
             <%= balthasar_pass ? 'Approve' : 'Reject' %>
           </span>
         </div>
@@ -172,62 +172,62 @@
             <span class="w-2 h-2 bg-magi-melchior rounded-full <%= melchior_pass ? 'animate-pulse' : '' %>"></span>
             <span class="text-xs font-mono uppercase tracking-wider">MELCHIOR</span>
           </div>
-          <span class="text-[10px] font-mono uppercase <%= melchior_pass ? 'text-terminal-green' : 'text-terminal-red' %>">
+          <span class="text-[10px] font-mono uppercase <%= melchior_pass ? 'text-status-success' : 'text-status-error' %>">
             <%= melchior_pass ? 'Approve' : 'Reject' %>
           </span>
         </div>
 
         <!-- Consensus Result -->
-        <div class="mt-4 pt-4 border-t border-terminal-red/20 text-center">
+        <div class="mt-4 pt-4 border-t border-status-error/20 text-center">
           <%
             approvals = [casper_pass, balthasar_pass, melchior_pass].count(true)
             consensus = approvals >= 2
           %>
-          <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-widest mb-2">MAGI Verdict</p>
-          <p class="text-lg font-mono font-bold <%= consensus ? 'text-terminal-green text-glow-green' : 'text-terminal-red text-glow-red animate-pulse' %> uppercase">
+          <p class="text-[10px] font-mono text-text-muted uppercase tracking-widest mb-2">MAGI Verdict</p>
+          <p class="text-lg font-mono font-bold <%= consensus ? 'text-status-success text-glow-green' : 'text-status-error text-glow-red animate-pulse' %> uppercase">
             <%= consensus ? 'Approved' : 'Rejected' %>
           </p>
-          <p class="text-[10px] font-mono text-terminal-gray mt-1"><%= approvals %>/3 Systems Agree</p>
+          <p class="text-[10px] font-mono text-text-muted mt-1"><%= approvals %>/3 Systems Agree</p>
         </div>
       </div>
     </div>
 
     <!-- Operation Details -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header">MISSION CONTEXT</div>
+    <div class="panel">
+      <div class="panel-header">MISSION CONTEXT</div>
       <div class="p-4 space-y-4">
         <dl class="space-y-3 text-sm font-mono">
           <div class="flex justify-between">
-            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">Mission</dt>
-            <dd class="text-terminal-cyan">
-              <%= link_to @test_run.project.name, project_path(@test_run.project), class: "hover:text-terminal-cyan/80" %>
+            <dt class="text-text-muted uppercase text-[10px] tracking-wider">Mission</dt>
+            <dd class="text-primary">
+              <%= link_to @test_run.project.name, project_path(@test_run.project), class: "hover:text-primary/80" %>
             </dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">OPERATION COMMANDER</dt>
-            <dd class="text-terminal-white"><%= @test_run.user.display_name %></dd>
+            <dt class="text-text-muted uppercase text-[10px] tracking-wider">OPERATION COMMANDER</dt>
+            <dd class="text-text-primary"><%= @test_run.user.display_name %></dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">Initialized</dt>
-            <dd class="text-terminal-white"><%= @test_run.created_at.strftime('%Y.%m.%d %H:%M') %></dd>
+            <dt class="text-text-muted uppercase text-[10px] tracking-wider">Initialized</dt>
+            <dd class="text-text-primary"><%= @test_run.created_at.strftime('%Y.%m.%d %H:%M') %></dd>
           </div>
           <div class="flex justify-between">
-            <dt class="text-terminal-gray uppercase text-[10px] tracking-wider">Operation ID</dt>
-            <dd class="text-terminal-gray">#<%= @test_run.id %></dd>
+            <dt class="text-text-muted uppercase text-[10px] tracking-wider">Operation ID</dt>
+            <dd class="text-text-muted">#<%= @test_run.id %></dd>
           </div>
         </dl>
 
         <!-- Export Buttons -->
-        <div class="pt-4 border-t border-terminal-red/20 space-y-2">
-          <p class="text-[10px] font-mono text-terminal-gray uppercase tracking-widest mb-2">Export Report</p>
+        <div class="pt-4 border-t border-status-error/20 space-y-2">
+          <p class="text-[10px] font-mono text-text-muted uppercase tracking-widest mb-2">Export Report</p>
           <div class="flex space-x-2">
-            <%= link_to export_csv_test_run_path(@test_run), class: "flex-1 flex items-center justify-center px-3 py-2 bg-nerv-purple-mid border border-terminal-cyan/30 text-terminal-cyan text-xs font-mono uppercase tracking-wider hover:bg-terminal-cyan/10 transition-colors" do %>
+            <%= link_to export_csv_test_run_path(@test_run), class: "flex-1 flex items-center justify-center px-3 py-2 bg-dark-surface-mid border border-primary/30 text-primary text-xs font-mono uppercase tracking-wider hover:bg-primary/10 transition-colors" do %>
               <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
               </svg>
               CSV
             <% end %>
-            <%= link_to export_pdf_test_run_path(@test_run), class: "flex-1 flex items-center justify-center px-3 py-2 bg-nerv-purple-mid border border-terminal-amber/30 text-terminal-amber text-xs font-mono uppercase tracking-wider hover:bg-terminal-amber/10 transition-colors" do %>
+            <%= link_to export_pdf_test_run_path(@test_run), class: "flex-1 flex items-center justify-center px-3 py-2 bg-dark-surface-mid border border-status-warning/30 text-status-warning text-xs font-mono uppercase tracking-wider hover:bg-status-warning/10 transition-colors" do %>
               <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
               </svg>
@@ -237,9 +237,9 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="pt-4 border-t border-terminal-red/20 space-y-2">
+        <div class="pt-4 border-t border-status-error/20 space-y-2">
           <% if policy(@test_run).edit? %>
-            <%= link_to edit_test_run_path(@test_run), class: "flex items-center justify-center w-full px-4 py-2 bg-nerv-purple-mid border border-terminal-cyan/30 text-terminal-cyan text-xs font-mono uppercase tracking-wider hover:bg-terminal-cyan/10 transition-colors" do %>
+            <%= link_to edit_test_run_path(@test_run), class: "flex items-center justify-center w-full px-4 py-2 bg-dark-surface-mid border border-primary/30 text-primary text-xs font-mono uppercase tracking-wider hover:bg-primary/10 transition-colors" do %>
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
               </svg>
@@ -247,7 +247,7 @@
             <% end %>
           <% end %>
           <% if policy(@test_run).destroy? %>
-            <%= button_to test_run_path(@test_run), method: :delete, data: { confirm: 'TERMINATE OPERATION? This action cannot be undone.' }, class: "flex items-center justify-center w-full px-4 py-2 bg-terminal-red/10 border border-terminal-red/50 text-terminal-red text-xs font-mono uppercase tracking-wider hover:bg-terminal-red/20 transition-colors" do %>
+            <%= button_to test_run_path(@test_run), method: :delete, data: { confirm: 'TERMINATE OPERATION? This action cannot be undone.' }, class: "flex items-center justify-center w-full px-4 py-2 bg-status-error/10 border border-status-error/50 text-status-error text-xs font-mono uppercase tracking-wider hover:bg-status-error/20 transition-colors" do %>
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
               </svg>
@@ -259,17 +259,17 @@
     </div>
 
     <!-- Quick Navigation -->
-    <div class="nerv-panel">
-      <div class="nerv-panel-header">Navigation</div>
+    <div class="panel">
+      <div class="panel-header">Navigation</div>
       <div class="p-4 space-y-1">
-        <%= link_to project_path(@test_run.project), class: "flex items-center px-3 py-2 text-terminal-white/70 hover:text-terminal-cyan hover:bg-nerv-purple-mid transition-colors" do %>
-          <svg class="w-4 h-4 mr-3 text-terminal-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <%= link_to project_path(@test_run.project), class: "flex items-center px-3 py-2 text-text-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
+          <svg class="w-4 h-4 mr-3 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
           </svg>
           <span class="text-xs font-mono uppercase tracking-wider">View Mission</span>
         <% end %>
-        <%= link_to project_test_runs_path(@test_run.project), class: "flex items-center px-3 py-2 text-terminal-white/70 hover:text-terminal-cyan hover:bg-nerv-purple-mid transition-colors" do %>
-          <svg class="w-4 h-4 mr-3 text-terminal-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <%= link_to project_test_runs_path(@test_run.project), class: "flex items-center px-3 py-2 text-text-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
+          <svg class="w-4 h-4 mr-3 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
           </svg>
           <span class="text-xs font-mono uppercase tracking-wider">All Operations</span>
