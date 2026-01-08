@@ -25,7 +25,7 @@
         <div class="flex items-center space-x-4">
           <span>Test Suites</span>
           <div class="h-3 w-px bg-dark-border"></div>
-          <span class="text-[10px] font-mono text-primary"><%= @test_suites.size %> Suites</span>
+          <span class="text-[10px] font-mono text-primary"><%= @pagy_suites.count %> Suites</span>
         </div>
         <% if policy(TestSuite.new(project: @project)).new? %>
           <%= link_to new_project_test_suite_path(@project), class: "btn-primary flex items-center space-x-2 py-1.5" do %>
@@ -58,6 +58,7 @@
             </div>
           <% end %>
         </div>
+        <%= render 'shared/pagination', pagy: @pagy_suites %>
       <% else %>
         <div class="p-8 text-center">
           <p class="text-sm font-mono text-text-muted uppercase tracking-wider">No test suites yet</p>
@@ -74,7 +75,7 @@
         <div class="flex items-center space-x-4">
           <span>Test Runs</span>
           <div class="h-3 w-px bg-dark-border"></div>
-          <span class="text-[10px] font-mono text-primary"><%= @test_runs.size %> Runs</span>
+          <span class="text-[10px] font-mono text-primary"><%= @pagy_runs.count %> Runs</span>
         </div>
         <% if policy(TestRun.new(project: @project)).new? %>
           <%= link_to new_project_test_run_path(@project), class: "btn-primary flex items-center space-x-2 py-1.5" do %>
@@ -116,6 +117,7 @@
             </div>
           <% end %>
         </div>
+        <%= render 'shared/pagination', pagy: @pagy_runs %>
       <% else %>
         <div class="p-8 text-center">
           <p class="text-sm font-mono text-text-muted uppercase tracking-wider">No test runs yet</p>
@@ -144,11 +146,11 @@
           </div>
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Test Suites</dt>
-            <dd class="text-primary"><%= @test_suites.size %></dd>
+            <dd class="text-primary"><%= @pagy_suites.count %></dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Test Runs</dt>
-            <dd class="text-primary"><%= @test_runs.size %></dd>
+            <dd class="text-primary"><%= @pagy_runs.count %></dd>
           </div>
         </dl>
 

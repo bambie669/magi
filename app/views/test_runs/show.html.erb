@@ -71,7 +71,7 @@
         <div class="flex items-center space-x-4">
           <span>PROTOCOL EXECUTION</span>
           <div class="h-3 w-px bg-status-error/30"></div>
-          <span class="text-[10px] font-mono text-primary"><%= @test_run_cases.count %> Protocols</span>
+          <span class="text-[10px] font-mono text-primary"><%= @pagy.count %> Protocols</span>
         </div>
         <div class="flex items-center space-x-2">
           <button class="px-2 py-1 text-[10px] font-mono text-primary border border-primary/30 hover:bg-primary/10 transition-colors">All</button>
@@ -110,7 +110,7 @@
           <% end %>
         </form>
         <span class="text-[10px] font-mono text-text-muted">
-          <span class="text-primary"><%= @test_run_cases.count %></span> protocols loaded
+          <span class="text-primary"><%= @pagy.count %></span> protocols total
         </span>
       </div>
 
@@ -133,6 +133,7 @@
           </tbody>
         </table>
       </div>
+      <%= render 'shared/pagination', pagy: @pagy %>
     </div>
   </div>
 
@@ -144,7 +145,8 @@
       <div class="p-4 space-y-3">
         <%
           # Simulate MAGI consensus based on pass rate
-          pass_rate = @test_run.passed_cases.to_f / [@test_run_cases.count, 1].max
+          total_cases = @test_run.test_run_cases.count
+          pass_rate = @test_run.passed_cases.to_f / [total_cases, 1].max
           casper_pass = pass_rate > 0.6
           balthasar_pass = pass_rate > 0.5
           melchior_pass = pass_rate > 0.7

@@ -71,7 +71,7 @@ class TestRunsController < ApplicationController
       test_run_cases = test_run_cases.joins(:test_case).order("test_cases.title #{sort_direction}")
     end
 
-    @test_run_cases = test_run_cases
+    @pagy, @test_run_cases = pagy(test_run_cases, items: 25)
   end
 
   # GET /projects/:project_id/test_runs/new

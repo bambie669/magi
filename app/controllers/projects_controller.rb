@@ -16,12 +16,16 @@ class ProjectsController < ApplicationController
     @project = Project.includes(:milestones, { test_runs: :user }).find(params[:id])
 
     @milestones = @project.milestones.order(due_date: :asc)
-    @test_suites = @project.test_suites
-                            .left_joins(:test_cases)
-                            .select('test_suites.*, COUNT(test_cases.id) as test_cases_count')
-                            .group('test_suites.id')
-                            .order(:name)
-    @test_runs = @project.test_runs.order(created_at: :desc)
+
+    test_suites = @project.test_suites
+                          .left_joins(:test_cases)
+                          .select('test_suites.*, COUNT(test_cases.id) as test_cases_count')
+                          .group('test_suites.id')
+                          .order(:name)
+    @pagy_suites, @test_suites = pagy(test_suites, items: 10, page_param: :suites_page)
+
+    test_runs = @project.test_runs.order(created_at: :desc)
+    @pagy_runs, @test_runs = pagy(test_runs, items: 10, page_param: :runs_page)
   end
 
   # GET /projects/new

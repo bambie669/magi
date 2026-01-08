@@ -3,7 +3,8 @@ class NotificationsController < ApplicationController
 
   # GET /notifications
   def index
-    @notifications = current_user.notifications.recent.includes(:notifiable)
+    notifications = current_user.notifications.recent.includes(:notifiable)
+    @pagy, @notifications = pagy(notifications, items: 20)
     @unread_count = current_user.unread_notifications_count
 
     respond_to do |format|
