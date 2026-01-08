@@ -16,7 +16,8 @@ export default class extends Controller {
     this.itemTargets.forEach(item => {
       const title = item.dataset.title || ""
       const scope = item.dataset.scope || ""
-      const matches = query === "" || title.includes(query) || scope.includes(query)
+      const id = item.dataset.id || ""
+      const matches = query === "" || title.includes(query) || scope.includes(query) || id.includes(query)
 
       if (matches) {
         item.classList.remove("hidden")
