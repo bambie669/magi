@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 // Theme Toggle Controller
-// Switches between dark (NERV) and light (EVA-00) themes
+// Switches between dark and light themes
 // Syncs with user preferences in the database
 export default class extends Controller {
   static targets = ["icon", "label"]
@@ -12,16 +12,16 @@ export default class extends Controller {
 
   async toggle() {
     const body = document.body
-    const isDark = body.classList.contains('theme-nerv')
-    const newTheme = isDark ? 'light' : 'nerv'
+    const isDark = body.classList.contains('theme-dark')
+    const newTheme = isDark ? 'light' : 'dark'
 
     // Update UI immediately
     if (isDark) {
-      body.classList.remove('theme-nerv')
+      body.classList.remove('theme-dark')
       body.classList.add('theme-light')
     } else {
       body.classList.remove('theme-light')
-      body.classList.add('theme-nerv')
+      body.classList.add('theme-dark')
     }
 
     this.updateIcon()
@@ -48,7 +48,7 @@ export default class extends Controller {
   updateIcon() {
     if (!this.hasIconTarget) return
 
-    const isDark = document.body.classList.contains('theme-nerv')
+    const isDark = document.body.classList.contains('theme-dark')
 
     if (isDark) {
       // Show sun icon (to switch to light)
@@ -56,7 +56,7 @@ export default class extends Controller {
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
       `
       if (this.hasLabelTarget) {
-        this.labelTarget.textContent = 'EVA-00'
+        this.labelTarget.textContent = 'Light'
       }
     } else {
       // Show moon icon (to switch to dark)
@@ -64,7 +64,7 @@ export default class extends Controller {
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
       `
       if (this.hasLabelTarget) {
-        this.labelTarget.textContent = 'EVA-01'
+        this.labelTarget.textContent = 'Dark'
       }
     }
   }
