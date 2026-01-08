@@ -51,19 +51,20 @@
   /* ===========================================
      LIGHT THEME Colors
      White/slate based with blue accent
+     High contrast text colors for accessibility
      =========================================== */
   --color-light-white: #FFFFFF;
   --color-light-cream: #F8FAFC;
   --color-light-surface: #F1F5F9;
-  --color-light-border: #E2E8F0;
-  --color-light-border-dark: #CBD5E1;
-  --color-light-primary: #2563EB;
-  --color-light-primary-light: #3B82F6;
-  --color-light-primary-dark: #1D4ED8;
+  --color-light-border: #CBD5E1;
+  --color-light-border-dark: #94A3B8;
+  --color-light-primary: #1D4ED8;
+  --color-light-primary-light: #2563EB;
+  --color-light-primary-dark: #1E40AF;
   --color-light-primary-pale: #DBEAFE;
-  --color-light-gray: #64748B;
-  --color-light-gray-light: #94A3B8;
-  --color-light-gray-dark: #475569;
+  --color-light-gray: #475569;
+  --color-light-gray-light: #64748B;
+  --color-light-gray-dark: #1E293B;
 
   /* Terminal colors for status indicators */
   --color-terminal-green: #10B981;
@@ -1055,21 +1056,21 @@ body {
   border-color: var(--color-light-border) !important;
 }
 
-/* Text color overrides */
+/* Text color overrides - high contrast for accessibility */
 .theme-light .text-text-primary {
-  color: var(--color-light-gray-dark) !important;
+  color: #1E293B !important; /* slate-800 - very dark for max contrast */
 }
 
 .theme-light .text-text-secondary {
-  color: var(--color-light-gray) !important;
+  color: #334155 !important; /* slate-700 - dark for good contrast */
 }
 
 .theme-light .text-text-muted {
-  color: var(--color-light-gray-light) !important;
+  color: #475569 !important; /* slate-600 - readable muted text */
 }
 
 .theme-light .text-text-muted\/50 {
-  color: rgba(148, 163, 184, 0.5) !important;
+  color: #64748B !important; /* slate-500 - still readable at 50% */
 }
 
 /* Divider overrides */
@@ -1127,4 +1128,59 @@ body {
 /* Activity feed items */
 .theme-light [class*="border-l-2"][class*="border-status-"] {
   background-color: var(--color-light-surface) !important;
+}
+
+/* Panel content text in light theme */
+.theme-light .panel p,
+.theme-light .panel span,
+.theme-light .panel div {
+  color: inherit;
+}
+
+/* Ensure links and interactive elements are visible */
+.theme-light a.text-text-primary:hover {
+  color: #1D4ED8 !important;
+}
+
+/* Fix notification dropdown in light theme */
+.theme-light .bg-dark-surface {
+  background-color: #FFFFFF !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Chart and empty state backgrounds */
+.theme-light [class*="bg-dark-base"][class*="border"] {
+  background-color: #F8FAFC !important;
+  border-color: #CBD5E1 !important;
+}
+
+/* Fix opacity variations in light theme */
+.theme-light .text-primary\/50 {
+  color: rgba(29, 78, 216, 0.7) !important;
+}
+
+.theme-light .text-primary\/30 {
+  color: rgba(29, 78, 216, 0.5) !important;
+}
+
+/* Ensure status colors remain vibrant */
+.theme-light .text-status-success {
+  color: #059669 !important; /* emerald-600 for better contrast on light */
+}
+
+.theme-light .text-status-error {
+  color: #DC2626 !important; /* red-600 */
+}
+
+.theme-light .text-status-warning {
+  color: #D97706 !important; /* amber-600 */
+}
+
+/* Fix hover states */
+.theme-light .hover\:text-primary:hover {
+  color: #1D4ED8 !important;
+}
+
+.theme-light .group:hover .group-hover\:text-status-error {
+  color: #DC2626 !important;
 }

@@ -66,13 +66,21 @@ module.exports = {
         // ===========================================
         // LIGHT THEME - Clean Corporate
         // White/slate based with blue accent
+        // High contrast for accessibility
         // ===========================================
         light: {
           white: '#FFFFFF',
           cream: '#F8FAFC',      // slate-50
           surface: '#F1F5F9',    // slate-100
-          border: '#E2E8F0',     // slate-200
-          'border-dark': '#CBD5E1', // slate-300
+          border: '#CBD5E1',     // slate-300
+          'border-dark': '#94A3B8', // slate-400
+          gray: '#475569',       // slate-600 - secondary text
+          'gray-light': '#64748B', // slate-500 - muted text
+          'gray-dark': '#1E293B',  // slate-800 - primary text
+          primary: '#1D4ED8',    // blue-700
+          'primary-light': '#2563EB', // blue-600
+          'primary-dark': '#1E40AF', // blue-800
+          'primary-pale': '#DBEAFE', // blue-100
         },
 
         // Legacy terminal colors for status indicators
