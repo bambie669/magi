@@ -249,6 +249,9 @@ class TestCasesExcelImporter
     steps = get_value(row, column_map, :steps)
     expected_result = get_value(row, column_map, :expected_result)
 
+    # Store original ID from Excel in import_ref for traceability
+    original_id = get_value(row, column_map, :cypress_id)
+
     # Skip if both steps and expected result are empty
     if steps.blank? && expected_result.blank?
       @skipped_count += 1
@@ -256,7 +259,7 @@ class TestCasesExcelImporter
     end
 
     # Check for duplicates
-    if duplicate_exists?(scope, title, cypress_id)
+    if duplicate_exists?(scope, title, cypress_id, original_id)
       @duplicate_count += 1
       return
     end
@@ -266,7 +269,9 @@ class TestCasesExcelImporter
       preconditions: preconditions,
       steps: steps || "See expected result",
       expected_result: expected_result || "See steps",
-      cypress_id: cypress_id.presence
+      cypress_id: cypress_id.presence,
+      source: :imported,
+      import_ref: original_id.presence
     )
 
     if test_case.save
@@ -282,10 +287,15 @@ class TestCasesExcelImporter
     title[0..251] + "..."
   end
 
-  def duplicate_exists?(scope, title, cypress_id)
+  def duplicate_exists?(scope, title, cypress_id, import_ref = nil)
     # Check by cypress_id first (if present) - search across entire test suite
     if cypress_id.present?
       return true if @test_suite.test_cases.exists?(cypress_id: cypress_id)
+    end
+
+    # Check by import_ref for re-imports
+    if import_ref.present?
+      return true if @test_suite.test_cases.exists?(import_ref: import_ref)
     end
 
     # Check by title within the same scope

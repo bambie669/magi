@@ -157,7 +157,9 @@ class TestCasesCsvImporter
     scope = find_or_create_scope(scope_path)
     return unless scope
 
-    cypress_id = get_value(row, :cypress_id)&.gsub(/\s+/, '') # Remove spaces from TC numbers
+    # Store original ID from CSV before normalization
+    original_id = get_value(row, :cypress_id)
+    cypress_id = original_id&.gsub(/\s+/, '') # Remove spaces from TC numbers
     preconditions = get_value(row, :preconditions)
     steps = unescape_newlines(get_value(row, :steps))
     expected_result = unescape_newlines(get_value(row, :expected_result))
@@ -169,7 +171,7 @@ class TestCasesCsvImporter
     end
 
     # Check for duplicates
-    if duplicate_exists?(scope, title, cypress_id)
+    if duplicate_exists?(scope, title, cypress_id, original_id)
       @duplicate_count += 1
       return
     end
@@ -179,7 +181,9 @@ class TestCasesCsvImporter
       preconditions: preconditions,
       steps: steps || "See expected result",
       expected_result: expected_result || "See steps",
-      cypress_id: cypress_id.presence
+      cypress_id: cypress_id.presence,
+      source: :imported,
+      import_ref: original_id.presence
     )
 
     if test_case.save
@@ -189,10 +193,15 @@ class TestCasesCsvImporter
     end
   end
 
-  def duplicate_exists?(scope, title, cypress_id)
+  def duplicate_exists?(scope, title, cypress_id, import_ref = nil)
     # Check by cypress_id first (if present) - search across entire test suite
     if cypress_id.present?
       return true if @test_suite.test_cases.exists?(cypress_id: cypress_id)
+    end
+
+    # Check by import_ref for re-imports
+    if import_ref.present?
+      return true if @test_suite.test_cases.exists?(import_ref: import_ref)
     end
 
     # Check by title within the same scope

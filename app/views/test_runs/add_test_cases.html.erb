@@ -1,45 +1,36 @@
-<% content_for :page_title, "New Test Run" %>
+<% content_for :page_title, "Add Test Cases" %>
 
 <% content_for :breadcrumbs do %>
   <%= link_to @project.name, project_path(@project), class: "text-primary hover:text-primary/80" %>
   <span class="text-text-muted mx-2">/</span>
   <%= link_to "Test Runs", project_test_runs_path(@project), class: "text-primary hover:text-primary/80" %>
   <span class="text-text-muted mx-2">/</span>
-  <span class="text-text-muted">New</span>
+  <%= link_to @test_run.name, test_run_path(@test_run), class: "text-primary hover:text-primary/80" %>
+  <span class="text-text-muted mx-2">/</span>
+  <span class="text-text-muted">Add Test Cases</span>
 <% end %>
 
 <div class="max-w-4xl mx-auto">
   <div class="panel">
     <div class="panel-header flex items-center justify-between">
-      <span>New Test Run</span>
-      <span class="text-[10px] font-mono text-primary">Project: <%= @project.name %></span>
+      <span>Add Test Cases to Operation</span>
+      <span class="text-[10px] font-mono text-primary"><%= @test_run.name %></span>
     </div>
 
     <div class="p-6">
-      <%= form_with(model: [@project, @test_run], class: "space-y-6") do |form| %>
-        <% if @test_run.errors.any? %>
-          <div class="p-4 bg-status-error/10 border border-status-error/50 text-status-error font-mono text-sm" role="alert">
-            <div class="flex items-center space-x-2 mb-2">
-              <span class="w-2 h-2 bg-status-error rounded-full"></span>
-              <span class="uppercase tracking-wider text-xs">Validation Error:</span>
-            </div>
-            <strong class="font-bold"><%= pluralize(@test_run.errors.count, "error") %> prevented this test run from being created:</strong>
-            <ul class="mt-2 list-disc list-inside text-sm">
-              <% @test_run.errors.each do |error| %>
-                <li><%= error.full_message %></li>
-              <% end %>
-            </ul>
+      <%= form_with url: add_test_cases_test_run_path(@test_run), method: :post, class: "space-y-6" do |form| %>
+        <div class="p-4 bg-primary/10 border border-primary/30 text-primary font-mono text-sm">
+          <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>Select test cases to add to this test run. Already included test cases are not shown.</span>
           </div>
-        <% end %>
-
-        <div>
-          <%= form.label :name, "Run Name", class: "block text-[10px] font-mono text-text-secondary uppercase tracking-wider mb-2" %>
-          <%= form.text_field :name, class: "input-field w-full px-4 py-3 text-sm", placeholder: "Enter test run name..." %>
         </div>
 
         <div data-controller="test-case-search">
           <div class="flex items-center justify-between mb-3">
-            <p class="text-[10px] font-mono text-text-secondary uppercase tracking-wider">Select Test Cases:</p>
+            <p class="text-[10px] font-mono text-text-secondary uppercase tracking-wider">Available Test Cases:</p>
             <div class="flex items-center space-x-2">
               <span data-test-case-search-target="counter" class="text-[10px] font-mono text-text-muted">
                 <span data-test-case-search-target="selectedCount">0</span> selected
@@ -106,7 +97,7 @@
                            data-id="<%= test_case.cypress_id&.downcase %>"
                            data-ref="<%= test_case.ref_id&.downcase %>"
                            data-source="<%= test_case.source %>">
-                      <%= check_box_tag "test_run[test_case_ids][]", test_case.id, false,
+                      <%= check_box_tag "test_case_ids[]", test_case.id, false,
                           class: "w-4 h-4 bg-dark-base border-dark-border text-primary focus:ring-primary/50 rounded",
                           data: { action: "change->test-case-search#updateCount", test_case_search_target: "checkbox" } %>
                       <div class="ml-3 flex-1 min-w-0">
@@ -132,8 +123,11 @@
               <% end %>
             <% else %>
               <div class="text-center py-8">
-                <p class="text-sm font-mono text-text-muted uppercase tracking-wider">No test cases available</p>
-                <p class="text-[10px] font-mono text-text-muted mt-1">Create test cases in a test suite first</p>
+                <svg class="w-12 h-12 mx-auto text-text-muted/30 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <p class="text-sm font-mono text-text-muted uppercase tracking-wider">All test cases already included</p>
+                <p class="text-[10px] font-mono text-text-muted mt-1">This test run contains all available test cases from the project</p>
               </div>
             <% end %>
           </div>
@@ -145,8 +139,10 @@
         </div>
 
         <div class="flex justify-end space-x-3 pt-6 border-t border-dark-border">
-          <%= link_to 'Cancel', project_path(@project), class: "px-4 py-2 bg-dark-surface border border-dark-border text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors" %>
-          <%= form.submit "Create Test Run", class: "btn-primary cursor-pointer" %>
+          <%= link_to 'Cancel', test_run_path(@test_run), class: "px-4 py-2 bg-dark-surface border border-dark-border text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors" %>
+          <% if @available_test_cases.any? %>
+            <%= form.submit "Add Selected Test Cases", class: "btn-primary cursor-pointer" %>
+          <% end %>
         </div>
       <% end %>
     </div>

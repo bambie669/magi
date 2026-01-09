@@ -77,9 +77,15 @@
           <div class="hidden md:block">
             <input type="text" name="q" value="<%= params[:q] %>" placeholder="Search..." class="input-field w-48 px-3 py-1.5 text-xs rounded">
           </div>
+          <select name="source" class="input-field px-2 py-1.5 text-xs rounded" onchange="this.form.submit()">
+            <option value="" <%= 'selected' if params[:source].blank? %>>All Sources</option>
+            <option value="manual" <%= 'selected' if params[:source] == 'manual' %>>Manual</option>
+            <option value="automated" <%= 'selected' if params[:source] == 'automated' %>>Automated</option>
+          </select>
           <select name="sort" class="input-field px-2 py-1.5 text-xs rounded" onchange="this.form.submit()">
             <option value="title" <%= 'selected' if params[:sort] == 'title' || params[:sort].blank? %>>By Title</option>
             <option value="cypress_id" <%= 'selected' if params[:sort] == 'cypress_id' %>>By ID</option>
+            <option value="source" <%= 'selected' if params[:sort] == 'source' %>>By Source</option>
             <option value="created_at" <%= 'selected' if params[:sort] == 'created_at' %>>By Date</option>
           </select>
           <select name="direction" class="input-field px-2 py-1.5 text-xs rounded" onchange="this.form.submit()">
@@ -89,7 +95,7 @@
           <button type="submit" class="btn-secondary px-3 py-1 text-xs">
             Apply
           </button>
-          <% if params[:q].present? || params[:sort].present? %>
+          <% if params[:q].present? || params[:sort].present? || params[:source].present? %>
             <%= link_to test_suite_path(@test_suite), class: "text-xs text-text-muted hover:text-primary", title: "Clear" do %>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -191,7 +197,9 @@
                 <div class="flex-1 min-w-0">
                   <!-- Title Row -->
                   <div class="flex items-center space-x-3 mb-3">
-                    <span class="w-2 h-2 bg-primary rounded-full flex-shrink-0"></span>
+                    <span class="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 border border-primary/30 flex-shrink-0">
+                      <%= test_case.ref_id %>
+                    </span>
                     <%= link_to test_case_path(test_case), class: "text-base font-mono text-text-primary hover:text-primary transition-colors truncate" do %>
                       <%= test_case.title %>
                     <% end %>
@@ -199,6 +207,14 @@
                       <span class="text-[10px] font-mono text-status-warning bg-status-warning/10 px-2 py-0.5 border border-status-warning/30 flex-shrink-0">
                         <%= test_case.cypress_id %>
                       </span>
+                    <% end %>
+                    <% case test_case.source %>
+                    <% when 'manual' %>
+                      <span class="text-[9px] font-mono text-text-muted bg-dark-base px-1.5 py-0.5 border border-text-muted/30 flex-shrink-0 uppercase">Manual</span>
+                    <% when 'imported' %>
+                      <span class="text-[9px] font-mono text-status-success bg-status-success/10 px-1.5 py-0.5 border border-status-success/30 flex-shrink-0 uppercase">Imported</span>
+                    <% when 'cypress_auto' %>
+                      <span class="text-[9px] font-mono text-status-warning bg-status-warning/10 px-1.5 py-0.5 border border-status-warning/30 flex-shrink-0 uppercase">Cypress</span>
                     <% end %>
                   </div>
 

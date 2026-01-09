@@ -15,7 +15,17 @@ class TestSuitesController < ApplicationController
       # Search with SQL ILIKE instead of Ruby select
       if params[:q].present?
         query = params[:q]
-        test_cases = test_cases.where("title ILIKE ? OR cypress_id ILIKE ?", "%#{query}%", "%#{query}%")
+        test_cases = test_cases.where("title ILIKE ? OR cypress_id ILIKE ? OR ref_id ILIKE ?", "%#{query}%", "%#{query}%", "%#{query}%")
+      end
+
+      # Filter by source
+      if params[:source].present?
+        case params[:source]
+        when 'manual'
+          test_cases = test_cases.where(source: :manual)
+        when 'automated'
+          test_cases = test_cases.where(source: [:imported, :cypress_auto])
+        end
       end
 
       # Sort with SQL ORDER BY instead of Ruby sort_by
@@ -27,6 +37,8 @@ class TestSuitesController < ApplicationController
         test_cases = test_cases.order("cypress_id #{sort_direction}")
       when 'created_at'
         test_cases = test_cases.order("created_at #{sort_direction}")
+      when 'source'
+        test_cases = test_cases.order("source #{sort_direction}")
       else
         test_cases = test_cases.order("title #{sort_direction}")
       end

@@ -1,7 +1,7 @@
 class TestRunsController < ApplicationController
   before_action :set_project, only: [:new, :create] # Contextul proiectului
   before_action :set_project_optional, only: [:index]
-  before_action :set_test_run, only: [:show, :edit, :update, :destroy, :export_csv, :export_pdf]
+  before_action :set_test_run, only: [:show, :edit, :update, :destroy, :export_csv, :export_pdf, :add_test_cases, :create_test_cases]
   before_action :load_available_test_cases, only: [:new, :create]
 
   # GET /test_runs or GET /projects/:project_id/test_runs
@@ -50,10 +50,20 @@ class TestRunsController < ApplicationController
       test_run_cases = test_run_cases.where(status: params[:status])
     end
 
-    # Search by test case title or cypress_id
+    # Filter by source
+    if params[:source].present?
+      case params[:source]
+      when 'manual'
+        test_run_cases = test_run_cases.joins(:test_case).where(test_cases: { source: :manual })
+      when 'automated'
+        test_run_cases = test_run_cases.joins(:test_case).where(test_cases: { source: [:imported, :cypress_auto] })
+      end
+    end
+
+    # Search by test case title, cypress_id, or ref_id
     if params[:q].present?
       test_run_cases = test_run_cases.joins(:test_case).where(
-        "test_cases.title ILIKE :q OR test_cases.cypress_id ILIKE :q",
+        "test_cases.title ILIKE :q OR test_cases.cypress_id ILIKE :q OR test_cases.ref_id ILIKE :q",
         q: "%#{params[:q]}%"
       )
     end
@@ -67,6 +77,8 @@ class TestRunsController < ApplicationController
       test_run_cases = test_run_cases.order("test_run_cases.status #{sort_direction}")
     when 'cypress_id'
       test_run_cases = test_run_cases.joins(:test_case).order("test_cases.cypress_id #{sort_direction}")
+    when 'source'
+      test_run_cases = test_run_cases.joins(:test_case).order("test_cases.source #{sort_direction}")
     else
       test_run_cases = test_run_cases.joins(:test_case).order("test_cases.title #{sort_direction}")
     end
@@ -161,6 +173,55 @@ class TestRunsController < ApplicationController
       filename: "#{@test_run.name.parameterize}-report-#{Date.current}.pdf",
       type: 'application/pdf',
       disposition: 'attachment'
+  end
+
+  # GET /test_runs/:id/add_test_cases
+  def add_test_cases
+    authorize @test_run, :update?
+    @project = @test_run.project
+
+    # Get test cases not already in this test run
+    existing_test_case_ids = @test_run.test_run_cases.pluck(:test_case_id)
+    @available_test_cases = @project.all_project_test_cases
+                                    .where.not(id: existing_test_case_ids)
+                                    .order(:title)
+  end
+
+  # POST /test_runs/:id/add_test_cases
+  def create_test_cases
+    authorize @test_run, :update?
+    @project = @test_run.project
+
+    selected_test_case_ids = params[:test_case_ids]&.reject(&:blank?)&.map(&:to_i) || []
+
+    if selected_test_case_ids.empty?
+      redirect_to add_test_cases_test_run_path(@test_run), alert: "Please select at least one test case."
+      return
+    end
+
+    # Verify test cases belong to this project and not already in run
+    existing_test_case_ids = @test_run.test_run_cases.pluck(:test_case_id)
+    valid_test_case_ids = @project.all_project_test_cases
+                                  .where(id: selected_test_case_ids)
+                                  .where.not(id: existing_test_case_ids)
+                                  .pluck(:id)
+
+    if valid_test_case_ids.any?
+      test_run_cases_data = valid_test_case_ids.map do |test_case_id|
+        {
+          test_run_id: @test_run.id,
+          test_case_id: test_case_id,
+          status: 0,
+          created_at: Time.current,
+          updated_at: Time.current
+        }
+      end
+      TestRunCase.insert_all(test_run_cases_data)
+
+      redirect_to @test_run, notice: "#{valid_test_case_ids.size} test case(s) added successfully."
+    else
+      redirect_to add_test_cases_test_run_path(@test_run), alert: "No valid test cases to add."
+    end
   end
 
   private
