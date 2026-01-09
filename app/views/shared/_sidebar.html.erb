@@ -3,10 +3,8 @@
   <div class="p-4 border-b border-theme">
     <%= link_to authenticated_root_path, class: "block" do %>
       <div class="flex flex-col items-center">
-        <div class="w-16 h-16 flex items-center justify-center bg-primary-muted rounded-lg border border-primary mb-2">
-          <span class="text-2xl font-mono font-bold text-primary-light">MQ</span>
-        </div>
-        <span class="text-accent font-mono text-lg font-bold tracking-widest">MAGI QA</span>
+        <%= image_tag 'magi-logo.png', alt: 'MAGI QA', class: 'w-14 h-14 mb-2 drop-shadow-[0_0_10px_rgba(239,68,68,0.4)]' %>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400 font-mono text-lg font-bold tracking-widest">MAGI QA</span>
         <span class="text-theme-muted text-[10px] font-mono tracking-wider mt-1">Test Management</span>
       </div>
     <% end %>

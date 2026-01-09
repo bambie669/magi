@@ -85,7 +85,7 @@
             <tbody>
               <% @api_tokens.each do |token| %>
                 <tr class="<%= token.expired? ? 'opacity-50' : '' %>">
-                  <td class="font-mono text-text-primary"><%= token.name %></td>
+                  <td class="font-mono text-theme-primary"><%= token.name %></td>
                   <td class="font-mono text-primary"><%= token.token[0..7] %>...</td>
                   <td class="font-mono text-text-muted text-xs"><%= token.created_at.strftime('%Y.%m.%d') %></td>
                   <td class="font-mono text-text-muted text-xs">

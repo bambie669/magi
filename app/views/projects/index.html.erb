@@ -34,7 +34,7 @@
                 </svg>
               </div>
               <div>
-                <%= link_to project.name, project_path(project), class: "text-lg font-mono text-text-primary hover:text-primary transition-colors" %>
+                <%= link_to project.name, project_path(project), class: "text-lg font-mono text-theme-primary hover:text-primary transition-colors" %>
                 <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider"><%= time_ago_in_words(project.created_at) %> ago</p>
               </div>
             </div>
@@ -94,7 +94,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
       </svg>
     </div>
-    <h3 class="text-lg font-mono text-text-primary uppercase tracking-wider mb-2">No Missions Registered</h3>
+    <h3 class="text-lg font-mono text-theme-primary uppercase tracking-wider mb-2">No Missions Registered</h3>
     <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mb-6">Initialize a new mission to begin operations</p>
     <% if policy(Project).new? %>
       <%= link_to new_project_path, class: "btn-primary inline-flex items-center space-x-2" do %>
