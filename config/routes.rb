@@ -37,6 +37,8 @@ Rails.application.routes.draw do
       member do
         get :export_csv
         get :export_pdf
+        get :add_test_cases
+        post :add_test_cases, action: :create_test_cases
       end
       resources :test_run_cases, only: [:update]
     end
@@ -87,6 +89,7 @@ Rails.application.routes.draw do
       # Test Cases
       resources :test_cases, only: [:show]
       get 'test_cases/by_cypress_id/:cypress_id', to: 'test_cases#by_cypress_id'
+      get 'test_cases/by_ref/:ref_id', to: 'test_cases#by_ref_id'
 
       # Test Run Cases
       resources :test_run_cases, only: [:update]

@@ -44,8 +44,9 @@
   <td class="px-4 py-3">
     <div class="flex flex-col">
       <div class="flex items-center gap-2">
+        <span class="px-2 py-0.5 bg-primary/10 border border-primary/30 text-[10px] font-mono text-primary"><%= test_case.ref_id %></span>
         <% if test_case.cypress_id.present? %>
-          <span class="px-2 py-0.5 bg-primary/10 border border-primary/30 text-[10px] font-mono text-primary uppercase"><%= test_case.cypress_id %></span>
+          <span class="px-2 py-0.5 bg-status-warning/10 border border-status-warning/30 text-[10px] font-mono text-status-warning uppercase"><%= test_case.cypress_id %></span>
         <% end %>
         <%= link_to test_case.title, test_case_path(test_case), class: "text-sm font-mono text-text-primary hover:text-primary transition-colors", target: "_blank" %>
       </div>

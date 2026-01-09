@@ -3,23 +3,31 @@ import { Controller } from "@hotwired/stimulus"
 // Test Case Search Controller
 // Provides filtering and selection for test cases in test run creation
 export default class extends Controller {
-  static targets = ["searchInput", "item", "checkbox", "selectedCount", "visibleCount", "selectAllBtn", "noResults", "list"]
+  static targets = ["searchInput", "item", "checkbox", "selectedCount", "visibleCount", "selectAllBtn", "noResults", "list", "sourceFilter"]
+  static values = { sourceFilter: { type: String, default: "all" } }
 
   connect() {
     this.updateCount()
   }
 
   filter() {
-    const query = this.searchInputTarget.value.toLowerCase().trim()
+    const query = this.hasSearchInputTarget ? this.searchInputTarget.value.toLowerCase().trim() : ""
+    const sourceFilter = this.sourceFilterValue
     let visibleCount = 0
 
     this.itemTargets.forEach(item => {
       const title = item.dataset.title || ""
       const scope = item.dataset.scope || ""
       const id = item.dataset.id || ""
-      const matches = query === "" || title.includes(query) || scope.includes(query) || id.includes(query)
+      const ref = item.dataset.ref || ""
+      const source = item.dataset.source || ""
 
-      if (matches) {
+      const matchesQuery = query === "" || title.includes(query) || scope.includes(query) || id.includes(query) || ref.includes(query)
+      const matchesSource = sourceFilter === "all" ||
+        (sourceFilter === "manual" && source === "manual") ||
+        (sourceFilter === "automated" && (source === "imported" || source === "cypress_auto"))
+
+      if (matchesQuery && matchesSource) {
         item.classList.remove("hidden")
         visibleCount++
       } else {
@@ -34,7 +42,7 @@ export default class extends Controller {
 
     // Show/hide no results message
     if (this.hasNoResultsTarget) {
-      if (visibleCount === 0 && query !== "") {
+      if (visibleCount === 0 && (query !== "" || sourceFilter !== "all")) {
         this.noResultsTarget.classList.remove("hidden")
         this.listTarget.classList.add("hidden")
       } else {
@@ -45,6 +53,24 @@ export default class extends Controller {
 
     // Update scope headers visibility
     this.updateScopeHeaders()
+  }
+
+  filterBySource(event) {
+    const source = event.currentTarget.dataset.source
+    this.sourceFilterValue = source
+
+    // Update button styles
+    this.sourceFilterTargets.forEach(btn => {
+      if (btn.dataset.source === source) {
+        btn.classList.add("bg-primary/20", "border-primary", "text-primary")
+        btn.classList.remove("border-text-muted-dark/50", "text-text-muted")
+      } else {
+        btn.classList.remove("bg-primary/20", "border-primary", "text-primary")
+        btn.classList.add("border-text-muted-dark/50", "text-text-muted")
+      }
+    })
+
+    this.filter()
   }
 
   updateScopeHeaders() {

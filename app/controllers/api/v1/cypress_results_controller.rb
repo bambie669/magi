@@ -161,7 +161,8 @@ module Api
           cypress_id: normalized_id,
           title: title.presence || "Test #{normalized_id}",
           steps: 'Automated Cypress test',
-          expected_result: 'Test passes'
+          expected_result: 'Test passes',
+          source: :cypress_auto
         )
 
         test_case.persisted? ? test_case : nil

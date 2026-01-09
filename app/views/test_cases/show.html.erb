@@ -14,12 +14,20 @@
 <!-- Classification Header -->
 <div class="mb-6 px-4 py-3 bg-dark-surface border border-status-error/30 flex items-center justify-between">
   <div class="flex items-center space-x-4">
-    <span class="text-[10px] font-mono text-status-error uppercase tracking-widest">Classified Protocol</span>
+    <span class="text-sm font-mono text-primary font-bold"><%= @test_case.ref_id %></span>
     <div class="h-3 w-px bg-status-error/30"></div>
     <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Bank: <%= test_suite.name %></span>
+    <% case @test_case.source %>
+    <% when 'manual' %>
+      <span class="text-[9px] font-mono text-text-muted bg-dark-base px-1.5 py-0.5 border border-text-muted/30 uppercase">Manual</span>
+    <% when 'imported' %>
+      <span class="text-[9px] font-mono text-status-success bg-status-success/10 px-1.5 py-0.5 border border-status-success/30 uppercase">Imported</span>
+    <% when 'cypress_auto' %>
+      <span class="text-[9px] font-mono text-status-warning bg-status-warning/10 px-1.5 py-0.5 border border-status-warning/30 uppercase">Cypress</span>
+    <% end %>
   </div>
   <% if @test_case.cypress_id.present? %>
-    <span class="text-[10px] font-mono text-primary uppercase tracking-wider">ID: <%= @test_case.cypress_id %></span>
+    <span class="text-[10px] font-mono text-status-warning uppercase tracking-wider">Cypress: <%= @test_case.cypress_id %></span>
   <% end %>
 </div>
 
@@ -180,6 +188,10 @@
       <div class="p-4 space-y-4">
         <dl class="space-y-3 text-sm font-mono">
           <div class="flex justify-between">
+            <dt class="text-text-muted uppercase text-[10px] tracking-wider">Ref ID</dt>
+            <dd class="text-primary font-bold"><%= @test_case.ref_id %></dd>
+          </div>
+          <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Mission</dt>
             <dd class="text-primary">
               <%= link_to project.name, project_path(project), class: "hover:text-primary/80" %>
@@ -191,10 +203,20 @@
               <%= link_to test_suite.name, test_suite_path(test_suite), class: "hover:text-primary/80" %>
             </dd>
           </div>
+          <div class="flex justify-between">
+            <dt class="text-text-muted uppercase text-[10px] tracking-wider">Source</dt>
+            <dd class="text-text-primary capitalize"><%= @test_case.source.humanize %></dd>
+          </div>
           <% if @test_case.cypress_id.present? %>
             <div class="flex justify-between">
-              <dt class="text-text-muted uppercase text-[10px] tracking-wider">Automation ID</dt>
+              <dt class="text-text-muted uppercase text-[10px] tracking-wider">Cypress ID</dt>
               <dd class="text-status-warning"><%= @test_case.cypress_id %></dd>
+            </div>
+          <% end %>
+          <% if @test_case.import_ref.present? %>
+            <div class="flex justify-between">
+              <dt class="text-text-muted uppercase text-[10px] tracking-wider">Import Ref</dt>
+              <dd class="text-text-muted"><%= @test_case.import_ref %></dd>
             </div>
           <% end %>
         </dl>

@@ -87,13 +87,21 @@
           <input type="text" name="q" value="<%= params[:q] %>" placeholder="Search title or ID..." class="input-field px-3 py-1 text-xs rounded w-40" oninput="if(this.value === '' && '<%= params[:q] %>' !== '') this.form.submit()">
 
           <!-- Status Filter -->
-          <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Filter:</span>
+          <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Status:</span>
           <select name="status" class="input-field px-3 py-1 text-xs rounded" onchange="this.form.submit()">
-            <option value="">All Status</option>
-            <option value="passed" <%= 'selected' if params[:status] == 'passed' %>>Nominal</option>
-            <option value="failed" <%= 'selected' if params[:status] == 'failed' %>>Breach</option>
-            <option value="blocked" <%= 'selected' if params[:status] == 'blocked' %>>Pattern Blue</option>
-            <option value="untested" <%= 'selected' if params[:status] == 'untested' %>>Standby</option>
+            <option value="">All</option>
+            <option value="passed" <%= 'selected' if params[:status] == 'passed' %>>Passed</option>
+            <option value="failed" <%= 'selected' if params[:status] == 'failed' %>>Failed</option>
+            <option value="blocked" <%= 'selected' if params[:status] == 'blocked' %>>Blocked</option>
+            <option value="untested" <%= 'selected' if params[:status] == 'untested' %>>Not Run</option>
+          </select>
+
+          <!-- Source Filter -->
+          <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">Source:</span>
+          <select name="source" class="input-field px-3 py-1 text-xs rounded" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option value="manual" <%= 'selected' if params[:source] == 'manual' %>>Manual</option>
+            <option value="automated" <%= 'selected' if params[:source] == 'automated' %>>Automated</option>
           </select>
 
           <!-- Sort -->
@@ -101,11 +109,12 @@
           <select name="sort" class="input-field px-3 py-1 text-xs rounded" onchange="this.form.submit()">
             <option value="title" <%= 'selected' if params[:sort] == 'title' || params[:sort].blank? %>>Title</option>
             <option value="status" <%= 'selected' if params[:sort] == 'status' %>>Status</option>
+            <option value="source" <%= 'selected' if params[:sort] == 'source' %>>Source</option>
             <option value="cypress_id" <%= 'selected' if params[:sort] == 'cypress_id' %>>ID</option>
           </select>
 
           <button type="submit" class="btn-secondary px-2 py-1 text-xs">Go</button>
-          <% if params[:q].present? || params[:status].present? || params[:sort].present? %>
+          <% if params[:q].present? || params[:status].present? || params[:sort].present? || params[:source].present? %>
             <%= link_to "Clear", test_run_path(@test_run), class: "text-xs text-text-muted hover:text-primary" %>
           <% end %>
         </form>
@@ -240,6 +249,14 @@
 
         <!-- Action Buttons -->
         <div class="pt-4 border-t border-status-error/20 space-y-2">
+          <% if policy(@test_run).update? %>
+            <%= link_to add_test_cases_test_run_path(@test_run), class: "flex items-center justify-center w-full px-4 py-2 bg-dark-surface-mid border border-status-success/30 text-status-success text-xs font-mono uppercase tracking-wider hover:bg-status-success/10 transition-colors" do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+              </svg>
+              Add Test Cases
+            <% end %>
+          <% end %>
           <% if policy(@test_run).edit? %>
             <%= link_to edit_test_run_path(@test_run), class: "flex items-center justify-center w-full px-4 py-2 bg-dark-surface-mid border border-primary/30 text-primary text-xs font-mono uppercase tracking-wider hover:bg-primary/10 transition-colors" do %>
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -24,6 +24,13 @@ module Api
         render json: test_case_json(@test_case, full: true)
       end
 
+      # GET /api/v1/test_cases/by_ref/:ref_id
+      def by_ref_id
+        @test_case = TestCase.find_by!(ref_id: params[:ref_id])
+        authorize @test_case
+        render json: test_case_json(@test_case, full: true)
+      end
+
       private
 
       def set_test_suite
@@ -37,8 +44,10 @@ module Api
       def test_case_json(test_case, full: false)
         data = {
           id: test_case.id,
+          ref_id: test_case.ref_id,
           title: test_case.title,
           cypress_id: test_case.cypress_id,
+          source: test_case.source,
           test_suite_id: test_case.test_suite_id,
           test_suite_name: test_case.test_suite.name,
           created_at: test_case.created_at.iso8601,
@@ -49,6 +58,7 @@ module Api
           data[:preconditions] = test_case.preconditions
           data[:steps] = test_case.steps
           data[:expected_result] = test_case.expected_result
+          data[:import_ref] = test_case.import_ref
           data[:execution_history] = test_case.test_run_cases.includes(:test_run, :user)
             .order(created_at: :desc)
             .limit(10)
