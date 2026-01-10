@@ -14,7 +14,7 @@
       <div class="panel">
         <div class="panel-header">Description</div>
         <div class="p-6">
-          <p class="text-text-primary/80 font-mono text-sm"><%= @project.description %></p>
+          <p class="text-theme-primary/80 font-mono text-sm"><%= @project.description %></p>
         </div>
       </div>
     <% end %>
@@ -44,7 +44,7 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                   <span class="w-2 h-2 bg-primary rounded-full group-hover:animate-pulse"></span>
-                  <%= link_to suite.name, test_suite_path(suite), class: "text-sm font-mono text-text-primary hover:text-primary transition-colors" %>
+                  <%= link_to suite.name, test_suite_path(suite), class: "text-sm font-mono text-theme-primary hover:text-primary transition-colors" %>
                   <span class="text-[10px] font-mono text-text-muted uppercase tracking-wider">
                     <%= pluralize(suite.test_cases_count, 'test case') %>
                   </span>
@@ -94,7 +94,7 @@
             <div class="p-4 hover:bg-dark-hover transition-colors group <%= has_failures ? 'border-l-2 border-status-error' : '' %>">
               <div class="flex items-center justify-between">
                 <div class="flex-1">
-                  <%= link_to run.name, test_run_path(run), class: "text-sm font-mono text-text-primary hover:text-primary transition-colors" %>
+                  <%= link_to run.name, test_run_path(run), class: "text-sm font-mono text-theme-primary hover:text-primary transition-colors" %>
                   <div class="flex items-center mt-2 space-x-4">
                     <div class="flex-1 max-w-xs progress-bar h-1.5">
                       <div class="progress-bar-fill h-1.5 <%= has_failures ? 'critical' : '' %>" style="width: <%= run.completion_percentage %>%"></div>
@@ -138,11 +138,11 @@
         <dl class="space-y-3 text-sm font-mono">
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Owner</dt>
-            <dd class="text-text-primary"><%= @project.user&.display_name || 'N/A' %></dd>
+            <dd class="text-theme-primary"><%= @project.user&.display_name || 'N/A' %></dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Created</dt>
-            <dd class="text-text-primary"><%= @project.created_at.strftime('%Y.%m.%d') %></dd>
+            <dd class="text-theme-primary"><%= @project.created_at.strftime('%Y.%m.%d') %></dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Test Suites</dt>
@@ -195,7 +195,7 @@
               <% is_urgent = milestone.due_date < 7.days.from_now %>
               <div class="p-3 bg-dark-base/30 border <%= is_urgent ? 'border-status-error/50' : 'border-primary/20' %> rounded">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-sm font-mono text-text-primary"><%= milestone.name %></span>
+                  <span class="text-sm font-mono text-theme-primary"><%= milestone.name %></span>
                   <div class="flex items-center space-x-1">
                     <% if policy(milestone).edit? %>
                       <%= link_to edit_milestone_path(milestone), class: "p-1 text-text-muted hover:text-status-warning transition-colors" do %>

@@ -75,8 +75,8 @@
         </div>
         <div class="flex items-center space-x-2">
           <button class="px-2 py-1 text-[10px] font-mono text-primary border border-primary/30 hover:bg-primary/10 transition-colors">All</button>
-          <button class="px-2 py-1 text-[10px] font-mono text-text-muted hover:text-text-primary transition-colors">Breach</button>
-          <button class="px-2 py-1 text-[10px] font-mono text-text-muted hover:text-text-primary transition-colors">Standby</button>
+          <button class="px-2 py-1 text-[10px] font-mono text-text-muted hover:text-theme-primary transition-colors">Breach</button>
+          <button class="px-2 py-1 text-[10px] font-mono text-text-muted hover:text-theme-primary transition-colors">Standby</button>
         </div>
       </div>
 
@@ -216,11 +216,11 @@
           </div>
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">OPERATION COMMANDER</dt>
-            <dd class="text-text-primary"><%= @test_run.user.display_name %></dd>
+            <dd class="text-theme-primary"><%= @test_run.user.display_name %></dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Initialized</dt>
-            <dd class="text-text-primary"><%= @test_run.created_at.strftime('%Y.%m.%d %H:%M') %></dd>
+            <dd class="text-theme-primary"><%= @test_run.created_at.strftime('%Y.%m.%d %H:%M') %></dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Operation ID</dt>
@@ -281,13 +281,13 @@
     <div class="panel">
       <div class="panel-header">Navigation</div>
       <div class="p-4 space-y-1">
-        <%= link_to project_path(@test_run.project), class: "flex items-center px-3 py-2 text-text-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
+        <%= link_to project_path(@test_run.project), class: "flex items-center px-3 py-2 text-theme-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
           <svg class="w-4 h-4 mr-3 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
           </svg>
           <span class="text-xs font-mono uppercase tracking-wider">View Mission</span>
         <% end %>
-        <%= link_to project_test_runs_path(@test_run.project), class: "flex items-center px-3 py-2 text-text-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
+        <%= link_to project_test_runs_path(@test_run.project), class: "flex items-center px-3 py-2 text-theme-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
           <svg class="w-4 h-4 mr-3 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
           </svg>

@@ -37,7 +37,7 @@
       </div>
 
       <div class="flex justify-end space-x-3 pt-6 border-t border-status-error/20">
-        <%= link_to 'Abort', project_path(the_project), class: "px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors" %>
+        <%= link_to 'Abort', project_path(the_project), class: "px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-theme-primary transition-colors" %>
         <%= form.submit milestone.persisted? ? 'Update Deadline' : 'Initialize Deadline', class: "btn-primary cursor-pointer" %>
       </div>
     <% end %>

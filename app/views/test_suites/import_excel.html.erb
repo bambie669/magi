@@ -46,7 +46,7 @@
         </div>
 
         <div class="flex justify-end space-x-3 pt-6 border-t border-status-error/20">
-          <%= link_to 'Abort', test_suite_path(@test_suite), class: "px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors" %>
+          <%= link_to 'Abort', test_suite_path(@test_suite), class: "px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-theme-primary transition-colors" %>
           <%= form.submit "Import Data", class: "btn-primary cursor-pointer" %>
         </div>
       <% end %>
@@ -57,14 +57,14 @@
   <div class="panel">
     <div class="panel-header">EXCEL FORMAT SPECIFICATION</div>
     <div class="p-6 space-y-6">
-      <p class="text-sm font-mono text-text-primary/80">
+      <p class="text-sm font-mono text-theme-primary/80">
         Excel files are imported with each sheet becoming a test scope (folder). Multiple sheets create a structured hierarchy.
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <h3 class="text-[10px] font-mono text-status-warning uppercase tracking-widest mb-3">Expected Columns</h3>
-          <ul class="space-y-2 text-sm font-mono text-text-primary/80">
+          <ul class="space-y-2 text-sm font-mono text-theme-primary/80">
             <li><span class="text-status-success">Test Case Number</span> - ID (e.g., "1" or "TC 1")</li>
             <li><span class="text-status-success">Test Title</span> - Protocol designation</li>
             <li><span class="text-status-success">Test Steps</span> - Execution steps</li>
@@ -74,7 +74,7 @@
 
         <div>
           <h3 class="text-[10px] font-mono text-status-warning uppercase tracking-widest mb-3">Optional Columns</h3>
-          <ul class="space-y-2 text-sm font-mono text-text-primary/80">
+          <ul class="space-y-2 text-sm font-mono text-theme-primary/80">
             <li><span class="text-status-success">Prerequisites</span> - Initial conditions</li>
             <li><span class="text-status-success">Actual Results</span> - Ignored during import</li>
             <li><span class="text-status-success">Results</span> - Test status (ignored)</li>
@@ -85,7 +85,7 @@
       <div>
         <h3 class="text-[10px] font-mono text-status-warning uppercase tracking-widest mb-3">Sheet Organization</h3>
         <div class="bg-dark-base/50 border border-status-success/30 p-4">
-          <ul class="space-y-2 text-sm font-mono text-text-primary/80">
+          <ul class="space-y-2 text-sm font-mono text-theme-primary/80">
             <li><span class="text-status-success">Sheet Name</span> becomes the test scope (folder) name</li>
             <li>Section rows (single cell with text) create sub-scopes</li>
             <li>Summary sheets (named "Summary", "Overview", etc.) are skipped</li>
@@ -112,7 +112,7 @@
           </svg>
           <span class="text-sm font-mono text-status-warning">System Note:</span>
         </div>
-        <p class="mt-2 text-sm font-mono text-text-primary/80">
+        <p class="mt-2 text-sm font-mono text-theme-primary/80">
           Test scopes will be created automatically based on sheet names. Test case IDs are normalized to "TC" prefix format (e.g., "1" becomes "TC1").
           Duplicate entries (same cypress_id or same title in scope) are automatically skipped.
         </p>

@@ -106,7 +106,7 @@
                           <% if test_case.cypress_id.present? %>
                             <span class="px-2 py-0.5 bg-status-warning/10 border border-status-warning/30 text-[10px] font-mono text-status-warning uppercase"><%= test_case.cypress_id %></span>
                           <% end %>
-                          <span class="text-sm font-mono text-text-primary group-hover:text-primary transition-colors truncate"><%= test_case.title %></span>
+                          <span class="text-sm font-mono text-theme-primary group-hover:text-primary transition-colors truncate"><%= test_case.title %></span>
                         </div>
                         <% case test_case.source %>
                         <% when 'manual' %>
@@ -139,7 +139,7 @@
         </div>
 
         <div class="flex justify-end space-x-3 pt-6 border-t border-dark-border">
-          <%= link_to 'Cancel', test_run_path(@test_run), class: "px-4 py-2 bg-dark-surface border border-dark-border text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors" %>
+          <%= link_to 'Cancel', test_run_path(@test_run), class: "px-4 py-2 bg-dark-surface border border-dark-border text-text-muted text-xs font-mono uppercase tracking-wider hover:text-theme-primary transition-colors" %>
           <% if @available_test_cases.any? %>
             <%= form.submit "Add Selected Test Cases", class: "btn-primary cursor-pointer" %>
           <% end %>

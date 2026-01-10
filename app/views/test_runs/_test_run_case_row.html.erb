@@ -48,7 +48,7 @@
         <% if test_case.cypress_id.present? %>
           <span class="px-2 py-0.5 bg-status-warning/10 border border-status-warning/30 text-[10px] font-mono text-status-warning uppercase"><%= test_case.cypress_id %></span>
         <% end %>
-        <%= link_to test_case.title, test_case_path(test_case), class: "text-sm font-mono text-text-primary hover:text-primary transition-colors", target: "_blank" %>
+        <%= link_to test_case.title, test_case_path(test_case), class: "text-sm font-mono text-theme-primary hover:text-primary transition-colors", target: "_blank" %>
       </div>
       <details class="mt-2">
         <summary class="text-[10px] font-mono text-text-muted uppercase tracking-wider cursor-pointer hover:text-primary transition-colors">
@@ -58,12 +58,12 @@
           <% if test_case.preconditions.present? %>
             <div>
               <span class="text-[10px] text-status-warning uppercase tracking-wider">Preconditions:</span>
-              <p class="text-text-primary/80 whitespace-pre-wrap mt-1"><%= test_case.preconditions %></p>
+              <p class="text-theme-primary/80 whitespace-pre-wrap mt-1"><%= test_case.preconditions %></p>
             </div>
           <% end %>
           <div>
             <span class="text-[10px] text-status-warning uppercase tracking-wider">Execution Steps:</span>
-            <p class="text-text-primary/80 whitespace-pre-wrap mt-1"><%= test_case.steps %></p>
+            <p class="text-theme-primary/80 whitespace-pre-wrap mt-1"><%= test_case.steps %></p>
           </div>
           <div>
             <span class="text-[10px] text-status-warning uppercase tracking-wider">Expected Result:</span>
@@ -84,7 +84,7 @@
       <button type="button" onclick="updateStatus(<%= trc.id %>, 'blocked')" title="Blocked" class="w-7 h-7 flex items-center justify-center border transition-colors <%= status_symbol == :blocked ? 'bg-status-warning/20 border-status-warning text-status-warning' : 'border-text-muted-dark/50 text-text-muted hover:border-status-warning hover:text-status-warning' %>">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
       </button>
-      <button type="button" onclick="updateStatus(<%= trc.id %>, 'untested')" title="Reset" class="w-7 h-7 flex items-center justify-center border transition-colors <%= status_symbol == :untested ? 'bg-text-muted/20 border-text-muted text-text-muted' : 'border-text-muted-dark/50 text-text-muted hover:border-text-primary hover:text-text-primary' %>">
+      <button type="button" onclick="updateStatus(<%= trc.id %>, 'untested')" title="Reset" class="w-7 h-7 flex items-center justify-center border transition-colors <%= status_symbol == :untested ? 'bg-text-muted/20 border-text-muted text-text-muted' : 'border-text-muted-dark/50 text-text-muted hover:border-text-primary hover:text-theme-primary' %>">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
       </button>
     </div>
@@ -159,7 +159,7 @@
 
               <!-- Lightbox Modal -->
               <div data-lightbox-target="modal" class="hidden fixed inset-0 z-50 bg-dark-base/95 flex items-center justify-center" data-action="click->lightbox#closeOnBackdrop">
-                <button data-action="click->lightbox#close" class="absolute top-4 right-4 p-2 text-text-muted hover:text-text-primary transition-colors">
+                <button data-action="click->lightbox#close" class="absolute top-4 right-4 p-2 text-text-muted hover:text-theme-primary transition-colors">
                   <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                   </svg>
@@ -181,7 +181,7 @@
                 <div class="max-w-4xl max-h-[80vh] flex flex-col items-center">
                   <img data-lightbox-target="image" src="" alt="" class="max-w-full max-h-[70vh] object-contain border border-primary/30">
                   <div class="mt-4 text-center">
-                    <p data-lightbox-target="caption" class="text-sm font-mono text-text-primary"></p>
+                    <p data-lightbox-target="caption" class="text-sm font-mono text-theme-primary"></p>
                     <p data-lightbox-target="counter" class="hidden text-[10px] font-mono text-text-muted mt-1"></p>
                   </div>
                 </div>
@@ -208,7 +208,7 @@
       </div>
 
       <div class="flex justify-end space-x-3 pt-4 border-t border-status-error/20">
-        <button type="button" onclick="document.getElementById('form_<%= trc.id %>').classList.add('hidden')" class="px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors">
+        <button type="button" onclick="document.getElementById('form_<%= trc.id %>').classList.add('hidden')" class="px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-theme-primary transition-colors">
           Cancel
         </button>
         <%= form.submit 'Execute Update', class: "px-4 py-2 bg-primary/10 border border-primary text-primary text-xs font-mono uppercase tracking-wider hover:bg-primary/20 transition-colors cursor-pointer" %>

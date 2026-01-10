@@ -20,7 +20,7 @@
         <% if @template.description.present? %>
           <div>
             <h3 class="text-[10px] font-mono text-text-muted uppercase tracking-widest mb-2">Description</h3>
-            <p class="text-sm font-mono text-text-primary/90"><%= @template.description %></p>
+            <p class="text-sm font-mono text-theme-primary/90"><%= @template.description %></p>
           </div>
         <% end %>
 
@@ -28,7 +28,7 @@
           <div>
             <h3 class="text-[10px] font-mono text-text-muted uppercase tracking-widest mb-2">Preconditions</h3>
             <div class="bg-dark-base/50 border border-text-muted-dark/30 p-4 rounded">
-              <pre class="text-sm font-mono text-text-primary/90 whitespace-pre-wrap"><%= @template.preconditions %></pre>
+              <pre class="text-sm font-mono text-theme-primary/90 whitespace-pre-wrap"><%= @template.preconditions %></pre>
             </div>
           </div>
         <% end %>
@@ -37,7 +37,7 @@
           <div>
             <h3 class="text-[10px] font-mono text-text-muted uppercase tracking-widest mb-2">Execution Steps</h3>
             <div class="bg-dark-base/50 border border-text-muted-dark/30 p-4 rounded">
-              <pre class="text-sm font-mono text-text-primary/90 whitespace-pre-wrap"><%= @template.steps %></pre>
+              <pre class="text-sm font-mono text-theme-primary/90 whitespace-pre-wrap"><%= @template.steps %></pre>
             </div>
           </div>
         <% end %>
@@ -63,15 +63,15 @@
         <dl class="space-y-3 text-sm font-mono">
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Created by</dt>
-            <dd class="text-text-primary"><%= @template.user.display_name %></dd>
+            <dd class="text-theme-primary"><%= @template.user.display_name %></dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Created</dt>
-            <dd class="text-text-primary"><%= @template.created_at.strftime('%Y.%m.%d %H:%M') %></dd>
+            <dd class="text-theme-primary"><%= @template.created_at.strftime('%Y.%m.%d %H:%M') %></dd>
           </div>
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Updated</dt>
-            <dd class="text-text-primary"><%= @template.updated_at.strftime('%Y.%m.%d %H:%M') %></dd>
+            <dd class="text-theme-primary"><%= @template.updated_at.strftime('%Y.%m.%d %H:%M') %></dd>
           </div>
         </dl>
 
@@ -99,13 +99,13 @@
     <div class="panel">
       <div class="panel-header">Navigation</div>
       <div class="p-4 space-y-1">
-        <%= link_to project_test_case_templates_path(@project), class: "flex items-center px-3 py-2 text-text-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
+        <%= link_to project_test_case_templates_path(@project), class: "flex items-center px-3 py-2 text-theme-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
           <svg class="w-4 h-4 mr-3 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
           <span class="text-xs font-mono uppercase tracking-wider">All Templates</span>
         <% end %>
-        <%= link_to project_path(@project), class: "flex items-center px-3 py-2 text-text-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
+        <%= link_to project_path(@project), class: "flex items-center px-3 py-2 text-theme-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
           <svg class="w-4 h-4 mr-3 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
           </svg>

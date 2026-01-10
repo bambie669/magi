@@ -44,7 +44,7 @@
           <span>PRECONDITIONS</span>
         </div>
         <div class="p-6">
-          <p class="text-text-primary/80 font-mono text-sm whitespace-pre-wrap"><%= @test_case.preconditions %></p>
+          <p class="text-theme-primary/80 font-mono text-sm whitespace-pre-wrap"><%= @test_case.preconditions %></p>
         </div>
       </div>
     <% end %>
@@ -58,12 +58,12 @@
         <span>EXECUTION STEPS</span>
       </div>
       <div class="p-6">
-        <div class="text-text-primary/80 font-mono text-sm whitespace-pre-wrap space-y-2">
+        <div class="text-theme-primary/80 font-mono text-sm whitespace-pre-wrap space-y-2">
           <% @test_case.steps.to_s.split("\n").each_with_index do |step, index| %>
             <% next if step.strip.blank? %>
             <div class="flex items-start space-x-3 p-3 bg-dark-base/30 border-l-2 border-primary/50 hover:border-primary transition-colors">
               <span class="text-primary font-bold text-xs">[<%= format('%02d', index + 1) %>]</span>
-              <span class="text-text-primary/80"><%= step %></span>
+              <span class="text-theme-primary/80"><%= step %></span>
             </div>
           <% end %>
         </div>
@@ -152,7 +152,7 @@
                 <div class="flex items-center space-x-4">
                   <span class="w-2 h-2 rounded-full bg-<%= status_color %> <%= status == 'failed' ? 'animate-pulse' : '' %>"></span>
                   <div>
-                    <%= link_to test_run_path(execution.test_run), class: "text-sm font-mono text-text-primary hover:text-primary transition-colors" do %>
+                    <%= link_to test_run_path(execution.test_run), class: "text-sm font-mono text-theme-primary hover:text-primary transition-colors" do %>
                       <%= execution.test_run.name %>
                     <% end %>
                     <p class="text-[10px] font-mono text-text-muted">
@@ -205,7 +205,7 @@
           </div>
           <div class="flex justify-between">
             <dt class="text-text-muted uppercase text-[10px] tracking-wider">Source</dt>
-            <dd class="text-text-primary capitalize"><%= @test_case.source.humanize %></dd>
+            <dd class="text-theme-primary capitalize"><%= @test_case.source.humanize %></dd>
           </div>
           <% if @test_case.cypress_id.present? %>
             <div class="flex justify-between">
@@ -247,13 +247,13 @@
     <div class="panel">
       <div class="panel-header">Navigation</div>
       <div class="p-4 space-y-1">
-        <%= link_to test_suite_path(test_suite), class: "flex items-center px-3 py-2 text-text-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
+        <%= link_to test_suite_path(test_suite), class: "flex items-center px-3 py-2 text-theme-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
           <svg class="w-4 h-4 mr-3 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
           </svg>
           <span class="text-xs font-mono uppercase tracking-wider">Test Suite</span>
         <% end %>
-        <%= link_to project_path(project), class: "flex items-center px-3 py-2 text-text-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
+        <%= link_to project_path(project), class: "flex items-center px-3 py-2 text-theme-primary/70 hover:text-primary hover:bg-dark-surface-mid transition-colors" do %>
           <svg class="w-4 h-4 mr-3 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
           </svg>

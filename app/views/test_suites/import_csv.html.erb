@@ -46,7 +46,7 @@
         </div>
 
         <div class="flex justify-end space-x-3 pt-6 border-t border-status-error/20">
-          <%= link_to 'Abort', test_suite_path(@test_suite), class: "px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-text-primary transition-colors" %>
+          <%= link_to 'Abort', test_suite_path(@test_suite), class: "px-4 py-2 bg-dark-surface-mid border border-text-muted-dark text-text-muted text-xs font-mono uppercase tracking-wider hover:text-theme-primary transition-colors" %>
           <%= form.submit "Import Data", class: "btn-primary cursor-pointer" %>
         </div>
       <% end %>
@@ -57,7 +57,7 @@
   <div class="panel">
     <div class="panel-header">CSV FORMAT SPECIFICATION</div>
     <div class="p-6 space-y-6">
-      <p class="text-sm font-mono text-text-primary/80">
+      <p class="text-sm font-mono text-theme-primary/80">
         Download the template or use the following format for your CSV file:
       </p>
 
@@ -73,7 +73,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <h3 class="text-[10px] font-mono text-status-warning uppercase tracking-widest mb-3">Required Columns</h3>
-          <ul class="space-y-2 text-sm font-mono text-text-primary/80">
+          <ul class="space-y-2 text-sm font-mono text-theme-primary/80">
             <li><span class="text-primary">scope_path</span> - Folder hierarchy (e.g., "Login" or "Login/Validation")</li>
             <li><span class="text-primary">title</span> - Protocol designation</li>
             <li><span class="text-primary">steps</span> - Execution steps (use \n for new lines)</li>
@@ -83,7 +83,7 @@
 
         <div>
           <h3 class="text-[10px] font-mono text-status-warning uppercase tracking-widest mb-3">Optional Columns</h3>
-          <ul class="space-y-2 text-sm font-mono text-text-primary/80">
+          <ul class="space-y-2 text-sm font-mono text-theme-primary/80">
             <li><span class="text-primary">preconditions</span> - Initial conditions</li>
             <li><span class="text-primary">cypress_id</span> - Automation ID (e.g., TC-001)</li>
           </ul>
@@ -106,7 +106,7 @@ Login/Validation,Empty email test,,1. Leave email empty\n2. Click Login,Error me
           </svg>
           <span class="text-sm font-mono text-status-warning">System Note:</span>
         </div>
-        <p class="mt-2 text-sm font-mono text-text-primary/80">
+        <p class="mt-2 text-sm font-mono text-theme-primary/80">
           Test scopes (folders) will be created automatically if they don't exist.
         </p>
       </div>

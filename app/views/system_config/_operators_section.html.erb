@@ -30,7 +30,7 @@
                   </svg>
                 </div>
                 <div>
-                  <p class="font-mono text-sm text-text-primary"><%= user.email %></p>
+                  <p class="font-mono text-sm text-theme-primary"><%= user.email %></p>
                   <% if user == current_user %>
                     <p class="text-[10px] font-mono text-primary uppercase">Current User</p>
                   <% end %>
@@ -87,7 +87,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
         </svg>
       </div>
-      <h3 class="text-lg font-mono text-text-primary uppercase tracking-wider mb-2">No Users</h3>
+      <h3 class="text-lg font-mono text-theme-primary uppercase tracking-wider mb-2">No Users</h3>
       <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mb-6">Add a user to grant system access</p>
     </div>
   <% end %>

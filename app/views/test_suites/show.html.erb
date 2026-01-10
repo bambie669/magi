@@ -51,7 +51,7 @@
           <% if @test_suite.description.present? %>
             <div>
               <p class="text-[10px] font-mono text-status-warning uppercase tracking-wider mb-2">Bank Description</p>
-              <p class="text-text-primary/80 font-mono text-sm leading-relaxed"><%= @test_suite.description %></p>
+              <p class="text-theme-primary/80 font-mono text-sm leading-relaxed"><%= @test_suite.description %></p>
             </div>
           <% else %>
             <div class="flex items-center justify-center h-full text-text-muted">
@@ -147,7 +147,7 @@
             <span class="text-xs font-mono text-primary uppercase tracking-wider">
               <span data-bulk-actions-target="selectedCount">0</span> Selected
             </span>
-            <button data-action="click->bulk-actions#clearSelection" class="text-xs font-mono text-text-muted hover:text-text-primary uppercase tracking-wider">
+            <button data-action="click->bulk-actions#clearSelection" class="text-xs font-mono text-text-muted hover:text-theme-primary uppercase tracking-wider">
               Clear
             </button>
           </div>
@@ -200,7 +200,7 @@
                     <span class="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 border border-primary/30 flex-shrink-0">
                       <%= test_case.ref_id %>
                     </span>
-                    <%= link_to test_case_path(test_case), class: "text-base font-mono text-text-primary hover:text-primary transition-colors truncate" do %>
+                    <%= link_to test_case_path(test_case), class: "text-base font-mono text-theme-primary hover:text-primary transition-colors truncate" do %>
                       <%= test_case.title %>
                     <% end %>
                     <% if test_case.cypress_id.present? %>
@@ -290,7 +290,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
           </svg>
         </div>
-        <h3 class="text-lg font-mono text-text-primary uppercase tracking-wider mb-2">No Test Cases</h3>
+        <h3 class="text-lg font-mono text-theme-primary uppercase tracking-wider mb-2">No Test Cases</h3>
         <p class="text-[10px] font-mono text-text-muted uppercase tracking-wider mb-6">No test cases in this suite yet</p>
         <% if policy(::TestCase.new(test_suite: @test_suite)).new? %>
           <%= link_to new_test_suite_test_case_path(@test_suite), class: "btn-primary inline-flex items-center space-x-2" do %>
