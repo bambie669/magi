@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Magi QA is a test management web application built with Ruby on Rails 7.1 for managing software testing processes including projects, test suites, test cases, and test runs.
+Magi QA is a test management web application built with Ruby on Rails 7.1 for managing software testing processes including projects, test suites, test cases, and test runs. Includes a REST API for external integrations (e.g., Cypress test automation).
 
 ## Common Commands
 
@@ -42,15 +42,19 @@ rails console              # Start Rails console
 
 ### Domain Model Hierarchy
 ```
-User (has role: admin/regular)
+User (role enum: tester/manager/admin)
+├── ApiToken (for API authentication)
 └── Project (owner: user_id)
     ├── Milestone (due_date tracking)
     ├── TestSuite
     │   └── TestScope (hierarchical via parent_id, organizes test cases)
-    │       └── TestCase (title, preconditions, steps, expected_result)
-    └── TestRun (execution instance)
-        └── TestRunCase (status, comments, assigned user, attachments via ActiveStorage)
+    │       └── TestCase (title, preconditions, steps, expected_result, cypress_id)
+    ├── TestRun (execution instance)
+    │   └── TestRunCase (status enum: untested/passed/failed/blocked, comments, attachments)
+    └── TestCaseTemplate (reusable test case templates)
 ```
+
+TestCase has `ref_id` (auto-generated unique ID like "PROJ-00042") and optional `cypress_id` for matching with Cypress tests. TestCase `source` enum: manual/imported/cypress_auto.
 
 ### Authorization Pattern
 All controllers inherit from `ApplicationController` which includes Pundit. Each resource has a corresponding policy in `app/policies/` (e.g., `ProjectPolicy`, `TestRunPolicy`). Policies check user permissions based on role and ownership.
@@ -59,7 +63,15 @@ All controllers inherit from `ApplicationController` which includes Pundit. Each
 - Root: Dashboard for authenticated users, login page for visitors
 - Nested resources: Projects contain TestRuns, Milestones, TestSuites
 - Shallow nesting: TestSuites contain TestCases, TestRuns contain TestRunCases
-- TestRunCases have a dedicated update route for status/comments/attachments
+- API namespace: `/api/v1/` for external integrations
+- Health check: `GET /up`
+
+### API for Integrations
+The `/api/v1/` namespace provides REST endpoints for external tools:
+- Bearer token authentication via `ApiToken`
+- Cypress results endpoint: `POST /api/v1/projects/:project_id/cypress_results` or `POST /api/v1/test_runs/:test_run_id/cypress_results`
+- Auto-creates TestCases from Cypress tests when `auto_create: true`
+- Maps Cypress test IDs to TestCase `cypress_id` field
 
 ### Test Organization
 - RSpec with FactoryBot and Faker for test data
