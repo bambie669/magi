@@ -367,3 +367,4 @@ This project is licensed under the MIT License.
 **MAGI QA - Test Management System**
 
 </div>
+# magi-qa
